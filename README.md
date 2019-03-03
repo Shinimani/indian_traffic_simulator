@@ -10,6 +10,8 @@ For a class,
 we will define the attributes and only the function defintions in the .hpp files
 The actual functions will be in the .cpp file
 
+Follow this <a href = "https://www.learncpp.com/cpp-tutorial/89-class-code-and-header-files/">link</a>
+
 For a class Train, the .hpp and .cpp file will be named "train.cpp" and "train.hpp" while the class with Capitalized. The header guard must be full capitals and have the same name as the class of the form TRAIN_H
 
 
