@@ -1,11 +1,15 @@
 #include "common.hpp"
 #include "vehicle.hpp"
+#include <ctime>
+
 
 void ShowRoad (vector<vector<char> > mat);
 vector<vector<char> >  initRoad(int mat_wid, int mat_len);
+vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
+
 
 int main(int argc, char **argv){
-
+    srand(time(0));
     int mat_len, mat_wid;
     mat_len = stoi(argv[1]);
     mat_wid = stoi(argv[2]);
@@ -15,19 +19,15 @@ int main(int argc, char **argv){
     car.setBasicAttributes(2,2,0,1);
     car.setColour("Red");
     car.setType("Car");
-    car.setPosition(0.0, 1.0);
+    car.posInit(mat_wid);
     int count = 20;
 
     while(count > 0){
         //clears the screen so that continuous output looks like an animation
         system("clear");
-        //intializing the 2D road for positioning the vehicles on it.
+        //intializing the 2D road for positioning the vehicles on it. Erases the previous instance of the vehicle
         vector<vector<char> > mat = initRoad(mat_wid, mat_len);
-        for(int i=0; i<car.Get_width(); i++){
-            for(int j=0; j<car.Get_lenth(); j++){
-                mat[i+car.Get_y()][j+car.Get_x()] = 'b';
-            }
-        }
+        mat = newRoad(mat,car);
         ShowRoad(mat);
         //calculating the next cooridinates of the vehicle
         car.NextPosition();
@@ -71,4 +71,14 @@ void ShowRoad (vector<vector<char> > arr){
         }
         cout<<endl<<flush;
     }
+}
+
+vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a){
+    char o = a.getType().at(0);
+    for(int i=0; i<a.Get_width(); i++){
+        for(int j=0; j<a.Get_lenth(); j++){
+            road[i+a.Get_y()][j+a.Get_x()] = o;
+        }
+    }
+    return road;
 }

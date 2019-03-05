@@ -48,3 +48,15 @@ int Vehicle::Get_lenth(){
 int Vehicle::Get_width(){
     return width;
 }
+string Vehicle::getType(){
+    return vehicle_type;
+}
+
+//Extra Functions for the greater good
+
+void Vehicle::posInit(int road_wid){
+    int veh_wid = Get_width();
+    int den = road_wid - 2 - veh_wid +1;
+    float y_c = (rand()%den)+1;
+    setPosition(0,y_c);
+}
