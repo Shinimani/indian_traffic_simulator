@@ -36,6 +36,12 @@ To Learn List
 - [ ] OpenGL(After terminal visualization) 
 
 
-<!--To Do List-->
+## To Do List
+- [ ] Multiple Vehicles on road
+- [ ] Collision cases
+- [ ] Overtaking of vehicles 
+- [ ] Parsing the .ini file
+- [ ] Take in to account the Traffic signal
+- [ ] Starting and stopping the simulation
 
-<!-- - [ ] --> 
+
