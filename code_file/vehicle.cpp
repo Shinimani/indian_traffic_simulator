@@ -4,6 +4,14 @@
 
 
 //Intialising the position and specification of the vehicle. 
+    void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int ac, float x0, float y0){
+        setType(type);
+        setBasicAttributes(len, wid, ac, iSpeed);
+        setColour(colour);
+        setPosition(x0, y0);
+    }
+
+
 void Vehicle::setType(string type){
     vehicle_type = type;
 }
@@ -26,9 +34,24 @@ void Vehicle::setPosition(float x0 , float y0){
 }
 
 
+//function needed for simulation
+
 //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
 void Vehicle::NextPosition(){
+    calSpeed();
     x = speed + x;
+}
+
+//Calculating the speed of the vehicle
+void Vehicle::calSpeed(){
+    if(brake = false){
+        speed = acceleration + speed;
+    }else{
+        speed = speed - acceleration;
+        if(speed < 0){
+            speed = 0;
+        }
+    }
 }
 
 

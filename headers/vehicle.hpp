@@ -15,8 +15,11 @@ class Vehicle{
             float acceleration; //If brake = false
             float speed;
             float x,y; //location of the top left of the vehicle
+
+            void calSpeed();
     public:
         //Intialising the position and specification of the vehicle. 
+        void setVehicle(string type, string colour, int len, int wid, int ispeed, int ac, float x0, float y0);
         void setType(string type);
         void setBasicAttributes(int l, int w, int acc, float initSpeed);
         void setColour(string c);
