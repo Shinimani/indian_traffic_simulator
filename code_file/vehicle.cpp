@@ -4,11 +4,11 @@
 
 
 //Intialising the position and specification of the vehicle. 
-    void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int ac, float x0, float y0){
+    void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int ac){//, float x0, float y0){
         setType(type);
         setBasicAttributes(len, wid, ac, iSpeed);
         setColour(colour);
-        setPosition(x0, y0);
+        // setPosition(x0, y0);
     }
 
 
