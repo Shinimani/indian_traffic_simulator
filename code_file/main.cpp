@@ -15,11 +15,7 @@ int main(int argc, char **argv){
     mat_wid = stoi(argv[2]);
 
 
-    Vehicle car;
-    car.setBasicAttributes(2,2,0,1);
-    car.setColour("Red");
-    car.setType("Car");
-    car.posInit(mat_wid);
+    vector<Vehicle> vh;
     int count = 20;
 
     while(count > 0){
@@ -42,7 +38,6 @@ return 0;
 
     //intialising the array with null and the ends with '-'
 vector<vector<char> >  initRoad(int mat_wid, int mat_len){
-    //assigning the len and the width of the road to the variables
     vector<vector< char> > mat(mat_wid);
 
     for(int i=0; i< mat_wid; i++){
