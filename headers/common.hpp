@@ -5,6 +5,7 @@
 #include <vector>
 #include <unistd.h>
 #include <stdlib.h>
+#include<string> 
 using namespace std;
 
 #endif

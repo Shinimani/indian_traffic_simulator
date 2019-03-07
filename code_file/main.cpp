@@ -3,6 +3,7 @@
 
 void ShowRoad (vector<vector<char> > mat);
 vector<vector<char> >  initRoad(int mat_wid, int mat_len);
+vector<vector<string> > Parser(string name);
 
 int main(int argc, char **argv){
 
@@ -13,6 +14,8 @@ int main(int argc, char **argv){
 
     vector<Vehicle> vh;
     int count = 20;
+
+    Parser("Mayank.ini");
 
     while(count > 0){
         //clears the screen so that continuous output looks like an animation
