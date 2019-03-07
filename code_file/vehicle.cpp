@@ -4,12 +4,13 @@
 
 
 //Intialising the position and specification of the vehicle. 
-    void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int ac){//, float x0, float y0){
-        setType(type);
-        setBasicAttributes(len, wid, ac, iSpeed);
-        setColour(colour);
-        // setPosition(x0, y0);
-    }
+void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int ac, int start_time){//, float x0, float y0){
+    setType(type);
+    setBasicAttributes(len, wid, ac, iSpeed);
+    setColour(colour);
+    setStartTime(start_time);
+    // setPosition(x0, y0);
+}
 
 
 void Vehicle::setType(string type){
@@ -31,6 +32,10 @@ void Vehicle::setColour(string c){
 void Vehicle::setPosition(float x0 , float y0){
     x = x0;
     y = y0;
+}
+
+void Vehicle::setStartTime(int t){
+    start_time = t;
 }
 
 
@@ -73,6 +78,10 @@ int Vehicle::Get_width(){
 }
 string Vehicle::getType(){
     return vehicle_type;
+}
+
+int Vehicle::Get_start_time(){
+    return start_time;
 }
 
 //Extra Functions for the greater good

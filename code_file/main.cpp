@@ -7,7 +7,7 @@ void ShowRoad (vector<vector<char> > mat);
 vector<vector<char> >  initRoad(int mat_wid, int mat_len);
 vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
 void simulation(Vehicle v, vector<vector<char> > road, int count);
-
+void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
 int main(int argc, char **argv){
     srand(time(0));
     int mat_len, mat_wid;
@@ -15,28 +15,16 @@ int main(int argc, char **argv){
     mat_wid = stoi(argv[2]);
 
 
-    // vector<Vehicle> vh;
-    Vehicle car;
+    vector<Vehicle> vh;
+    Vehicle car,car2;
     int count = 20;
-    car.setVehicle("car","red",2,2,1,0);
+    car.setVehicle("car","red",2,2,1,0,0);
+    car2.setVehicle("car2","blue",2,2,1,0,2);
     car.posInit(mat_wid);
+    car2.posInit(mat_wid);
+    vh ={car,car2};
     vector<vector<char> > road = initRoad(mat_wid,mat_len);
-    simulation(car,road,count);
-    /*
-    while(count > 0){
-        //clears the screen so that continuous output looks like an animation
-        system("clear");
-        //intializing the 2D road for positioning the vehicles on it. Erases the previous instance of the vehicle
-        vector<vector<char> > mat = initRoad(mat_wid, mat_len);
-        mat = newRoad(mat,car);
-        ShowRoad(mat);
-        //calculating the next cooridinates of the vehicle
-        car.NextPosition();
-
-        //waiting time in micro seconds
-        usleep(100000);
-        count -=1;
-    }   */
+    simulation(vh,road,count);
 
 return 0;
 }
@@ -60,7 +48,6 @@ vector<vector<char> >  initRoad(int mat_wid, int mat_len){
 
 //shows the snapshot of the road at particular time
 void ShowRoad (vector<vector<char> > arr){
-
     //intialising the basic value for output
     int l = arr[0].size();
     int w = arr.size();
@@ -84,13 +71,38 @@ vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a){
 }
 
 void simulation(Vehicle v, vector<vector<char> > road, int count){
+    int time = 0;
     vector<vector<char> > updatedRoad;
     while (count>0){
         system("clear");
-        updatedRoad = newRoad(road,v);
-        ShowRoad(updatedRoad);
-        v.NextPosition();
+        if (v.Get_start_time()<=time){
+            updatedRoad = newRoad(road,v);
+            ShowRoad(updatedRoad);
+            v.NextPosition();
+        }
         usleep(100000);
+        count--;
+        time++;
+    }
+}
+void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count){
+    int time = 0;
+    vector<vector<char> > updatedRoad;
+    Vehicle *currVehicle;
+    while (count>0){
+        system("clear");
+        updatedRoad = road;
+        for (int i = 0; i<vl.size();i++){
+            currVehicle = &vl[i];
+            if ((*currVehicle).Get_start_time() <= time){
+                updatedRoad = newRoad(updatedRoad,*currVehicle);
+                (*currVehicle).NextPosition();
+            }
+        }
+        ShowRoad(updatedRoad);
+        // v.NextPosition();
+        usleep(100000);
+        time++;
         count--;
     }
 }
