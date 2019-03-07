@@ -6,7 +6,7 @@
 void ShowRoad (vector<vector<char> > mat);
 vector<vector<char> >  initRoad(int mat_wid, int mat_len);
 vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
-
+void simulation(Vehicle v, vector<vector<char> > road, int count);
 
 int main(int argc, char **argv){
     srand(time(0));
@@ -15,9 +15,14 @@ int main(int argc, char **argv){
     mat_wid = stoi(argv[2]);
 
 
-    vector<Vehicle> vh;
+    // vector<Vehicle> vh;
+    Vehicle car;
     int count = 20;
-
+    car.setVehicle("car","red",2,2,1,0);
+    car.posInit(mat_wid);
+    vector<vector<char> > road = initRoad(mat_wid,mat_len);
+    simulation(car,road,count);
+    /*
     while(count > 0){
         //clears the screen so that continuous output looks like an animation
         system("clear");
@@ -31,7 +36,7 @@ int main(int argc, char **argv){
         //waiting time in micro seconds
         usleep(100000);
         count -=1;
-    }   
+    }   */
 
 return 0;
 }
@@ -76,4 +81,16 @@ vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a){
         }
     }
     return road;
+}
+
+void simulation(Vehicle v, vector<vector<char> > road, int count){
+    vector<vector<char> > updatedRoad;
+    while (count>0){
+        system("clear");
+        updatedRoad = newRoad(road,v);
+        ShowRoad(updatedRoad);
+        v.NextPosition();
+        usleep(100000);
+        count--;
+    }
 }
