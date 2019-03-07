@@ -23,6 +23,7 @@ int main(int argc, char **argv){
     car.posInit(mat_wid);
     car2.posInit(mat_wid);
     vh ={car,car2};
+    
     vector<vector<char> > road = initRoad(mat_wid,mat_len);
     simulation(vh,road,count);
 

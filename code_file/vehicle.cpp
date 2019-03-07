@@ -38,7 +38,6 @@ void Vehicle::setStartTime(int t){
     start_time = t;
 }
 
-
 //function needed for simulation
 
 //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
@@ -92,3 +91,5 @@ void Vehicle::posInit(int road_wid){
     float y_c = (rand()%den)+1;
     setPosition(0,y_c);
 }
+
+// vector<int> Vehicle::coverage()
