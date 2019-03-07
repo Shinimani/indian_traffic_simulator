@@ -41,7 +41,7 @@ vector<vector<string> > Parser(string name){
     }
 
     // for(int i=0; i<res.size(); i++){
-    //     cout<<res[i][0]<<""<<res[i][1]<<endl;
+    //     cout<<res[i][0]<<" "<<res[i][1]<<endl;
     // }
 
     fileopen.close();

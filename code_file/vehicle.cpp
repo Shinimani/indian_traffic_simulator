@@ -4,17 +4,33 @@
 
 
 //Intialising the position and specification of the vehicle. 
-void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int ac, int start_time){//, float x0, float y0){
+void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac=1, int maxSpeed=1){
     setType(type);
     setBasicAttributes(len, wid, ac, iSpeed);
+    setMaxSpeed(maxSpeed);
     setColour(colour);
     setStartTime(start_time);
     // setPosition(x0, y0);
 }
 
+void Vehicle::setMaxSpeed(float maxSpeed){
+    maxspeed = maxSpeed;
+}
+
+void Vehicle::setMaxAcc(float a){
+    maxAcceleration = a;
+}
 
 void Vehicle::setType(string type){
     vehicle_type = type;
+}
+
+void Vehicle::setLength(int l){
+    length = l;
+}
+
+void Vehicle::setWidth(int w){
+    width = w;
 }
 
 void Vehicle::setBasicAttributes(int l, int w, int acc, float initSpeed){
@@ -93,3 +109,14 @@ void Vehicle::posInit(int road_wid){
 }
 
 // vector<int> Vehicle::coverage()
+
+//Showing the attributes of the vehicle
+void Vehicle::ShowVehicle(){
+    cout<<"Vehicle Type: "<<vehicle_type;
+    cout<<"\nVehicle Length: "<<length;
+    cout<<"\nVehicle Width: "<<width;
+    cout<<"\nVehicle MaxSpeed: "<<maxspeed;
+    cout<<"\nVehicle MaxAcceleration: "<<maxAcceleration;
+    cout<<endl<<endl;
+
+}
