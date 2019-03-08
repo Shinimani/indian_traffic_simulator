@@ -4,7 +4,7 @@
 
 
 //Intialising the position and specification of the vehicle. 
-void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac=1, int maxSpeed=1){
+void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed){
     setType(type);
     setBasicAttributes(len, wid, ac, iSpeed);
     setMaxSpeed(maxSpeed);
@@ -66,6 +66,9 @@ void Vehicle::NextPosition(){
 void Vehicle::calSpeed(){
     if(brake = false){
         speed = acceleration + speed;
+        if(speed > maxspeed){
+            speed = maxspeed;
+        }
     }else{
         speed = speed - acceleration;
         if(speed < 0){

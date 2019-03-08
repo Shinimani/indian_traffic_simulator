@@ -18,20 +18,23 @@ int main(int argc, char **argv){
     mat_len = stoi(argv[1]);
     mat_wid = stoi(argv[2]);
 
+    //Parsing the .ini file for getting the information from the file
     vector<vector<string> > temp = Parser("Mayank.ini");
-    vector<Vehicle> vh = InitVehicles(temp);
 
-    for(int i=0; i<vh.size(); i++){
-        vh[i].posInit(mat_wid);
+    //storing the different types of vehicle colour and how many type of each vehicle not decided yet.
+    // vector<Vehicle> vh = InitVehicles(temp);
 
-    }
-    // Vehicle car,car2;
+    // for(int i=0; i<vh.size(); i++){
+    //     vh[i].posInit(mat_wid);
+    // }
+    vector<Vehicle> vh;
+     Vehicle car,car2;
      int count = 20;
-    // car.setVehicle("car","red",2,2,1,0,0);
-    // car2.setVehicle("car2","blue",2,2,1,0,2);
-    // car.posInit(mat_wid);
-    // car2.posInit(mat_wid);
-    // vh ={car,car2};
+    car.setVehicle("car","red",2,2,3,0,0,1);
+    car2.setVehicle("car2","blue",2,2,1,0,0,1);
+    car.posInit(mat_wid);
+    car2.posInit(mat_wid);
+    vh ={car,car2};
     vector<vector<char> > road = initRoad(mat_wid,mat_len);
     simulation(vh,road,count);
 
