@@ -1,6 +1,8 @@
 #include "vehicle.hpp"
 #include "road.hpp"
 
+
+//Initializes the road attribute of the class. 
 void Road::Init_road(int mat_wid, int mat_len){
     // road.reserve(mat_wid);
     cout<<"Ok"<<endl;
@@ -18,6 +20,7 @@ void Road::Init_road(int mat_wid, int mat_len){
     }
 }
 
+//Changes the road attribute with a vehicle
 void Road::New_road(Vehicle a){
     char o = a.getType().at(0);
     for(int i=0; i<a.Get_width(); i++){
@@ -26,7 +29,7 @@ void Road::New_road(Vehicle a){
         }
     }
 }
-
+//Returns a new road and takes a road matrix as an input
 vector<vector<char> > Road::New_road(vector<vector<char> > roadMat,Vehicle a){
     char o = a.getType().at(0);
     for(int i=0; i<a.Get_width(); i++){
@@ -37,7 +40,7 @@ vector<vector<char> > Road::New_road(vector<vector<char> > roadMat,Vehicle a){
     return roadMat;
 }
 
-
+//Prints the road attribute of a class
 void Road::Show_road(){
     int w = road.size();
     int l = road[0].size();
@@ -48,7 +51,7 @@ void Road::Show_road(){
         cout<<endl<<flush;
     }
 }
-
+//Prints any road
 void Road::Show_road(vector<vector<char> > r){
     int w = r.size();
     int l = r[0].size();
@@ -60,6 +63,16 @@ void Road::Show_road(vector<vector<char> > r){
     }
 }
 
+
+void Road::Add_vehicles(Vehicle v){
+    vehicles.push_back(v);
+}
+
+void Road::Add_vehicles(vector<Vehicle> v){
+    vehicles.insert(vehicles.end(),v.begin(),v.end());
+}
+
+//Simulates.
 void Road::Simulation(vector<Vehicle> v,int count){
     int time = 0;
     vector<vector<char> > updatedRoad;
@@ -83,7 +96,33 @@ void Road::Simulation(vector<Vehicle> v,int count){
 
 }
 
+void Road::Simulation(int count){
+    int time = 0;
+    vector<vector<char> > updatedRoad;
+    Vehicle *currVehicle;
+    while (count>0){
+        system("clear");
+        updatedRoad = Get_road();
+        for (int i = 0; i<vehicles.size();i++){
+            currVehicle = &vehicles[i];
+            if ((*currVehicle).Get_start_time() <= time){
+                updatedRoad = New_road(updatedRoad,*currVehicle);
+                (*currVehicle).NextPosition();
+            }
+        }
+        Show_road(updatedRoad);
+        // v.NextPosition();
+        usleep(100000);
+        time++;
+        count--;
+    }
+
+}
 
 vector<vector<char> > Road::Get_road(){
     return road;
+}
+
+vector<Vehicle> Road::Get_vehicles(){
+    return vehicles;
 }

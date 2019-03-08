@@ -18,9 +18,17 @@ class Road{
         void Show_road();
         void Show_road(vector<vector<char> > r);
 
-        void Simulation(vector<Vehicle> v ,int count);
+        void Add_vehicles(Vehicle v);
+        void Add_vehicles(vector<Vehicle> v);
+
+
+
+        void Simulation(vector<Vehicle> v ,int count); //can be deleted afterwards
+        void Simulation(int count);
 
         vector<vector<char> > Get_road();
+        vector<Vehicle> Get_vehicles();
+
 };
 
 
