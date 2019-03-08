@@ -22,12 +22,13 @@ class Road{
         void Add_vehicles(vector<Vehicle> v);
 
 
-
+        void Set_signal(int i);
         void Simulation(vector<Vehicle> v ,int count); //can be deleted afterwards
         void Simulation(int count);
 
         vector<vector<char> > Get_road();
         vector<Vehicle> Get_vehicles();
+        vector<int> Get_signals();
 
 };
 

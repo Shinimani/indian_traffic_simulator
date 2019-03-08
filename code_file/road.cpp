@@ -63,7 +63,7 @@ void Road::Show_road(vector<vector<char> > r){
     }
 }
 
-
+//Adds vehicles to the vector of vehicles
 void Road::Add_vehicles(Vehicle v){
     vehicles.push_back(v);
 }
@@ -71,6 +71,11 @@ void Road::Add_vehicles(Vehicle v){
 void Road::Add_vehicles(vector<Vehicle> v){
     vehicles.insert(vehicles.end(),v.begin(),v.end());
 }
+//Adds Signal to the vector of signals 
+void Road::Set_signal(int i){
+    signals.push_back(i);
+}
+
 
 //Simulates.
 void Road::Simulation(vector<Vehicle> v,int count){
@@ -125,4 +130,7 @@ vector<vector<char> > Road::Get_road(){
 
 vector<Vehicle> Road::Get_vehicles(){
     return vehicles;
+}
+vector<int> Road::Get_signals(){
+    return signals;
 }
