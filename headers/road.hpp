@@ -14,6 +14,11 @@ class Road{
         void ShowRoad (vector<vector<char> > mat);
         void Init_road(int mat_wid, int mat_len);
         void New_road(Vehicle a);
+        vector<vector<char> > New_road(vector<vector<char> > roadMat,Vehicle a);
+        void Show_road();
+        void Show_road(vector<vector<char> > r);
+
+        void Simulation(vector<Vehicle> v ,int count);
 
         vector<vector<char> > Get_road();
 };

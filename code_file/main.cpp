@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "vehicle.hpp"
+#include "road.hpp"
 #include <ctime>
 
 
@@ -18,27 +19,30 @@ int main(int argc, char **argv){
     mat_len = stoi(argv[1]);
     mat_wid = stoi(argv[2]);
 
-    vector<vector<string> > temp = Parser("Mayank.ini");
-    vector<Vehicle> vh = InitVehicles(temp);
+    // vector<vector<string> > temp = Parser("Mayank.ini");
+    // vector<Vehicle> vh = InitVehicles(temp);
+    Road r;
+    r.Init_road(mat_wid, mat_len);
 
+    vector<Vehicle> vh;
     for(int i=0; i<vh.size(); i++){
         vh[i].posInit(mat_wid);
 
     }
-    // Vehicle car,car2;
-     int count = 20;
-    // car.setVehicle("car","red",2,2,1,0,0);
-    // car2.setVehicle("car2","blue",2,2,1,0,2);
-    // car.posInit(mat_wid);
-    // car2.posInit(mat_wid);
-    // vh ={car,car2};
-    vector<vector<char> > road = initRoad(mat_wid,mat_len);
-    simulation(vh,road,count);
+    Vehicle car,car2;
+    int count = 20;
+    car.setVehicle("car","red",2,2,1,0,0,4);
+    car2.setVehicle("car2","blue",2,2,1,2,0,4);
+    car.posInit(mat_wid);
+    car2.posInit(mat_wid);
+    vh ={car,car2};
+    // simulation(vh,r.Get_road(),count);
+    r.Simulation(vh,20);
 
 return 0;
 }
 
-    //intialising the array with null and the ends with '-'
+//intialising the array with null and the ends with '-'
 vector<vector<char> >  initRoad(int mat_wid, int mat_len){
     vector<vector< char> > mat(mat_wid);
 
