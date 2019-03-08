@@ -8,22 +8,30 @@ vector<vector<char> >  initRoad(int mat_wid, int mat_len);
 vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
 void simulation(Vehicle v, vector<vector<char> > road, int count);
 void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
+vector<Vehicle> InitVehicles(vector<vector<string> > prased);
+vector<vector<string> > Parser(string name);
+
+
 int main(int argc, char **argv){
     srand(time(0));
     int mat_len, mat_wid;
     mat_len = stoi(argv[1]);
     mat_wid = stoi(argv[2]);
 
+    vector<vector<string> > temp = Parser("Mayank.ini");
+    vector<Vehicle> vh = InitVehicles(temp);
 
-    vector<Vehicle> vh;
-    Vehicle car,car2;
-    int count = 20;
-    car.setVehicle("car","red",2,2,1,0,0);
-    car2.setVehicle("car2","blue",2,2,1,0,2);
-    car.posInit(mat_wid);
-    car2.posInit(mat_wid);
-    vh ={car,car2};
-    
+    for(int i=0; i<vh.size(); i++){
+        vh[i].posInit(mat_wid);
+
+    }
+    // Vehicle car,car2;
+     int count = 20;
+    // car.setVehicle("car","red",2,2,1,0,0);
+    // car2.setVehicle("car2","blue",2,2,1,0,2);
+    // car.posInit(mat_wid);
+    // car2.posInit(mat_wid);
+    // vh ={car,car2};
     vector<vector<char> > road = initRoad(mat_wid,mat_len);
     simulation(vh,road,count);
 
@@ -106,4 +114,56 @@ void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count){
         time++;
         count--;
     }
+}
+
+vector<Vehicle> InitVehicles(vector<vector<string> > parsed){
+    
+    int count = 0; 
+    int countVehicle = -1;
+
+    vector<Vehicle> vh;
+
+    //default value for all the vehicles
+    float dMaxSpeed;
+    float dAcceleration;
+
+    Vehicle temp;
+
+    while( parsed[count][0] != "START" ){
+
+        if(parsed[count][0] == "Default_MaxSpeed"){
+            dMaxSpeed = stoi(parsed[count][1]);
+        }
+
+        if(parsed[count][0] == "Default_Acceleration"){
+            dAcceleration = stoi(parsed[count][1]);
+        }
+
+        if(parsed[count][0] == "Vehicle_Type"){
+            //setting the default value and the type of the vehicle
+            vh.push_back(temp);
+            countVehicle += 1;
+            vh[countVehicle].setType(parsed[count][1]);
+            vh[countVehicle].setMaxSpeed(dMaxSpeed);
+            vh[countVehicle].setMaxAcc(dAcceleration);
+        }else{
+            if(parsed[count][0] == "Vehicle_Length"){
+                vh[countVehicle].setLength(stoi(parsed[count][1]));
+            }
+            if(parsed[count][0] == "Vehicle_Width"){
+                vh[countVehicle].setWidth(stoi(parsed[count][1]));
+            }
+            if(parsed[count][0] == "Vehicle_MaxSpeed"){
+                vh[countVehicle].setMaxSpeed(stoi(parsed[count][1]));
+            }
+            if(parsed[count][0] == "Vehicle_Acceleration"){
+                vh[countVehicle].setMaxAcc(stoi(parsed[count][1]));
+            } 
+        }
+
+        count += 1;
+    }
+
+    return vh;
+
 }
