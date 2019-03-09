@@ -34,7 +34,15 @@ vector<vector<char> > Road::New_road(vector<vector<char> > roadMat,Vehicle a){
     char o = a.getType().at(0);
     for(int i=0; i<a.Get_width(); i++){
         for(int j=0; j<a.Get_lenth(); j++){
-            roadMat[i+a.Get_y()][j+a.Get_x()] = o;
+            int x = j+a.Get_x();
+            int y = i+a.Get_y();
+            // if (x>roadMat.size()){
+            //     continue;
+            // } else if(y>roadMat[0].size()){
+            //     continue;
+            // }else{
+                roadMat[y][x] = o;
+            // }
         }
     }
     return roadMat;
@@ -63,7 +71,7 @@ void Road::Show_road(vector<vector<char> > r){
     }
 }
 
-
+//Adds vehicles to the vector of vehicles
 void Road::Add_vehicles(Vehicle v){
     vehicles.push_back(v);
 }
@@ -71,6 +79,32 @@ void Road::Add_vehicles(Vehicle v){
 void Road::Add_vehicles(vector<Vehicle> v){
     vehicles.insert(vehicles.end(),v.begin(),v.end());
 }
+
+void Road::Vehicle_intializer(int mat_len, int mat_wid){
+    Vehicle *currVehicle;
+    vector<int> all_coverage;
+    for (int i = 0; i< vehicles.size(); i++){
+        currVehicle = &vehicles[i];
+        bool checker= true;
+        while (checker){
+            (*currVehicle).posInit(mat_wid);
+            vector<int> cv =(*currVehicle).Get_coverage();
+            //check if 2 vectors have any common elemnts
+            bool retVal = commIn2vectors(all_coverage,cv);
+            if (retVal == true){
+                all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
+                checker = false;
+            }
+        }
+    }
+}
+
+
+//Adds Signal to the vector of signals 
+void Road::Set_signal(int i){
+    signals.push_back(i);
+}
+
 
 //Simulates.
 void Road::Simulation(vector<Vehicle> v,int count){
@@ -96,19 +130,30 @@ void Road::Simulation(vector<Vehicle> v,int count){
 
 }
 
-void Road::Simulation(int count){
+void Road::Simulation(int count, int mat_len){
     int time = 0;
     vector<vector<char> > updatedRoad;
-    Vehicle *currVehicle;
+    Vehicle *currVehicle,*currVehicle2;
     while (count>0){
         system("clear");
         updatedRoad = Get_road();
         for (int i = 0; i<vehicles.size();i++){
             currVehicle = &vehicles[i];
-            if ((*currVehicle).Get_start_time() <= time){
+                if ((*currVehicle).Get_start_time() <= time){
+                (*currVehicle).setCoverage(mat_len);
                 updatedRoad = New_road(updatedRoad,*currVehicle);
+
+                if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
+                    continue;
+                }else{
                 (*currVehicle).NextPosition();
-            }
+                }
+            }   
+        }
+        //Shows the information of the vehicles
+        for (int i = 0; i<vehicles.size();i++){
+            currVehicle2 = &vehicles[i];
+            (*currVehicle2).ShowVehicle();   
         }
         Show_road(updatedRoad);
         // v.NextPosition();
@@ -125,4 +170,7 @@ vector<vector<char> > Road::Get_road(){
 
 vector<Vehicle> Road::Get_vehicles(){
     return vehicles;
+}
+vector<int> Road::Get_signals(){
+    return signals;
 }

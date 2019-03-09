@@ -4,13 +4,15 @@
 #include <ctime>
 
 
-void ShowRoad (vector<vector<char> > mat);
-vector<vector<char> >  initRoad(int mat_wid, int mat_len);
-vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
-void simulation(Vehicle v, vector<vector<char> > road, int count);
-void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
-vector<Vehicle> InitVehicles(vector<vector<string> > prased);
-vector<vector<string> > Parser(string name);
+// void ShowRoad (vector<vector<char> > mat);
+// vector<vector<char> >  initRoad(int mat_wid, int mat_len);
+// vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
+// void simulation(Vehicle v, vector<vector<char> > road, int count);
+// void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
+// vector<Vehicle> InitVehicles(vector<vector<string> > prased);
+// vector<vector<string> > Parser(string name);
+
+
 
 
 int main(int argc, char **argv){
@@ -27,18 +29,18 @@ int main(int argc, char **argv){
     vector<Vehicle> vh;
     for(int i=0; i<vh.size(); i++){
         vh[i].posInit(mat_wid);
-
     }
     Vehicle car,car2;
-    int count = 20;
-    car.setVehicle("car","red",2,2,1,0,0,4);
+    int count = 40;
+    car.setVehicle("car","red",2,2,1,3,0,4);
     car2.setVehicle("car2","blue",2,2,1,2,0,4);
-    car.posInit(mat_wid);
-    car2.posInit(mat_wid);
+    // car.posInit(mat_wid);
+    // car2.posInit(mat_wid);
     vh ={car,car2};
     // simulation(vh,r.Get_road(),count);
     r.Add_vehicles(vh);
-    r.Simulation(20);
+    r.Vehicle_intializer(mat_len,mat_wid);
+    r.Simulation(count,mat_len);
 
 return 0;
 }
