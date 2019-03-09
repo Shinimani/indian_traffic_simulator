@@ -36,13 +36,7 @@ vector<vector<char> > Road::New_road(vector<vector<char> > roadMat,Vehicle a){
         for(int j=0; j<a.Get_lenth(); j++){
             int x = j+a.Get_x();
             int y = i+a.Get_y();
-            // if (x>roadMat.size()){
-            //     continue;
-            // } else if(y>roadMat[0].size()){
-            //     continue;
-            // }else{
-                roadMat[y][x] = o;
-            // }
+            roadMat[y][x] = o;
         }
     }
     return roadMat;
@@ -112,31 +106,30 @@ void Road::Set_signal(int i){
     signals.push_back(i);
 }
 
+bool Road::Signal_behavior(Vehicle v){
+    for (int i = 0; i< signals.size();i++){
+        int curr_signal = signals[i];
+        if (curr_signal - v.Get_x()-v.Get_lenth() == 0){
+            return true;
+        } else{
+            continue;
+        }
+    }
+    return false;
+}
 
-//Simulates.
-/*
-void Road::Simulation(vector<Vehicle> v,int count){
-    int time = 0;
-    vector<vector<char> > updatedRoad;
-    Vehicle *currVehicle;
-    while (count>0){
-        //system("clear");
-        updatedRoad = Get_road();
-        for (int i = 0; i<v.size();i++){
-            currVehicle = &v[i];
-            if ((*currVehicle).Get_start_time() <= time){
-                updatedRoad = New_road(updatedRoad,*currVehicle);
-                (*currVehicle).NextPosition();
+vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r){
+    for(int i = 0; i< r.size();i++){
+        for (int j = 0; j<r[0].size(); j++){
+            for (int k =0;k<signals.size();k++){
+                if (signals[k] == j){
+                    r[i][j] = '|';
+                }
             }
         }
-        Show_road(updatedRoad);
-        // v.NextPosition();
-        usleep(100000);
-        time++;
-        count--;
     }
-
-}*/
+    return r;
+}
 
 //Simulates.
 void Road::Simulation(int count, int mat_len){
@@ -155,17 +148,20 @@ void Road::Simulation(int count, int mat_len){
                 if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
-                (*currVehicle).NextPosition();
+                bool chk = Signal_behavior((*currVehicle));
+                if (chk == false){
+                    (*currVehicle).NextPosition();
+                }
                 }
             }   
         }
         //Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
-            (*currVehicle2).ShowOrder();   
+            (*currVehicle2).ShowVehicle();   
         }
+        updatedRoad = Set_signal_on_road(updatedRoad);
         Show_road(updatedRoad);
-        // v.NextPosition();
         usleep(100000);
         time++;
         count--;
