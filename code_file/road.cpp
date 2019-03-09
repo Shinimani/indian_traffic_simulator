@@ -5,7 +5,7 @@
 //Initializes the road attribute of the class. 
 void Road::Init_road(int mat_wid, int mat_len){
     // road.reserve(mat_wid);
-    cout<<"Ok"<<endl;
+
     for(int i=0; i< mat_wid; i++){
         // road[i] = vector<char>(mat_len);
         vector<char> roadRow;
@@ -83,11 +83,13 @@ void Road::Add_vehicles(vector<Vehicle> v){
 void Road::Vehicle_intializer(int mat_len, int mat_wid){
     Vehicle *currVehicle;
     vector<int> all_coverage;
+    int restarter = 0;
     for (int i = 0; i< vehicles.size(); i++){
         currVehicle = &vehicles[i];
         bool checker= true;
         while (checker){
             (*currVehicle).posInit(mat_wid);
+            (*currVehicle).setCoverage(mat_len);
             vector<int> cv =(*currVehicle).Get_coverage();
             //check if 2 vectors have any common elemnts
             bool retVal = commIn2vectors(all_coverage,cv);
@@ -95,6 +97,11 @@ void Road::Vehicle_intializer(int mat_len, int mat_wid){
                 all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
                 checker = false;
             }
+            if (restarter > 5*vehicles.size()){
+                checker = false;
+                i = 0;
+            }
+            restarter++;
         }
     }
 }
@@ -112,7 +119,7 @@ void Road::Simulation(vector<Vehicle> v,int count){
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle;
     while (count>0){
-        system("clear");
+        //system("clear");
         updatedRoad = Get_road();
         for (int i = 0; i<v.size();i++){
             currVehicle = &v[i];
