@@ -36,7 +36,7 @@ int main(int argc, char **argv){
     list_vehicle.push_back(car);
     r.Add_vehicles(list_vehicle);
     r.Vehicle_intializer(mat_len,mat_wid);
-    r.Set_signal(10);
+    r.Set_signal(10,15);
     r.Simulation(count,mat_len);
 
     cout<<mat_len<<" "<<mat_wid<<endl;

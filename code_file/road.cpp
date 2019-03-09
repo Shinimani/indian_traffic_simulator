@@ -102,15 +102,21 @@ void Road::Vehicle_intializer(int mat_len, int mat_wid){
 
 
 //Adds Signal to the vector of signals 
-void Road::Set_signal(int i){
-    signals.push_back(i);
+void Road::Set_signal(int col,int rel_time){
+    tuple<int,int> t = make_tuple(col,rel_time);
+    signals.push_back(t);
 }
 
-bool Road::Signal_behavior(Vehicle v){
+bool Road::Signal_behavior(Vehicle v, int curr_time){
     for (int i = 0; i< signals.size();i++){
-        int curr_signal = signals[i];
+        int curr_signal = get<0>(signals[i]);
+        int curr_rel_time = get<1>(signals[i]);
         if (curr_signal - v.Get_x()-v.Get_lenth() == 0){
-            return true;
+            if (curr_time < curr_rel_time){
+                return true;
+            }else{
+                return false;
+            }
         } else{
             continue;
         }
@@ -122,7 +128,8 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r){
     for(int i = 0; i< r.size();i++){
         for (int j = 0; j<r[0].size(); j++){
             for (int k =0;k<signals.size();k++){
-                if (signals[k] == j){
+                int sig_col = get<0>(signals[k]); 
+                if (sig_col == j){
                     r[i][j] = '|';
                 }
             }
@@ -148,7 +155,7 @@ void Road::Simulation(int count, int mat_len){
                 if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
-                bool chk = Signal_behavior((*currVehicle));
+                bool chk = Signal_behavior((*currVehicle),time);
                 if (chk == false){
                     (*currVehicle).NextPosition();
                 }
@@ -176,6 +183,6 @@ vector<vector<char> > Road::Get_road(){
 vector<Vehicle> Road::Get_vehicles(){
     return vehicles;
 }
-vector<int> Road::Get_signals(){
+vector<tuple<int,int> > Road::Get_signals(){
     return signals;
 }

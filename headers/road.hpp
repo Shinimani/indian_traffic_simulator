@@ -8,7 +8,7 @@ class Road{
         vector<vector<char> > road; //The Road matrix.
         vector<Vehicle> vehicles; //The list of vehicles on the road
         // vector<vector<int> >coverage; //The matrix cell numberseach of the car take. Useful for detecting collisions
-        vector<int> signals; //List of signals with their Column Numbers. The length of the vector are the number of columns
+        vector<tuple<int,int> > signals; //List of signals with their Column Numbers. The length of the vector are the number of columns
 
     public:
         void ShowRoad (vector<vector<char> > mat);
@@ -24,8 +24,8 @@ class Road{
         void Vehicle_intializer(int mat_len, int mat_wid);
 
 
-        void Set_signal(int i);
-        bool Signal_behavior(Vehicle v);
+        void Set_signal(int col,int rel_time);
+        bool Signal_behavior(Vehicle v, int time);
         vector<vector<char> > Set_signal_on_road(vector<vector<char> > r);
 
         void Simulation(vector<Vehicle> v ,int count); //can be deleted afterwards
@@ -33,7 +33,7 @@ class Road{
 
         vector<vector<char> > Get_road();
         vector<Vehicle> Get_vehicles();
-        vector<int> Get_signals();
+        vector<tuple <int,int> > Get_signals();
 
 };
 
