@@ -154,7 +154,7 @@ void Road::Simulation(int count, int mat_len){
     int time = 0;
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
-    while (count>0){
+    while (Sim_fin()){
         system("clear");
         updatedRoad = Get_road();
         for (int i = 0; i<vehicles.size();i++){
@@ -185,6 +185,18 @@ void Road::Simulation(int count, int mat_len){
         count--;
     }
 
+}
+
+bool Road::Sim_fin(){
+    for (int i = 0; i<vehicles.size();i++){
+        Vehicle v = vehicles[i];
+        if (v.Get_x()-v.Get_lenth()>=road[0].size()){
+            continue;
+        }else{
+            return true;
+        }
+    }
+    return false;
 }
 
 vector<vector<char> > Road::Get_road(){

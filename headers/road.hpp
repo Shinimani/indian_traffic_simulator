@@ -30,6 +30,7 @@ class Road{
 
         void Simulation(vector<Vehicle> v ,int count); //can be deleted afterwards
         void Simulation(int count,int mat_len);
+        bool Sim_fin();
 
         vector<vector<char> > Get_road();
         vector<Vehicle> Get_vehicles();
