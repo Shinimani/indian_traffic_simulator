@@ -34,7 +34,14 @@ int main(int argc, char **argv){
     Road r;
     r.Init_road(mat_wid, mat_len);
 
+    vector<Vehicle> list_vehicle = GetVehicle(temp, vh1);
+
     vector<Vehicle> vh;
+    
+    for(int i=0; i<list_vehicle.size(); i++){
+        list_vehicle[i].posInit(mat_wid);
+    }
+    
     for(int i=0; i<vh.size(); i++){
         vh[i].posInit(mat_wid);
     }
@@ -46,7 +53,7 @@ int main(int argc, char **argv){
     // car2.posInit(mat_wid);
     vh ={car,car2};
     // simulation(vh,r.Get_road(),count);
-    r.Add_vehicles(vh);
+    r.Add_vehicles(list_vehicle);
     r.Vehicle_intializer(mat_len,mat_wid);
     r.Simulation(count,mat_len);
 

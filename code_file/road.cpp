@@ -153,7 +153,7 @@ void Road::Simulation(int count, int mat_len){
         //Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
-            (*currVehicle2).ShowVehicle();   
+            (*currVehicle2).ShowOrder();   
         }
         Show_road(updatedRoad);
         // v.NextPosition();

@@ -5,7 +5,8 @@
 #include <vector>
 #include <unistd.h>
 #include <stdlib.h>
-#include<string> 
+#include<string>
+#include<time.h>  
 using namespace std;
 
 template<typename T>
