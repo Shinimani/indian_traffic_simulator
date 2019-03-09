@@ -29,10 +29,8 @@ int main(int argc, char **argv){
     //     list_vehicle[i].posInit(mat_wid);
     // }
      Vehicle car,car2;
-    int count = 40;
+    int count = 100;
     car.setVehicle("car","red",2,2,1,0,3,2);
-    // car2.setVehicle("car2","blue",2,2,1,2,0.6,3);
-    // vh ={car,car2};
     list_vehicle.push_back(car);
     r.Add_vehicles(list_vehicle);
     r.Vehicle_intializer(mat_len,mat_wid);

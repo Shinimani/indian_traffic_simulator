@@ -36,7 +36,11 @@ vector<vector<char> > Road::New_road(vector<vector<char> > roadMat,Vehicle a){
         for(int j=0; j<a.Get_lenth(); j++){
             int x = j+a.Get_x();
             int y = i+a.Get_y();
+            if (x>roadMat[0].size()){
+                continue;
+            }else{
             roadMat[y][x] = o;
+            }
         }
     }
     return roadMat;
@@ -137,6 +141,12 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
         }
     }
     return r;
+}
+
+
+//Free space for each vehicle calculation
+void Set_free_area(vector<vector<char> > r){
+
 }
 
 //Simulates.
