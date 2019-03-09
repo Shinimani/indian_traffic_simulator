@@ -27,10 +27,9 @@ int main(int argc, char **argv){
     vector<Vehicle> vh;
     for(int i=0; i<vh.size(); i++){
         vh[i].posInit(mat_wid);
-
     }
     Vehicle car,car2;
-    int count = 20;
+    // int count = 20;
     car.setVehicle("car","red",2,2,1,3,0,4);
     car2.setVehicle("car2","blue",2,2,1,2,0,4);
     car.posInit(mat_wid);
@@ -38,7 +37,7 @@ int main(int argc, char **argv){
     vh ={car,car2};
     // simulation(vh,r.Get_road(),count);
     r.Add_vehicles(vh);
-    r.Simulation(20);
+    r.Simulation(mat_len);
 
 return 0;
 }

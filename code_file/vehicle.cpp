@@ -142,6 +142,7 @@ void Vehicle::ShowVehicle(){
     cout<<"\nVehicle Width: "<<width;
     cout<<"\nVehicle MaxSpeed: "<<maxspeed;
     cout<<"\nVehicle MaxAcceleration: "<<maxAcceleration;
+    cout<<"\nX: "<<x<<" Y: "<<y;
     cout<<endl<<endl;
 
 }

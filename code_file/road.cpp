@@ -34,7 +34,15 @@ vector<vector<char> > Road::New_road(vector<vector<char> > roadMat,Vehicle a){
     char o = a.getType().at(0);
     for(int i=0; i<a.Get_width(); i++){
         for(int j=0; j<a.Get_lenth(); j++){
-            roadMat[i+a.Get_y()][j+a.Get_x()] = o;
+            int x = j+a.Get_x();
+            int y = i+a.Get_y();
+            // if (x>roadMat.size()){
+            //     continue;
+            // } else if(y>roadMat[0].size()){
+            //     continue;
+            // }else{
+                roadMat[y][x] = o;
+            // }
         }
     }
     return roadMat;
@@ -101,19 +109,27 @@ void Road::Simulation(vector<Vehicle> v,int count){
 
 }
 
-void Road::Simulation(int count){
+void Road::Simulation(int mat_len){
     int time = 0;
     vector<vector<char> > updatedRoad;
-    Vehicle *currVehicle;
+    Vehicle *currVehicle,*currVehicle2;
+    int count = mat_len;
     while (count>0){
         system("clear");
         updatedRoad = Get_road();
         for (int i = 0; i<vehicles.size();i++){
             currVehicle = &vehicles[i];
-            if ((*currVehicle).Get_start_time() <= time){
+                if ((*currVehicle).Get_start_time() <= time){
+                (*currVehicle).setCoverage(mat_len);
                 updatedRoad = New_road(updatedRoad,*currVehicle);
                 (*currVehicle).NextPosition();
-            }
+            }   
+        }
+        for (int i = 0; i<vehicles.size();i++){
+
+            currVehicle2 = &vehicles[i];
+            
+            (*currVehicle2).ShowVehicle();   
         }
         Show_road(updatedRoad);
         // v.NextPosition();
