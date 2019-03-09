@@ -4,13 +4,13 @@
 #include <ctime>
 
 
-void ShowRoad (vector<vector<char> > mat);
-vector<vector<char> >  initRoad(int mat_wid, int mat_len);
-vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
-void simulation(Vehicle v, vector<vector<char> > road, int count);
-void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
-vector<Vehicle> InitVehicles(vector<vector<string> > prased);
-vector<vector<string> > Parser(string name);
+// void ShowRoad (vector<vector<char> > mat);
+// vector<vector<char> >  initRoad(int mat_wid, int mat_len);
+// vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
+// void simulation(Vehicle v, vector<vector<char> > road, int count);
+// void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
+// vector<Vehicle> InitVehicles(vector<vector<string> > prased);
+// vector<vector<string> > Parser(string name);
 
 
 int main(int argc, char **argv){
@@ -31,7 +31,7 @@ int main(int argc, char **argv){
     }
     Vehicle car,car2;
     int count = 20;
-    car.setVehicle("car","red",2,2,1,0,0,4);
+    car.setVehicle("car","red",2,2,1,3,0,4);
     car2.setVehicle("car2","blue",2,2,1,2,0,4);
     car.posInit(mat_wid);
     car2.posInit(mat_wid);

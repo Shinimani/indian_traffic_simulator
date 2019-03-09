@@ -18,6 +18,7 @@ class Vehicle{
         float maxAcceleration;
         int start_time;
         float x,y; //location of the top left of the vehicle
+        vector<int> coverage;
 
         void calSpeed();
     public:
@@ -32,6 +33,7 @@ class Vehicle{
         void setLength(int t);
         void setWidth(int w);
         void setMaxAcc(float a);
+        void setCoverage(int mat_len);
 
         //functions for getting the coordinates and dimension of the vehicle.
         float Get_x();
@@ -40,6 +42,8 @@ class Vehicle{
         int Get_width();
         string getType();
         int Get_start_time();
+        vector<int>Get_coverage();
+
         void posInit(int road_wid);
 
         //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
