@@ -150,7 +150,7 @@ void Set_free_area(vector<vector<char> > r){
 }
 
 //Simulates.
-void Road::Simulation(int count, int mat_len){
+void Road::Simulation(int mat_len){
     int time = 0;
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
@@ -182,7 +182,7 @@ void Road::Simulation(int count, int mat_len){
         Show_road(updatedRoad);
         usleep(100000);
         time++;
-        count--;
+        // count--;
     }
 
 }

@@ -36,7 +36,7 @@ int main(int argc, char **argv){
     r.Vehicle_intializer(mat_len,mat_wid);
     r.Set_signal(10,15);
     r.Set_signal(20,35);
-    r.Simulation(count,mat_len);
+    r.Simulation(mat_len);
 
     cout<<mat_len<<" "<<mat_wid<<endl;
 
