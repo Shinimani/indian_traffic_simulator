@@ -13,6 +13,8 @@
 // vector<vector<string> > Parser(string name);
 
 
+
+
 int main(int argc, char **argv){
     srand(time(0));
     int mat_len, mat_wid;
@@ -29,15 +31,16 @@ int main(int argc, char **argv){
         vh[i].posInit(mat_wid);
     }
     Vehicle car,car2;
-    // int count = 20;
+    int count = 40;
     car.setVehicle("car","red",2,2,1,3,0,4);
     car2.setVehicle("car2","blue",2,2,1,2,0,4);
-    car.posInit(mat_wid);
-    car2.posInit(mat_wid);
+    // car.posInit(mat_wid);
+    // car2.posInit(mat_wid);
     vh ={car,car2};
     // simulation(vh,r.Get_road(),count);
     r.Add_vehicles(vh);
-    r.Simulation(mat_len);
+    r.Vehicle_intializer(mat_len,mat_wid);
+    r.Simulation(count,mat_len);
 
 return 0;
 }

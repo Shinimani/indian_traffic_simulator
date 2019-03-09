@@ -55,18 +55,14 @@ void Vehicle::setStartTime(int t){
 }
 
 void Vehicle::setCoverage(int mat_len){
-    coverage={};
+    coverage.clear();
     int x = Get_x();
     int y = Get_y();
     int ele;
     for (int i = 0; i<Get_width();i++){
         for (int j = 0; j<Get_lenth();j++){
             int length;
-            if (j+x > Get_lenth()){
-                length = 0;
-            } else {
-                length = j+x;
-            }
+            length = j+x;
             ele = ((i+y)*mat_len + length); //This line will give the element in the road matrix.
             //(i+y) is the current row while length will make sure the column number doesn't exceed the lengh of the road
             coverage.push_back(ele);
@@ -143,6 +139,11 @@ void Vehicle::ShowVehicle(){
     cout<<"\nVehicle MaxSpeed: "<<maxspeed;
     cout<<"\nVehicle MaxAcceleration: "<<maxAcceleration;
     cout<<"\nX: "<<x<<" Y: "<<y;
+    cout<<"\nCoverage of the vehicle in the matrix: ";
+    vector<int> cv = Get_coverage();
+    for (int i = 0; i<cv.size();i++){
+        cout<<cv[i]<<" ";
+    }
     cout<<endl<<endl;
 
 }

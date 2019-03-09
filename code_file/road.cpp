@@ -79,6 +79,27 @@ void Road::Add_vehicles(Vehicle v){
 void Road::Add_vehicles(vector<Vehicle> v){
     vehicles.insert(vehicles.end(),v.begin(),v.end());
 }
+
+void Road::Vehicle_intializer(int mat_len, int mat_wid){
+    Vehicle *currVehicle;
+    vector<int> all_coverage;
+    for (int i = 0; i< vehicles.size(); i++){
+        currVehicle = &vehicles[i];
+        bool checker= true;
+        while (checker){
+            (*currVehicle).posInit(mat_wid);
+            vector<int> cv =(*currVehicle).Get_coverage();
+            //check if 2 vectors have any common elemnts
+            bool retVal = commIn2vectors(all_coverage,cv);
+            if (retVal == true){
+                all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
+                checker = false;
+            }
+        }
+    }
+}
+
+
 //Adds Signal to the vector of signals 
 void Road::Set_signal(int i){
     signals.push_back(i);
@@ -109,11 +130,10 @@ void Road::Simulation(vector<Vehicle> v,int count){
 
 }
 
-void Road::Simulation(int mat_len){
+void Road::Simulation(int count, int mat_len){
     int time = 0;
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
-    int count = mat_len;
     while (count>0){
         system("clear");
         updatedRoad = Get_road();
@@ -122,13 +142,17 @@ void Road::Simulation(int mat_len){
                 if ((*currVehicle).Get_start_time() <= time){
                 (*currVehicle).setCoverage(mat_len);
                 updatedRoad = New_road(updatedRoad,*currVehicle);
+
+                if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
+                    continue;
+                }else{
                 (*currVehicle).NextPosition();
+                }
             }   
         }
+        //Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
-
             currVehicle2 = &vehicles[i];
-            
             (*currVehicle2).ShowVehicle();   
         }
         Show_road(updatedRoad);
