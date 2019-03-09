@@ -4,7 +4,7 @@
 
 
 //Intialising the position and specification of the vehicle. 
-void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac=1, int maxSpeed=1){
+void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed){
     setType(type);
     setBasicAttributes(len, wid, ac, iSpeed);
     setMaxSpeed(maxSpeed);
@@ -40,6 +40,16 @@ void Vehicle::setBasicAttributes(int l, int w, int acc, float initSpeed){
     brake = false;
     speed = initSpeed;
 }
+
+void Vehicle::setAcceleration(float ac){
+    acceleration = ac;
+}
+
+
+void Vehicle::setSpeed(float Speed){
+    speed = Speed;
+}
+
 
 void Vehicle::setColour(string c){
     colour = c;
@@ -80,12 +90,15 @@ void Vehicle::NextPosition(){
 
 //Calculating the speed of the vehicle
 void Vehicle::calSpeed(){
-    if(brake = false){
-        speed = acceleration + speed;
-    }else{
+    if(brake = 0){
         speed = speed - acceleration;
         if(speed < 0){
             speed = 0;
+        }
+    }else{
+        speed = acceleration + speed;
+        if(speed >= maxspeed){
+            speed = maxspeed;
         }
     }
 }
@@ -120,6 +133,14 @@ vector<int> Vehicle::Get_coverage(){
 }
 
 
+float Vehicle::GetMaxSpeed(){
+    return maxspeed;
+}
+
+float Vehicle::GetMaxAccleration(){
+    return maxAcceleration;
+}
+
 //Extra Functions for the greater good
 
 void Vehicle::posInit(int road_wid){
@@ -138,6 +159,9 @@ void Vehicle::ShowVehicle(){
     cout<<"\nVehicle Width: "<<width;
     cout<<"\nVehicle MaxSpeed: "<<maxspeed;
     cout<<"\nVehicle MaxAcceleration: "<<maxAcceleration;
+    cout<<"\nBrake value:"<<brake;
+    cout<<"\nColour: "<<colour;
+    cout<<"\nStart Time: "<<start_time;
     cout<<"\nX: "<<x<<" Y: "<<y;
     cout<<"\nCoverage of the vehicle in the matrix: ";
     vector<int> cv = Get_coverage();
@@ -146,4 +170,16 @@ void Vehicle::ShowVehicle(){
     }
     cout<<endl<<endl;
 
+}
+
+//void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed)
+void Vehicle::ShowOrder(){
+    cout<<"\n Type: "<<vehicle_type;
+    cout<<"\n Colour: "<<colour;
+    cout<<"\n Length: "<<length;
+    cout<<"\n Width: "<<width;
+    cout<<"\n Intial speed: "<<speed;
+    cout<<"\n Start Time: "<<start_time;
+    cout<<"\n Accleration: "<<acceleration;
+    cout<<"\n Max Speed: "<<maxspeed<<endl;
 }

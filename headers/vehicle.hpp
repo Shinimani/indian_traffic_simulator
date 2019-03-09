@@ -34,6 +34,8 @@ class Vehicle{
         void setWidth(int w);
         void setMaxAcc(float a);
         void setCoverage(int mat_len);
+        void setSpeed(float speed);
+        void setAcceleration(float ac);
 
         //functions for getting the coordinates and dimension of the vehicle.
         float Get_x();
@@ -43,6 +45,8 @@ class Vehicle{
         string getType();
         int Get_start_time();
         vector<int>Get_coverage();
+        float GetMaxSpeed();
+        float GetMaxAccleration();
 
         void posInit(int road_wid);
 
@@ -51,6 +55,7 @@ class Vehicle{
 
         //Showing the basic attributes of the object of the class
         void ShowVehicle();
+        void ShowOrder();
 
 };
 
