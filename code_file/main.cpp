@@ -30,13 +30,14 @@ int main(int argc, char **argv){
     // }
      Vehicle car,car2;
     int count = 40;
-    car.setVehicle("car","red",2,2,1,0,0.5,2);
+    car.setVehicle("car","red",2,2,1,0,3,2);
     // car2.setVehicle("car2","blue",2,2,1,2,0.6,3);
     // vh ={car,car2};
     list_vehicle.push_back(car);
     r.Add_vehicles(list_vehicle);
     r.Vehicle_intializer(mat_len,mat_wid);
     r.Set_signal(10,15);
+    r.Set_signal(20,35);
     r.Simulation(count,mat_len);
 
     cout<<mat_len<<" "<<mat_wid<<endl;

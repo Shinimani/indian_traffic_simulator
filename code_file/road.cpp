@@ -124,12 +124,13 @@ bool Road::Signal_behavior(Vehicle v, int curr_time){
     return false;
 }
 
-vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r){
+vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time){
     for(int i = 0; i< r.size();i++){
         for (int j = 0; j<r[0].size(); j++){
             for (int k =0;k<signals.size();k++){
                 int sig_col = get<0>(signals[k]); 
-                if (sig_col == j){
+                int sig_rel_time = get<1>(signals[k]);
+                if (sig_col == j && sig_rel_time>time){
                     r[i][j] = '|';
                 }
             }
@@ -167,7 +168,7 @@ void Road::Simulation(int count, int mat_len){
             currVehicle2 = &vehicles[i];
             (*currVehicle2).ShowVehicle();   
         }
-        updatedRoad = Set_signal_on_road(updatedRoad);
+        updatedRoad = Set_signal_on_road(updatedRoad,time);
         Show_road(updatedRoad);
         usleep(100000);
         time++;
