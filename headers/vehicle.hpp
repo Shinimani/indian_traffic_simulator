@@ -18,7 +18,7 @@ class Vehicle{
         float maxAcceleration;
         int start_time;
         float x,y; //location of the top left of the vehicle
-        vector<int> coverage;
+        vector<tuple<int,int> > coverage;
         vector<int> free_area; //A vector of length 4 which tells the space free in the 4 directions of the vehicle
 
         void calSpeed();
@@ -45,7 +45,7 @@ class Vehicle{
         int Get_width();
         string getType();
         int Get_start_time();
-        vector<int>Get_coverage();
+        vector<tuple<int,int> >Get_coverage();
         float GetMaxSpeed();
         float GetMaxAccleration();
 

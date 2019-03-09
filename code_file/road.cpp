@@ -80,7 +80,7 @@ void Road::Add_vehicles(vector<Vehicle> v){
 
 void Road::Vehicle_intializer(int mat_len, int mat_wid){
     Vehicle *currVehicle;
-    vector<int> all_coverage;
+    vector<tuple<int,int> > all_coverage;
     int restarter = 0;
     for (int i = 0; i< vehicles.size(); i++){
         currVehicle = &vehicles[i];
@@ -88,7 +88,7 @@ void Road::Vehicle_intializer(int mat_len, int mat_wid){
         while (checker){
             (*currVehicle).posInit(mat_wid);
             (*currVehicle).setCoverage(mat_len);
-            vector<int> cv =(*currVehicle).Get_coverage();
+            vector<tuple<int,int> > cv =(*currVehicle).Get_coverage();
             //check if 2 vectors have any common elemnts
             bool retVal = commIn2vectors(all_coverage,cv);
             if (retVal == true){
@@ -187,6 +187,7 @@ void Road::Simulation(int mat_len){
 
 }
 
+//Checks if the simulation must be finished or not
 bool Road::Sim_fin(){
     for (int i = 0; i<vehicles.size();i++){
         Vehicle v = vehicles[i];
