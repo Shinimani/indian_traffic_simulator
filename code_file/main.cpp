@@ -1,6 +1,7 @@
 #include "common.hpp"
 #include "vehicle.hpp"
 #include "road.hpp"
+#include "Parser.hpp"
 #include <ctime>
 
 
@@ -9,8 +10,9 @@
 // vector<vector<char> > newRoad(vector<vector<char> > road, Vehicle a);
 // void simulation(Vehicle v, vector<vector<char> > road, int count);
 // void simulation(vector<Vehicle> vl, vector<vector<char> > road, int count);
-// vector<Vehicle> InitVehicles(vector<vector<string> > prased);
-// vector<vector<string> > Parser(string name);
+
+ vector<Vehicle> InitVehicles(vector<vector<string> > prased);
+ vector<vector<string> > Parser(string name);
 
 
 
@@ -18,11 +20,17 @@
 int main(int argc, char **argv){
     srand(time(0));
     int mat_len, mat_wid;
-    mat_len = stoi(argv[1]);
-    mat_wid = stoi(argv[2]);
 
-    // vector<vector<string> > temp = Parser("Mayank.ini");
-    // vector<Vehicle> vh = InitVehicles(temp);
+    // mat_len = stoi(argv[1]);
+    // mat_wid = stoi(argv[2]);
+
+
+    vector<vector<string> > temp = Parser("Mayank.ini");
+    vector<Vehicle> vh1 = InitVehicles(temp);
+
+    mat_len = RoadLen(temp);
+    mat_wid = RoadWid(temp);
+
     Road r;
     r.Init_road(mat_wid, mat_len);
 
@@ -32,8 +40,8 @@ int main(int argc, char **argv){
     }
     Vehicle car,car2;
     int count = 40;
-    car.setVehicle("car","red",2,2,1,3,0,4);
-    car2.setVehicle("car2","blue",2,2,1,2,0,4);
+    car.setVehicle("car","red",2,2,1,3,0.5,2);
+    car2.setVehicle("car2","blue",2,2,1,2,0.6,3);
     // car.posInit(mat_wid);
     // car2.posInit(mat_wid);
     vh ={car,car2};
@@ -41,6 +49,9 @@ int main(int argc, char **argv){
     r.Add_vehicles(vh);
     r.Vehicle_intializer(mat_len,mat_wid);
     r.Simulation(count,mat_len);
+
+    cout<<mat_len<<" "<<mat_wid<<endl;
+
 
 return 0;
 }
@@ -123,54 +134,54 @@ return 0;
 //     }
 // }
 
-vector<Vehicle> InitVehicles(vector<vector<string> > parsed){
+// vector<Vehicle> InitVehicles(vector<vector<string> > parsed){
     
-    int count = 0; 
-    int countVehicle = -1;
+//     int count = 0; 
+//     int countVehicle = -1;
 
-    vector<Vehicle> vh;
+//     vector<Vehicle> vh;
 
-    //default value for all the vehicles
-    float dMaxSpeed;
-    float dAcceleration;
+//     //default value for all the vehicles
+//     float dMaxSpeed;
+//     float dAcceleration;
 
-    Vehicle temp;
+//     Vehicle temp;
 
-    while( parsed[count][0] != "START" ){
+//     while( parsed[count][0] != "START" ){
 
-        if(parsed[count][0] == "Default_MaxSpeed"){
-            dMaxSpeed = stoi(parsed[count][1]);
-        }
+//         if(parsed[count][0] == "Default_MaxSpeed"){
+//             dMaxSpeed = stoi(parsed[count][1]);
+//         }
 
-        if(parsed[count][0] == "Default_Acceleration"){
-            dAcceleration = stoi(parsed[count][1]);
-        }
+//         if(parsed[count][0] == "Default_Acceleration"){
+//             dAcceleration = stoi(parsed[count][1]);
+//         }
 
-        if(parsed[count][0] == "Vehicle_Type"){
-            //setting the default value and the type of the vehicle
-            vh.push_back(temp);
-            countVehicle += 1;
-            vh[countVehicle].setType(parsed[count][1]);
-            vh[countVehicle].setMaxSpeed(dMaxSpeed);
-            vh[countVehicle].setMaxAcc(dAcceleration);
-        }else{
-            if(parsed[count][0] == "Vehicle_Length"){
-                vh[countVehicle].setLength(stoi(parsed[count][1]));
-            }
-            if(parsed[count][0] == "Vehicle_Width"){
-                vh[countVehicle].setWidth(stoi(parsed[count][1]));
-            }
-            if(parsed[count][0] == "Vehicle_MaxSpeed"){
-                vh[countVehicle].setMaxSpeed(stoi(parsed[count][1]));
-            }
-            if(parsed[count][0] == "Vehicle_Acceleration"){
-                vh[countVehicle].setMaxAcc(stoi(parsed[count][1]));
-            } 
-        }
+//         if(parsed[count][0] == "Vehicle_Type"){
+//             //setting the default value and the type of the vehicle
+//             vh.push_back(temp);
+//             countVehicle += 1;
+//             vh[countVehicle].setType(parsed[count][1]);
+//             vh[countVehicle].setMaxSpeed(dMaxSpeed);
+//             vh[countVehicle].setMaxAcc(dAcceleration);
+//         }else{
+//             if(parsed[count][0] == "Vehicle_Length"){
+//                 vh[countVehicle].setLength(stoi(parsed[count][1]));
+//             }
+//             if(parsed[count][0] == "Vehicle_Width"){
+//                 vh[countVehicle].setWidth(stoi(parsed[count][1]));
+//             }
+//             if(parsed[count][0] == "Vehicle_MaxSpeed"){
+//                 vh[countVehicle].setMaxSpeed(stoi(parsed[count][1]));
+//             }
+//             if(parsed[count][0] == "Vehicle_Acceleration"){
+//                 vh[countVehicle].setMaxAcc(stoi(parsed[count][1]));
+//             } 
+//         }
 
-        count += 1;
-    }
+//         count += 1;
+//     }
 
-    return vh;
+//     return vh;
 
-}
+// }

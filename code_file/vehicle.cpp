@@ -80,15 +80,15 @@ void Vehicle::NextPosition(){
 
 //Calculating the speed of the vehicle
 void Vehicle::calSpeed(){
-    if(brake = false){
-        speed = acceleration + speed;
-        if(speed > maxspeed){
-            speed = maxspeed;
-        }
-    }else{
+    if(brake = 0){
         speed = speed - acceleration;
         if(speed < 0){
             speed = 0;
+        }
+    }else{
+        speed = acceleration + speed;
+        if(speed >= maxspeed){
+            speed = maxspeed;
         }
     }
 }
@@ -141,6 +141,7 @@ void Vehicle::ShowVehicle(){
     cout<<"\nVehicle Width: "<<width;
     cout<<"\nVehicle MaxSpeed: "<<maxspeed;
     cout<<"\nVehicle MaxAcceleration: "<<maxAcceleration;
+    cout<<"\nBrake value:"<<brake;
     cout<<"\nX: "<<x<<" Y: "<<y;
     cout<<"\nCoverage of the vehicle in the matrix: ";
     vector<int> cv = Get_coverage();
