@@ -114,6 +114,7 @@ void Road::Set_signal(int i){
 
 
 //Simulates.
+/*
 void Road::Simulation(vector<Vehicle> v,int count){
     int time = 0;
     vector<vector<char> > updatedRoad;
@@ -135,8 +136,9 @@ void Road::Simulation(vector<Vehicle> v,int count){
         count--;
     }
 
-}
+}*/
 
+//Simulates.
 void Road::Simulation(int count, int mat_len){
     int time = 0;
     vector<vector<char> > updatedRoad;
