@@ -1,6 +1,6 @@
 #include "vehicle.hpp"
 #include "road.hpp"
-
+#include <algorithm>
 
 //Initializes the road attribute of the class. 
 void Road::Init_road(int mat_wid, int mat_len){
@@ -145,8 +145,69 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
 
 
 //Free space for each vehicle calculation
-void Set_free_area(vector<vector<char> > r){
+void Road::Set_free_area(vector<vector<char> > r){
+    vector<Vehicle> vl = Get_vehicles();
+    vector<tuple<int,int> >all_coverage;
+    Vehicle *currV;
+    for (int i = 0; i<vl.size();i++){
+        currV = &vl[i];
+        vector<tuple<int,int> > currCov = (*currV).Get_coverage();
+        all_coverage.insert(all_coverage.end(),currCov.begin(),currCov.end());
+    }
+    for (int i = 0;i <vl.size();i++){
+        currV = &vl[i]; //Each Vehicle
+        int front,back,left,right = 0; //wrt to the vehicle
+        vector<tuple<int,int> > currCov = (*currV).Get_coverage();
+        vector<int>x_cord,y_cord; //x and y coordinates of the curr vehicle's coverage
+        for(int k = 0; k<currCov.size();k++){
+            int x = get<0>(currCov[k]);
+            int y = get<1>(currCov[k]);
+            if(find(x_cord.begin(),x_cord.end(),x) != x_cord.end()){
+            }else{
+                x_cord.push_back(x);
+            }
+            if(find(y_cord.begin(),y_cord.end(),y) != y_cord.end()){
+            }else{
+                y_cord.push_back(y);
+            }
+        }
 
+        for (int j = 0;j<all_coverage.size();j++){
+            int x = get<0>(all_coverage[j]);
+            int y = get<1>(all_coverage[j]);
+            for (int k = 0;k<x_cord.size();k++){
+                if (x == x_cord[k]){
+                    //for right
+                    int test_right = y - *(max_element(y_cord.begin(),y_cord.end()));
+                    if (test_right>0 && test_right<right){
+                        right = test_right;
+                    }
+
+                    //for left
+                    int test_left =  *(min_element(y_cord.begin(),y_cord.end())) - y;
+                    if (test_left>0 && test_left<left){
+                        left = test_left;
+                    }
+                }
+
+                if (y == y_cord[k]){
+                    //for right
+                    int test_front = x - *(max_element(x_cord.begin(),x_cord.end()));
+                    if (test_front>0 && test_front<front){
+                        front = test_front;
+                    }
+
+                    //for left
+                    int test_back =  *(min_element(x_cord.begin(),x_cord.end())) - x;
+                    if (test_back>0 && test_back<back){
+                        back = test_back;
+                    }
+                }
+            }
+
+        }
+        (*currV).setFreeArea({front,back,left,right});
+    }
 }
 
 //Simulates.
@@ -162,7 +223,7 @@ void Road::Simulation(int mat_len){
                 if ((*currVehicle).Get_start_time() <= time){
                 (*currVehicle).setCoverage(mat_len);
                 updatedRoad = New_road(updatedRoad,*currVehicle);
-
+                Set_free_area(updatedRoad);
                 if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
@@ -173,7 +234,7 @@ void Road::Simulation(int mat_len){
                 }
             }   
         }
-        //Shows the information of the vehicles
+        // Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
             (*currVehicle2).ShowVehicle();   

@@ -37,6 +37,7 @@ class Vehicle{
         void setCoverage(int mat_len);
         void setSpeed(float speed);
         void setAcceleration(float ac);
+        void setFreeArea(vector<int> fa);
 
         //functions for getting the coordinates and dimension of the vehicle.
         float Get_x();
@@ -48,6 +49,7 @@ class Vehicle{
         vector<tuple<int,int> >Get_coverage();
         float GetMaxSpeed();
         float GetMaxAccleration();
+        vector<int> Get_free_area();
 
         void posInit(int road_wid);
 

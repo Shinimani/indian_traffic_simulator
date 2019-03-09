@@ -28,6 +28,8 @@ class Road{
         bool Signal_behavior(Vehicle v, int time);
         vector<vector<char> > Set_signal_on_road(vector<vector<char> > r,int time);
 
+        void Set_free_area(vector<vector<char> > r);
+
         void Simulation(vector<Vehicle> v ,int count); //can be deleted afterwards
         void Simulation(int mat_len);
         bool Sim_fin();
