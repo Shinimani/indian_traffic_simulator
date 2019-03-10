@@ -153,17 +153,18 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
 
 //Free space for each vehicle calculation
 void Road::Set_free_area(vector<vector<char> > r){
-    vector<Vehicle> vl = Get_vehicles();
+    vector<Vehicle> *vl;
+    vl = &(vehicles);
     vector<tuple<int,int> >all_coverage;
     Vehicle *currV;
-    for (int i = 0; i<vl.size();i++){
-        currV = &vl[i];
+    for (int i = 0; i<(*vl).size();i++){
+        currV = &(*vl)[i];
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();
         all_coverage.insert(all_coverage.end(),currCov.begin(),currCov.end());
     }
-    for (int i = 0;i <vl.size();i++){
-        currV = &vl[i]; //Each Vehicle
-        int front,back,left,right = 0; //wrt to the vehicle
+    for (int i = 0;i <(*vl).size();i++){
+        currV = &(*vl)[i]; //Each Vehicle
+        int front = 100,back = 100,left = 100,right = 100; //wrt to the vehicle
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();
         vector<int>x_cord,y_cord; //x and y coordinates of the curr vehicle's coverage
         for(int k = 0; k<currCov.size();k++){
@@ -213,6 +214,7 @@ void Road::Set_free_area(vector<vector<char> > r){
             }
 
         }
+        cout<<"Front: "<<front<<" Back: "<<back<<" Left: "<<left<<" Right: "<<right<<endl;
         (*currV).setFreeArea({front,back,left,right});
     }
 }
@@ -230,7 +232,6 @@ void Road::Simulation(int mat_len){
                 if ((*currVehicle).Get_start_time() <= time){
                 (*currVehicle).setCoverage(mat_len);
                 updatedRoad = New_road(updatedRoad,*currVehicle);
-                Set_free_area(updatedRoad);
                 if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
@@ -241,6 +242,7 @@ void Road::Simulation(int mat_len){
                 }
             }   
         }
+        Set_free_area(updatedRoad);
         // Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
