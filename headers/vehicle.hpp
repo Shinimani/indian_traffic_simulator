@@ -11,7 +11,7 @@ class Vehicle{
         string colour;
         int length;
         int width;
-        bool brake;
+        int brake;     //break = 1 means no brake and brake = 0 means break is applied
         float acceleration; //If brake = false
         float speed;
         float maxspeed;
@@ -24,7 +24,7 @@ class Vehicle{
         bool rlc,llc; //right lane change and left lane change
 
         void calSpeed();
-        // int calSpeed(int dummy);  //returns the speed of vehicle v
+        void calAcceleration();
 
     public:
         //Intialising the position and specification of the vehicle. 
@@ -42,6 +42,7 @@ class Vehicle{
         void setSpeed(float speed);
         void setAcceleration(float ac);
         void setFreeArea(vector<int> fa);
+        void setBrake(int t);
 
         void laneChange();
         void laneChanger();

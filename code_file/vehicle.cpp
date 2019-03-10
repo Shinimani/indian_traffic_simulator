@@ -10,6 +10,8 @@ void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpee
     setMaxSpeed(maxSpeed);
     setColour(colour);
     setStartTime(start_time);
+    brake = 0;
+    cout<<brake<<endl;
     // setPosition(x0, y0);
 }
 
@@ -37,9 +39,14 @@ void Vehicle::setBasicAttributes(int l, int w, int acc, float initSpeed){
     length = l;
     width = w;
     acceleration = acc;
-    brake = false;
+    brake = 1;
     speed = initSpeed;
 }
+
+void Vehicle::setBrake(int t){
+    brake = t;
+}
+
 
 void Vehicle::setAcceleration(float ac){
     acceleration = ac;
@@ -84,7 +91,6 @@ void Vehicle::setFreeArea(vector<int> fa){
     free_area = fa;   
 }
 
-
 void Vehicle::laneChange(){
     vector<int>fs = Get_free_area();
     int lfs = fs[2]; //left free space
@@ -127,33 +133,30 @@ void Vehicle::NextPosition(){
 
 //Calculating the speed of the vehicle
 void Vehicle::calSpeed(){
-    if(brake = 0){
-        speed = speed - acceleration;
+    calAcceleration();
+    cout<<brake<<endl;
+    if(brake == 0 ){
+        speed = speed - (maxAcceleration - acceleration);
         if(speed < 0){
             speed = 0;
         }
     }else{
         speed = acceleration + speed;
+        //cout<<speed<<endl;
         if(speed >= maxspeed){
             speed = maxspeed;
         }
     }
 }
 
-// int Vehicle::calSpeed(int dummy){
-//     if(brake = 0){
-//         speed = speed - acceleration;
-//         if(speed < 0){
-//             speed = 0;
-//         }
-//     }else{
-//         speed = acceleration + speed;
-//         if(speed >= maxspeed){
-//             speed = maxspeed;
-//         }
-//     }
-//     return speed;
-// }
+//Calculating the accleration of the vehicle based on the previous acceleration and state of breaks
+void Vehicle::calAcceleration(){
+  acceleration = acceleration + 1;
+  if(acceleration >= maxAcceleration){
+      acceleration = maxAcceleration;
+  }
+}
+
 
 //Getters Function 
 float Vehicle::Get_x(){
@@ -250,13 +253,17 @@ void Vehicle::ShowOrder(){
     cout<<"\n Intial speed: "<<speed;
     cout<<"\n Start Time: "<<start_time;
     cout<<"\n Accleration: "<<acceleration;
+    cout<<"\n Brake Value: "<<brake;
     cout<<"\n Max Speed: "<<maxspeed<<endl;
 }
 
 void Vehicle::ShowEssential(){
     cout<<"\n Intial speed: "<<speed;
+    cout<<"\n Max Speed: "<<maxspeed;
     cout<<"\n Acceleration: "<<acceleration;
+    cout<<"\n Max Acceleration: "<<maxAcceleration;
     cout<<"\n Start Time: "<<start_time;
+    cout<<"\n Brake Value: "<<brake;
 }
 
 void Vehicle::ShowBasic(){
