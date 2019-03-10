@@ -165,7 +165,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
     //all coverage contains all the coverages of the vehicles on the road.
     for (int i = 0;i <(*vl).size();i++){
         currV = &(*vl)[i]; //Each Vehicle
-        int front = mat_len-(*currV).Get_x() + (*currV).Get_lenth();
+        int front = mat_len-(*currV).Get_x() - (*currV).Get_lenth();
         int back = (*currV).Get_x();
         int left = (*currV).Get_y();
         int right = mat_wid - (*currV).Get_y() - (*currV).Get_width(); //wrt to the vehicle
@@ -218,7 +218,6 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
             }
 
         }
-        cout<<"Front: "<<front<<" Back: "<<back<<" Left: "<<left<<" Right: "<<right<<endl;
         (*currV).setFreeArea({front,back,left,right});
     }
 }
@@ -250,8 +249,8 @@ void Road::Simulation(int mat_len, int mat_wid){
         // Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
-            //(*currVehicle2).ShowVehicle();  
-            (*currVehicle2).ShowEssential(); 
+            (*currVehicle2).ShowVehicle();  
+            // (*currVehicle2).ShowEssential(); 
             cout<<endl;
             //(*currVehicle2).ShowOrder();
         }
