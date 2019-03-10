@@ -99,9 +99,9 @@ void Vehicle::collisionAvoider(int mat_len){
     //Brake 1 is forward accelaration. Brake 0 is retardation
     if (mat_len - Get_x()<=2*Get_lenth()){
         setBrake(1);
-    }else if(Get_x()<=2*Get_lenth()){
+    }else if(Get_x()<=1){
         setBrake(1);
-    }else if (front<4*vspeed && front > 4){
+    }else if (front<4*vspeed && front > 2){
         setBrake(0);
     } else if (front <2){
         setBrake(0);
