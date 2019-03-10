@@ -50,6 +50,7 @@ class Vehicle{
         float GetMaxSpeed();
         float GetMaxAccleration();
         vector<int> Get_free_area();
+        string GetColour();
 
         void posInit(int road_wid);
 
@@ -59,6 +60,8 @@ class Vehicle{
         //Showing the basic attributes of the object of the class
         void ShowVehicle();
         void ShowOrder();
+        void ShowEssential();
+        void ShowBasic();
 
 };
 

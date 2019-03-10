@@ -237,11 +237,14 @@ void Road::Simulation(int mat_len){
         // Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
-            (*currVehicle2).ShowVehicle();   
+            //(*currVehicle2).ShowVehicle();  
+            (*currVehicle2).ShowEssential(); 
+            cout<<endl;
+            //(*currVehicle2).ShowOrder();
         }
         updatedRoad = Set_signal_on_road(updatedRoad,time);
         Show_road(updatedRoad);
-        usleep(100000);
+        usleep(1000000);
         time++;
         // count--;
     }
