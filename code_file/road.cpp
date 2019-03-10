@@ -190,28 +190,28 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
             for (int k = 0;k<x_cord.size();k++){
                 if (x == x_cord[k]){
                     //for right
-                    int test_right = y - *(max_element(y_cord.begin(),y_cord.end()));
-                    if (test_right>0 && test_right<right){
+                    int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
+                    if (test_right>=0 && test_right<right){
                         right = test_right;
                     }
 
                     //for left
-                    int test_left =  *(min_element(y_cord.begin(),y_cord.end())) - y;
-                    if (test_left>0 && test_left<left){
+                    int test_left =  *(min_element(y_cord.begin(),y_cord.end())) - y - 1;
+                    if (test_left>=0 && test_left<left){
                         left = test_left;
                     }
                 }
 
                 if (y == y_cord[k]){
-                    //for right
-                    int test_front = x - *(max_element(x_cord.begin(),x_cord.end()));
-                    if (test_front>0 && test_front<front){
+                    //for front
+                    int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
+                    if (test_front>=0 && test_front<front){
                         front = test_front;
                     }
 
-                    //for left
-                    int test_back =  *(min_element(x_cord.begin(),x_cord.end())) - x;
-                    if (test_back>0 && test_back<back){
+                    //for back
+                    int test_back =  *(min_element(x_cord.begin(),x_cord.end())) - x - 1;
+                    if (test_back>=0 && test_back<back){
                         back = test_back;
                     }
                 }
