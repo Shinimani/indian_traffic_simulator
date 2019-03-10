@@ -152,7 +152,7 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
 
 
 //Free space for each vehicle calculation
-void Road::Set_free_area(vector<vector<char> > r){
+void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
     vector<Vehicle> *vl;
     vl = &(vehicles);
     vector<tuple<int,int> >all_coverage;
@@ -162,9 +162,13 @@ void Road::Set_free_area(vector<vector<char> > r){
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();
         all_coverage.insert(all_coverage.end(),currCov.begin(),currCov.end());
     }
+    //all coverage contains all the coverages of the vehicles on the road.
     for (int i = 0;i <(*vl).size();i++){
         currV = &(*vl)[i]; //Each Vehicle
-        int front = 100,back = 100,left = 100,right = 100; //wrt to the vehicle
+        int front = mat_len-(*currV).Get_x() + (*currV).Get_lenth();
+        int back = (*currV).Get_x();
+        int left = (*currV).Get_y();
+        int right = mat_wid - (*currV).Get_y() - (*currV).Get_width(); //wrt to the vehicle
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();
         vector<int>x_cord,y_cord; //x and y coordinates of the curr vehicle's coverage
         for(int k = 0; k<currCov.size();k++){
@@ -220,7 +224,7 @@ void Road::Set_free_area(vector<vector<char> > r){
 }
 
 //Simulates.
-void Road::Simulation(int mat_len){
+void Road::Simulation(int mat_len, int mat_wid){
     int time = 0;
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
@@ -242,7 +246,7 @@ void Road::Simulation(int mat_len){
                 }
             }   
         }
-        Set_free_area(updatedRoad);
+        Set_free_area(updatedRoad, mat_len,mat_wid);
         // Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
