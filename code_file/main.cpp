@@ -50,8 +50,12 @@ int main(int argc, char **argv){
      r.Vehicle_intializer(mat_len,mat_wid);
     // r.Set_signal(10,15);
     // r.Set_signal(20,35);
+<<<<<<< HEAD
     r.Simulation(mat_len);
 
+=======
+     r.Simulation(mat_len,mat_wid);
+>>>>>>> ffc6dc98e8afb0678a0df1e4580e765b8b6197b2
     cout<<mat_len<<" "<<mat_wid<<endl;
 
 

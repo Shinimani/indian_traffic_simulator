@@ -185,12 +185,14 @@ void Vehicle::posInit(int road_wid){
 //Showing the attributes of the vehicle
 void Vehicle::ShowVehicle(){
     cout<<"Vehicle Type: "<<vehicle_type;
-    cout<<"\nVehicle Length: "<<length;
-    cout<<"\nVehicle Width: "<<width;
-    cout<<"\nVehicle MaxSpeed: "<<maxspeed;
-    cout<<"\nVehicle MaxAcceleration: "<<maxAcceleration;
+    cout<<"\tVehicle Length: "<<length;
+    cout<<"\tVehicle Width: "<<width;
+    cout<<"\nSpeed: "<<speed;
+    cout<<"\tVehicle MaxSpeed: "<<maxspeed;
+    cout<<"\nAccelaration: "<<acceleration;
+    cout<<"\tVehicle MaxAcceleration: "<<maxAcceleration;
     cout<<"\nBrake value:"<<brake;
-    cout<<"\nColour: "<<colour;
+    cout<<"\tColour: "<<colour;
     cout<<"\nStart Time: "<<start_time;
     cout<<"\nX: "<<x<<" Y: "<<y;
     cout<<"\nCoverage of the vehicle in the matrix: ";
@@ -200,9 +202,9 @@ void Vehicle::ShowVehicle(){
         int secEle = get<1>(cv[i]);
         cout<<"("<<firEle<<","<<secEle<<") ";
     }
-    cout<<endl<<endl;
-    cout<<"\n Free Area: "<<endl;
-    // cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl;
+    // cout<<endl;
+    cout<<"\nFree Area: ";
+    cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
 
 }
 
