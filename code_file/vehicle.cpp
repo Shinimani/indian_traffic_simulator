@@ -84,6 +84,39 @@ void Vehicle::setFreeArea(vector<int> fa){
     free_area = fa;   
 }
 
+
+void Vehicle::laneChange(){
+    vector<int>fs = Get_free_area();
+    int lfs = fs[2]; //left free space
+    int rfs = fs[3]; //right free space
+    int veh_wid = Get_width();
+    int veh_len = Get_lenth();
+    if (lfs > 1){
+        llc = true;
+    }else{
+        llc =false;
+    }
+    if (rfs > 1){
+        rlc = true;
+    } else{
+        rlc =false;
+    }
+}
+
+void Vehicle::laneChanger(){
+    if (rlc == true){
+        float a = (rand()%1);
+        if (a<0.2){
+            y +=1;
+        }
+    }
+    if (llc == true){
+        float a = (rand()%1);
+        if (a>0.2){
+            y -=1;
+        }
+    }
+}
 //function needed for simulation
 
 //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
@@ -107,6 +140,20 @@ void Vehicle::calSpeed(){
     }
 }
 
+// int Vehicle::calSpeed(int dummy){
+//     if(brake = 0){
+//         speed = speed - acceleration;
+//         if(speed < 0){
+//             speed = 0;
+//         }
+//     }else{
+//         speed = acceleration + speed;
+//         if(speed >= maxspeed){
+//             speed = maxspeed;
+//         }
+//     }
+//     return speed;
+// }
 
 //Getters Function 
 float Vehicle::Get_x(){
@@ -153,6 +200,10 @@ string Vehicle::GetColour(){
     return colour;
 }
 
+float Vehicle::Get_speed(){
+    return speed;
+}
+
 //Extra Functions for the greater good
 
 void Vehicle::posInit(int road_wid){
@@ -167,27 +218,27 @@ void Vehicle::posInit(int road_wid){
 //Showing the attributes of the vehicle
 void Vehicle::ShowVehicle(){
     cout<<"Vehicle Type: "<<vehicle_type;
-    cout<<"\tVehicle Length: "<<length;
-    cout<<"\tVehicle Width: "<<width;
+    // cout<<"\tVehicle Length: "<<length;
+    // cout<<"\tVehicle Width: "<<width;
     cout<<"\nSpeed: "<<speed;
-    cout<<"\tVehicle MaxSpeed: "<<maxspeed;
+    // cout<<"\tVehicle MaxSpeed: "<<maxspeed;
     cout<<"\nAccelaration: "<<acceleration;
-    cout<<"\tVehicle MaxAcceleration: "<<maxAcceleration;
-    cout<<"\nBrake value:"<<brake;
-    cout<<"\tColour: "<<colour;
+    // cout<<"\tVehicle MaxAcceleration: "<<maxAcceleration;
+    // cout<<"\nBrake value:"<<brake;
+    // cout<<"\tColour: "<<colour;
     cout<<"\nStart Time: "<<start_time;
     cout<<"\nX: "<<x<<" Y: "<<y;
-    cout<<"\nCoverage of the vehicle in the matrix: ";
+    // cout<<"\nCoverage of the vehicle in the matrix: ";
     vector<tuple<int,int> > cv = Get_coverage();
     for (int i = 0; i<cv.size();i++){
         int firEle = get<0>(cv[i]);
         int secEle = get<1>(cv[i]);
-        cout<<"("<<firEle<<","<<secEle<<") ";
+        // cout<<"("<<firEle<<","<<secEle<<") ";
     }
     // cout<<endl;
     cout<<"\nFree Area: ";
     cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
-
+    cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
 }
 
 //void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed)

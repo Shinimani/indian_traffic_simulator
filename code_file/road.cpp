@@ -122,7 +122,9 @@ bool Road::Signal_behavior(Vehicle v, int curr_time){
     for (int i = 0; i< signals.size();i++){
         int curr_signal = get<0>(signals[i]);
         int curr_rel_time = get<1>(signals[i]);
-        if (curr_signal - v.Get_x()-v.Get_lenth() == 0){
+        int vehSpeed = v.Get_speed();
+        float nextX = vehSpeed + v.Get_x();
+        if (curr_signal - v.Get_x()-v.Get_lenth() >= 0 && curr_signal-nextX-v.Get_lenth() <= 0){
             if (curr_time < curr_rel_time){
                 return true;
             }else{
@@ -230,6 +232,7 @@ void Road::Simulation(int mat_len, int mat_wid){
     while (Sim_fin()){
         system("clear");
         updatedRoad = Get_road();
+        updatedRoad = Set_signal_on_road(updatedRoad,time);
         for (int i = 0; i<vehicles.size();i++){
             currVehicle = &vehicles[i];
                 if ((*currVehicle).Get_start_time() <= time){
@@ -240,12 +243,17 @@ void Road::Simulation(int mat_len, int mat_wid){
                 }else{
                 bool chk = Signal_behavior((*currVehicle),time);
                 if (chk == false){
+                    if (time !=0){
+                    (*currVehicle).laneChange();
+                    (*currVehicle).laneChanger();
+                    }
                     (*currVehicle).NextPosition();
                 }
                 }
             }   
         }
         Set_free_area(updatedRoad, mat_len,mat_wid);
+
         // Shows the information of the vehicles
         for (int i = 0; i<vehicles.size();i++){
             currVehicle2 = &vehicles[i];
@@ -254,9 +262,8 @@ void Road::Simulation(int mat_len, int mat_wid){
             cout<<endl;
             //(*currVehicle2).ShowOrder();
         }
-        updatedRoad = Set_signal_on_road(updatedRoad,time);
         Show_road(updatedRoad);
-        usleep(1000000);
+        usleep(100000);
         time++;
         // count--;
     }
