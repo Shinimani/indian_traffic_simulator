@@ -248,6 +248,19 @@ void Road::Simulation(int mat_len, int mat_wid){
                     (*currVehicle).laneChanger();
                     }
                     (*currVehicle).NextPosition();
+                } else{
+                    //Set the vehicle infront of the signal
+                    int currX = (*currVehicle).Get_x();
+                    int minX = get<0>(signals[0]);
+                    for (int w =0; w<signals.size();w++){
+                        int sigX = get<0>(signals[w]);
+                        if (sigX > currX){
+                            if (sigX < minX){
+                                minX = sigX;
+                            }
+                        }
+                    }
+                    (*currVehicle).setPosition(minX-(*currVehicle).Get_lenth() - 1,(*currVehicle).Get_y());
                 }
                 }
             }   
