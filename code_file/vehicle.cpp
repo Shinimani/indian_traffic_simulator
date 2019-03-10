@@ -91,24 +91,24 @@ void Vehicle::setFreeArea(vector<int> fa){
     free_area = fa;   
 }
 void Vehicle::collisionAvoider(int mat_len){
-      vector<int> fs = Get_free_area();
-      int front = fs[0];
-      int vspeed = Get_speed();
-      int currX = Get_x();
-    // // int vacc = Get_acceleration();
-    if (front>3 or (mat_len-Get_x()+Get_lenth() < 2)){
-        //  setBrake(1);           //Move Forward
-        setSpeed(2);
-    } else if (front < 3){
-        setAcceleration(0);
-        setSpeed(0);            
-     } else if (front<3*(vspeed)){
-        setBrake(0);            //SlowDown
-        setSpeed(1);
-    }else{
+    vector<int> fs = Get_free_area();
+    int front = fs[0];
+    int vspeed = Get_speed();
+    int currX = Get_x();
+    //int vacc = Get_acceleration();
+    //Brake 1 is forward accelaration. Brake 0 is retardation
+    if (mat_len - Get_x()<=2*Get_lenth()){
         setBrake(1);
-        setSpeed(2);
-    }
+    }else if(Get_x()<=2*Get_lenth()){
+        setBrake(1);
+    }else if (front<4*vspeed && front > 4){
+        setBrake(0);
+    } else if (front <2){
+        setBrake(0);
+        setSpeed(0);
+    } else{
+        setBrake(1);
+    }   
 }
 
 
@@ -118,12 +118,12 @@ void Vehicle::laneChange(){
     int rfs = fs[3]; //right free space
     int veh_wid = Get_width();
     int veh_len = Get_lenth();
-    if (lfs > 1){
+    if (lfs > 2){
         llc = true;
     }else{
         llc =false;
     }
-    if (rfs > 1){
+    if (rfs > 2){
         rlc = true;
     } else{
         rlc =false;
@@ -131,15 +131,14 @@ void Vehicle::laneChange(){
 }
 
 void Vehicle::laneChanger(){
+    float a = (rand()%1);
     if (rlc == true){
-        float a = (rand()%1);
-        if (a>0.8){
+        if (a>0.5){
             y +=1;
         }
     }
     if (llc == true){
-        float a = (rand()%1);
-        if (a<0.2){
+        if (a<0.5){
             y -=1;
         }
     }
@@ -156,7 +155,7 @@ void Vehicle::NextPosition(){
 void Vehicle::calSpeed(){
     calAcceleration();
     if(brake == 0 ){
-        speed = speed - (maxAcceleration - acceleration);
+        speed = speed - acceleration;//(maxAcceleration - acceleration);
         if(speed < 0){
             speed = 0;
         }
