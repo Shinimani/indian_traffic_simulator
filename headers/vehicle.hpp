@@ -21,6 +21,8 @@ class Vehicle{
         vector<tuple<int,int> > coverage;
         vector<int> free_area; //A vector of length 4 which tells the space free in the 4 directions of the vehicle
 
+        bool rlc,llc; //right lane change and left lane change
+
         void calSpeed();
         void calAcceleration();
 
@@ -42,6 +44,8 @@ class Vehicle{
         void setFreeArea(vector<int> fa);
         void setBrake(int t);
 
+        void laneChange();
+        void laneChanger();
         //functions for getting the coordinates and dimension of the vehicle.
         float Get_x();
         float Get_y();
@@ -54,6 +58,7 @@ class Vehicle{
         float GetMaxAccleration();
         vector<int> Get_free_area();
         string GetColour();
+        float Get_speed();
 
         void posInit(int road_wid);
 
