@@ -142,6 +142,27 @@ int RoadLen(vector<vector<string> > vec){
 }
 
 
+//returns the positions of the road signals
+vector<int> GetSignalPosition(vector<vector<string> > vec){
+
+    vector<int> ans;
+    int i=0; 
+
+    while(vec[i][0] != "START"){
+        if(vec[i][0] == "Road_Signal"){
+            ans.push_back(stoi(vec[i][1]));
+        }
+        i+=1;
+    }
+
+    // for(int j=0; j<ans.size(); j++){
+    //     cout<<ans[j]<<endl;
+    // }
+    return ans;
+
+}
+
+
 
 
 //Get the different types of vehicles from 2D input vector
@@ -154,9 +175,15 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
     int count = 0;
     vector<Vehicle> vh;
 
+    int time = -1;
+
 
     for(int i=0; i<vec.size(); i++){
        Vehicle temp = Search(typeVehicle, vec[i][0]);
+
+       if(vec[i][0].find("START") != string::npos){
+           time = 0;
+       }
 
         if(temp.getType() != "null"){
             vh.push_back(temp);
@@ -165,21 +192,48 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
             int randAccleration = rand()%(int)(vh[count].GetMaxAccleration() + 1);
             vh[count].setSpeed(randspeed);
             vh[count].setAcceleration(randAccleration);
-            vh[count].setStartTime(rand()%(10));
+            vh[count].setStartTime(time);
+
+            //updating the time that initialises the start time of the car
+            time += 1;
             count += 1;
         }
 
         if(vec[i][0].find("Pass") != string::npos){
-            vh.push_back(temp);
-            vh[count].setType("Pass");
-            vh[count].setStartTime(stoi(vec[i][1]));
+            //incrementing the start time further
+            time = time + stoi(vec[i][1]) - 1 ;
+            //cout<<time<<endl;
+            
+        }
+
+        if(vec[i][0].find("@") != string::npos ){
+            int id = stoi(vec[i][0].substr(1));
+
+            //checks if the signal exist or not
+            if(CheckSignal(vec, id) > 0){
+                vh.push_back(temp);
+                vh[count].setType("Signal");//Tells that it is Signal not the car
+                vh[count].setColour(vec[i][1]);//stores the colour of the signal to determine the stored time is release time or not
+                vh[count].setStartTime(time);//start time stores the release time of the signal
+                vh[count].setLength(id); //length stores the position of the Signal
+            
+            }
+            //cout<<time<<endl;
+
+            // if(vec[i][1] == "GREEN"){
+            //     vh[count].setSpeed(0);
+            // }else{
+            //     vh[count].setSpeed(1);
+            // }
 
             count += 1;
+            //cout<<vec[i][0]<<" "<<vec[i][1]<<endl;
         }
     }
 
     // for(int j=0; j<vh.size(); j++){
-    //    vh[j].ShowVehicle();
+    //    vh[j].ShowBasic();
+    //    cout<<endl<<j<<" "<< vh.size()<<endl;
     // }
 
     return vh;
@@ -206,4 +260,22 @@ Vehicle Search(vector<Vehicle> tvehicle, string name){
     }
 
     return temp;
+}
+
+int CheckSignal(vector<vector<string> > vec, int id){
+    int i=0;
+    int ans = -1;
+    
+    while(vec[i][0] != "START"){
+        if(vec[i][0] == "Road_Signal"){
+            int temp = stoi(vec[i][1]);
+            if(temp == id){
+                ans = 1;
+            }
+        }
+
+        i+=1;
+    }
+
+    return ans;
 }

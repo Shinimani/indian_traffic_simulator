@@ -148,6 +148,11 @@ float Vehicle::GetMaxAccleration(){
 vector<int> Vehicle::Get_free_area(){
     return free_area;
 }
+
+string Vehicle::GetColour(){
+    return colour;
+}
+
 //Extra Functions for the greater good
 
 void Vehicle::posInit(int road_wid){
@@ -195,4 +200,16 @@ void Vehicle::ShowOrder(){
     cout<<"\n Start Time: "<<start_time;
     cout<<"\n Accleration: "<<acceleration;
     cout<<"\n Max Speed: "<<maxspeed<<endl;
+}
+
+void Vehicle::ShowEssential(){
+    cout<<"\n Intial speed: "<<speed;
+    cout<<"\n Acceleration: "<<acceleration;
+    cout<<"\n Start Time: "<<start_time;
+}
+
+void Vehicle::ShowBasic(){
+    cout<<"\n Type: "<<vehicle_type;
+    cout<<"\n Colour: "<<colour;
+    cout<<"\n Start Time: "<<start_time;
 }
