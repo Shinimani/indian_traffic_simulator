@@ -11,7 +11,7 @@ class Vehicle{
         string colour;
         int length;
         int width;
-        bool brake;
+        int brake;     //break = 1 means no brake and brake = 0 means break is applied
         float acceleration; //If brake = false
         float speed;
         float maxspeed;
@@ -22,6 +22,8 @@ class Vehicle{
         vector<int> free_area; //A vector of length 4 which tells the space free in the 4 directions of the vehicle
 
         void calSpeed();
+        void calAcceleration();
+
     public:
         //Intialising the position and specification of the vehicle. 
         void setVehicle(string type, string colour, int len, int wid, int ispeed, int start_time, int ac, int maxSpeed);//, float x0, float y0);
@@ -38,6 +40,7 @@ class Vehicle{
         void setSpeed(float speed);
         void setAcceleration(float ac);
         void setFreeArea(vector<int> fa);
+        void setBrake(int t);
 
         //functions for getting the coordinates and dimension of the vehicle.
         float Get_x();

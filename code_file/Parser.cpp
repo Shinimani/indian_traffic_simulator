@@ -89,7 +89,7 @@ vector<Vehicle> InitVehicles(vector<vector<string> > parsed){
                 vh[countVehicle].setMaxSpeed(stoi(parsed[count][1]));
             }
             if(parsed[count][0] == "Vehicle_Acceleration"){
-                vh[countVehicle].setMaxAcc(stoi(parsed[count][1]));
+                vh[countVehicle].setAcceleration(stoi(parsed[count][1]));
             } 
         }
 
@@ -192,6 +192,7 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
             int randAccleration = rand()%(int)(vh[count].GetMaxAccleration() + 1);
             vh[count].setSpeed(randspeed);
             vh[count].setAcceleration(randAccleration);
+            vh[count].setBrake(1);
             vh[count].setStartTime(time);
 
             //updating the time that initialises the start time of the car

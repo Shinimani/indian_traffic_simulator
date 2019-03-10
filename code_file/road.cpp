@@ -244,7 +244,7 @@ void Road::Simulation(int mat_len){
         }
         updatedRoad = Set_signal_on_road(updatedRoad,time);
         Show_road(updatedRoad);
-        usleep(1000000);
+        usleep(100000);
         time++;
         // count--;
     }
