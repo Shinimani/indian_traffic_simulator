@@ -68,16 +68,20 @@ void Vehicle::setCoverage(int mat_len){
     coverage.clear();
     int x = Get_x();
     int y = Get_y();
-    int ele;
+    tuple<int,int> ele;
     for (int i = 0; i<Get_width();i++){
         for (int j = 0; j<Get_lenth();j++){
             int length;
             length = j+x;
-            ele = ((i+y)*mat_len + length); //This line will give the element in the road matrix.
+            ele = make_tuple( length,(i+y)); //This line will give the element in the road matrix.
             //(i+y) is the current row while length will make sure the column number doesn't exceed the lengh of the road
             coverage.push_back(ele);
         }
     }
+}
+
+void Vehicle::setFreeArea(vector<int> fa){
+    free_area = fa;   
 }
 
 //function needed for simulation
@@ -128,7 +132,7 @@ int Vehicle::Get_start_time(){
     return start_time;
 }
 
-vector<int> Vehicle::Get_coverage(){
+vector<tuple<int,int> > Vehicle::Get_coverage(){
     return coverage;
 }
 
@@ -141,6 +145,9 @@ float Vehicle::GetMaxAccleration(){
     return maxAcceleration;
 }
 
+vector<int> Vehicle::Get_free_area(){
+    return free_area;
+}
 //Extra Functions for the greater good
 
 void Vehicle::posInit(int road_wid){
@@ -164,11 +171,15 @@ void Vehicle::ShowVehicle(){
     cout<<"\nStart Time: "<<start_time;
     cout<<"\nX: "<<x<<" Y: "<<y;
     cout<<"\nCoverage of the vehicle in the matrix: ";
-    vector<int> cv = Get_coverage();
+    vector<tuple<int,int> > cv = Get_coverage();
     for (int i = 0; i<cv.size();i++){
-        cout<<cv[i]<<" ";
+        int firEle = get<0>(cv[i]);
+        int secEle = get<1>(cv[i]);
+        cout<<"("<<firEle<<","<<secEle<<") ";
     }
     cout<<endl<<endl;
+    cout<<"\n Free Area: "<<endl;
+    // cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl;
 
 }
 
