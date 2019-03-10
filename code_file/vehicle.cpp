@@ -90,6 +90,27 @@ void Vehicle::setCoverage(int mat_len){
 void Vehicle::setFreeArea(vector<int> fa){
     free_area = fa;   
 }
+void Vehicle::collisionAvoider(int mat_len){
+      vector<int> fs = Get_free_area();
+      int front = fs[0];
+      int vspeed = Get_speed();
+      int currX = Get_x();
+    // // int vacc = Get_acceleration();
+    if (front>3 or (mat_len-Get_x()+Get_lenth() < 2)){
+        //  setBrake(1);           //Move Forward
+        setSpeed(2);
+    } else if (front < 3){
+        setAcceleration(0);
+        setSpeed(0);            
+     } else if (front<3*(vspeed)){
+        setBrake(0);            //SlowDown
+        setSpeed(1);
+    }else{
+        setBrake(1);
+        setSpeed(2);
+    }
+}
+
 
 void Vehicle::laneChange(){
     vector<int>fs = Get_free_area();
@@ -112,13 +133,13 @@ void Vehicle::laneChange(){
 void Vehicle::laneChanger(){
     if (rlc == true){
         float a = (rand()%1);
-        if (a<0.2){
+        if (a>0.8){
             y +=1;
         }
     }
     if (llc == true){
         float a = (rand()%1);
-        if (a>0.2){
+        if (a<0.2){
             y -=1;
         }
     }
@@ -134,7 +155,6 @@ void Vehicle::NextPosition(){
 //Calculating the speed of the vehicle
 void Vehicle::calSpeed(){
     calAcceleration();
-    cout<<brake<<endl;
     if(brake == 0 ){
         speed = speed - (maxAcceleration - acceleration);
         if(speed < 0){
@@ -142,7 +162,6 @@ void Vehicle::calSpeed(){
         }
     }else{
         speed = acceleration + speed;
-        //cout<<speed<<endl;
         if(speed >= maxspeed){
             speed = maxspeed;
         }
@@ -207,6 +226,9 @@ float Vehicle::Get_speed(){
     return speed;
 }
 
+float Vehicle::Get_acceleration(){
+    return acceleration;
+}
 //Extra Functions for the greater good
 
 void Vehicle::posInit(int road_wid){
@@ -227,7 +249,7 @@ void Vehicle::ShowVehicle(){
     // cout<<"\tVehicle MaxSpeed: "<<maxspeed;
     cout<<"\nAccelaration: "<<acceleration;
     // cout<<"\tVehicle MaxAcceleration: "<<maxAcceleration;
-    // cout<<"\nBrake value:"<<brake;
+    cout<<"\nBrake value:"<<brake;
     // cout<<"\tColour: "<<colour;
     cout<<"\nStart Time: "<<start_time;
     cout<<"\nX: "<<x<<" Y: "<<y;
