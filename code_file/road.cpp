@@ -89,13 +89,20 @@ void Road::Vehicle_intializer(int mat_len, int mat_wid){
             (*currVehicle).posInit(mat_wid);
             (*currVehicle).setCoverage(mat_len);
             vector<tuple<int,int> > cv =(*currVehicle).Get_coverage();
+            int start_time = (*currVehicle).Get_start_time();
+            for (int i = 0; i<cv.size();i++){
+                tuple<int,int> curEle = cv[i];
+                int x = get<0>(curEle) + start_time;
+                int y = get<1>(curEle);
+                cv[i] = make_tuple(x,y);
+            }
             //check if 2 vectors have any common elemnts
             bool retVal = commIn2vectors(all_coverage,cv);
             if (retVal == true){
                 all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
                 checker = false;
             }
-            if (restarter > 5*vehicles.size()){
+            if (restarter > 2*vehicles.size()){
                 checker = false;
                 i = 0;
             }
