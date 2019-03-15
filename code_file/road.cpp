@@ -87,7 +87,7 @@ void Road::Show_road(vector<vector<char> > r){
     int w = r.size();
     int l = r[0].size();
     for (int i = 0; i<w;i++){
-        for(int j = 0; j<l;j++){
+        for(int j = (l/10); j<l;j++){
             cout<<r[i][j]<<" "<<flush;
         }
         cout<<endl<<flush;

@@ -119,7 +119,7 @@ void Vehicle::collisionAvoider(int mat_len){
         setBrake(1);
     }else if(Get_x()<=1){
         setBrake(1);
-    }else if (front<2*vspeed && front >= 2){
+    }else if (front<=2*vspeed && front >= 2){
         float currProb = laneChangeProb;
         setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
         setBrake(0);

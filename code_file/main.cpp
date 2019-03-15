@@ -19,7 +19,8 @@ int main(int argc, char **argv){
 
     mat_len = RoadLen(temp);
     mat_wid = RoadWid(temp);
-
+    // int add_l = mat_len/10;
+    mat_len+= mat_len/10;
     Road r;
     r.Init_road(mat_wid, mat_len);
 
