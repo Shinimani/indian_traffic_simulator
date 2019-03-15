@@ -70,6 +70,9 @@ void Vehicle::setAcceleration(float ac){
     acceleration = ac;
 }
 
+// void Vehicle::setDeceleration(float ac){
+//     acceleration = ac;
+// }
 
 void Vehicle::setSpeed(float Speed){
     speed = Speed;
@@ -113,22 +116,32 @@ void Vehicle::collisionAvoider(int mat_len){
     int front = fs[0];
     int vspeed = Get_speed();
     int currX = Get_x();
-    //int vacc = Get_acceleration();
+    int vacc = Get_acceleration();
+    int dec = decelaration;
     //Brake 1 is forward accelaration. Brake 0 is retardation
-    if (mat_len - Get_x()<=2*Get_lenth()){
+    if (mat_len - Get_x()<=3*Get_lenth()){
         setBrake(1);
     }else if(Get_x()<=1){
         setBrake(1);
-    }else if (front<=2*vspeed ){
+    }
+    else if (front <= 2){
+        float currProb = laneChangeProb;
+        setBrake(0);
+        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        setSpeed(0);
+    } 
+    else if(front>(vacc - dec + vspeed + 2) && front<2*(vacc -dec + vspeed + 1)){
+        float currProb = laneChangeProb;
+        setBrake(0);
+        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
+    }
+    else if (front<=(vacc -dec + vspeed + 2) && front >=2){
         float currProb = laneChangeProb;
         setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
         setBrake(0);
-    // } else if (front <2){
-    //     float currProb = laneChangeProb;
-    //     setBrake(0);
-    //     setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
-    //     setSpeed(1);
-    } else{
+        setSpeed(0);
+    }
+    else{
         float currProb = laneChangeProb;
         setLCProb(laneChangeProb - ((0.5)*(currProb)));
         setBrake(1);
@@ -157,7 +170,9 @@ void Vehicle::laneChange(){
 void Vehicle::laneChanger(){
     float a = 0;
     a = static_cast<float>(rand())/(static_cast<float>(RAND_MAX));
-    if (rlc == true){
+
+    if (Get_speed() != 0 || Get_acceleration() != 0){
+        if (rlc == true){
         if (llc == true){
             if (a < laneChangeProb){
             // (free_area[2]>free_area[3])? y-=1:y+=1;
@@ -186,7 +201,9 @@ void Vehicle::laneChanger(){
 
         }
     }
-}
+    }
+
+    }
 //function needed for simulation
 
 //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
@@ -197,13 +214,20 @@ void Vehicle::NextPosition(){
 
 //Calculating the speed of the vehicle
 void Vehicle::calSpeed(){
-    calAcceleration();
+    // calAcceleration();
     if(brake == 0 ){
-        speed = speed - acceleration;//(maxAcceleration - acceleration);
+        decelaration +=2;
+        acceleration = 0;
+        speed = speed - decelaration;
         if(speed < 0){
             speed = 0;
         }
     }else{
+        decelaration = 0;
+        acceleration = acceleration + 2;
+        if(acceleration >= maxAcceleration){
+            acceleration = maxAcceleration;
+        }
         speed = acceleration + speed;
         if(speed >= maxspeed){
             speed = maxspeed;

@@ -13,6 +13,7 @@ class Vehicle{
         int width;
         int brake;     //break = 1 means no brake and brake = 0 means break is applied
         float acceleration; //If brake = false
+        float decelaration;
         float speed;
         float maxspeed;
         float maxAcceleration;
