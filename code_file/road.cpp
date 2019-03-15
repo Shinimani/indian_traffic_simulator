@@ -117,7 +117,7 @@ void Road::Vehicle_intializer(int mat_len, int mat_wid){
             int start_time = (*currVehicle).Get_start_time();
             for (int i = 0; i<cv.size();i++){
                 tuple<int,int> curEle = cv[i];
-                int x = get<0>(curEle) + start_time;
+                int x = get<0>(curEle) - start_time;
                 int y = get<1>(curEle);
                 cv[i] = make_tuple(x,y);
             }
@@ -215,7 +215,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
             int x = get<0>(all_coverage[j]);
             int y = get<1>(all_coverage[j]);
             for (int k = 0;k<x_cord.size();k++){
-                if (x >= x_cord[k]-2 && x <= x_cord[k]+1){
+                if (x >= x_cord[k]-1 && x <= x_cord[k]+1){
                     //for right
                     int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
                     if (test_right>=0 && test_right<right){
@@ -229,7 +229,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
                     }
                 }
 
-                if (y >= y_cord[k]-2 && y <= y_cord[k]+2 ){
+                if (y >= y_cord[k]-1 && y <= y_cord[k]+1 ){
                     //for front
                     int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
                     if (test_front>=0 && test_front<front){

@@ -160,10 +160,18 @@ void Vehicle::laneChanger(){
     if (rlc == true){
         if (llc == true){
             if (a < laneChangeProb){
-            (free_area[2]>free_area[3])? y-=1:y+=1;
+            // (free_area[2]>free_area[3])? y-=1:y+=1;
+            bool l = free_area[2]>free_area[3];
+            if (a<0.25){
+                l = not l;
+            }
+            if (l==true){
+                y-=1;
+            } else{
+                y+=1;
+            }
             x+=1;    
             }
-
         } else{
             if (a < laneChangeProb){
                         y +=1;
