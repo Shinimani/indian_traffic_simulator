@@ -276,7 +276,7 @@ void Road::Simulation(int mat_len, int mat_wid){
             //(*currVehicle2).ShowOrder();
         }
         Show_road(updatedRoad);
-        usleep(100000);
+        usleep(1000000);
         time++;
         // count--;
     }
