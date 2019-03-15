@@ -39,17 +39,11 @@ int main(int argc, char **argv){
 
     vector<int> signaltime = GetSignalPosition(temp);
     
-    // for(int i=0; i<list_vehicle.size(); i++){
-    //     list_vehicle[i].ShowOrder();
-   // }
-     //Vehicle car,car2;
     int count = 100;
-    // car.setVehicle("car","red",2,2,1,0,3,2);
-    // list_vehicle.push_back(car);
      r.Add_vehicles(list_vehicle);
      r.Vehicle_intializer(mat_len,mat_wid);
-    // r.Set_signal(10,15);
-    // r.Set_signal(20,35);
+     r.getAllVehSize();
+     r.setAllVehSize();
      r.Simulation(mat_len,mat_wid);
     cout<<mat_len<<" "<<mat_wid<<endl;
 

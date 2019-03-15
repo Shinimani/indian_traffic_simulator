@@ -35,6 +35,24 @@ void Vehicle::setWidth(int w){
     width = w;
 }
 
+void Vehicle::setSumAllVeh(int i){
+    sumAllVeh = i;
+}
+
+void Vehicle::setLCProb(float f){
+    laneChangeProb = f;   
+}
+
+float Vehicle:: callaneChangeProb(){
+    int l = Get_lenth();
+    int w = Get_width();
+    cout<<"Sum: "<<sumAllVeh<<" "<<endl;
+    float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
+    laneChangeProb = lcp;
+    cout<<lcp<<" ";
+    return laneChangeProb;
+}
+
 void Vehicle::setBasicAttributes(int l, int w, int acc, float initSpeed){
     length = l;
     width = w;
@@ -101,12 +119,18 @@ void Vehicle::collisionAvoider(int mat_len){
         setBrake(1);
     }else if(Get_x()<=1){
         setBrake(1);
-    }else if (front<4*vspeed && front > 2){
+    }else if (front<2*vspeed && front >= 2){
+        float currProb = laneChangeProb;
+        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
         setBrake(0);
     } else if (front <2){
+        float currProb = laneChangeProb;
         setBrake(0);
-        setSpeed(0);
+        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        setSpeed(1);
     } else{
+        float currProb = laneChangeProb;
+        setLCProb(laneChangeProb - ((0.5)*(currProb)));
         setBrake(1);
     }   
 }
@@ -131,15 +155,27 @@ void Vehicle::laneChange(){
 }
 
 void Vehicle::laneChanger(){
-    float a = (rand()%1);
+    float a = 0;
+    a = static_cast<float>(rand())/(static_cast<float>(RAND_MAX));
     if (rlc == true){
-        if (a>0.5){
-            y +=1;
+        if (llc == true){
+            if (a < laneChangeProb){
+            (free_area[2]>free_area[3])? y-=1:y+=1;
+            x+=1;    
+            }
+
+        } else{
+            if (a < laneChangeProb){
+                        y +=1;
+                        x+=1;
         }
-    }
-    if (llc == true){
-        if (a<0.5){
+        }
+        
+    } else if (llc == true){
+        if (a < laneChangeProb){
             y -=1;
+            x+=1;
+
         }
     }
 }
@@ -262,7 +298,8 @@ void Vehicle::ShowVehicle(){
     // cout<<endl;
     cout<<"\nFree Area: ";
     cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
-    cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
+    // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
+    cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
 }
 
 //void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed)

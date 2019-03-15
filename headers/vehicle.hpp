@@ -16,6 +16,10 @@ class Vehicle{
         float speed;
         float maxspeed;
         float maxAcceleration;
+
+        float laneChangeProb;
+        int sumAllVeh;
+
         int start_time;
         float x,y; //location of the top left of the vehicle
         vector<tuple<int,int> > coverage;
@@ -43,7 +47,9 @@ class Vehicle{
         void setAcceleration(float ac);
         void setFreeArea(vector<int> fa);
         void setBrake(int t);
-
+        void setLCProb(float f);
+        void setSumAllVeh(int i);
+        float callaneChangeProb();
         void collisionAvoider(int mat_len);
 
         void laneChange();
@@ -62,6 +68,7 @@ class Vehicle{
         string GetColour();
         float Get_speed();
         float Get_acceleration();
+
 
         void posInit(int road_wid);
 

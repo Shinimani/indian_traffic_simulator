@@ -2,6 +2,31 @@
 #include "road.hpp"
 #include <algorithm>
 
+
+void Road::getAllVehSize(){
+    int allSize = 0;
+    int currSize = vehicles[0].Get_lenth() * vehicles[0].Get_width();
+    allSize = currSize;
+    Vehicle *currV;
+    for (int i = 0; i<vehicles.size(); i++){
+        currV  = &vehicles[i];
+        currSize = (*currV).Get_lenth() * (*currV).Get_width();
+        // allSize+=(((*currV).Get_lenth() * (*currV).Get_width()));
+        allSize = (currSize>allSize)? currSize:allSize; 
+    }
+    sumAllVeh = allSize; 
+}
+void Road::setAllVehSize(){
+    Vehicle *currV;
+    float f;
+    for (int i = 0; i<vehicles.size(); i++){
+        currV  = &vehicles[i];
+        (*currV).setSumAllVeh(sumAllVeh);
+        f = (*currV).callaneChangeProb();
+        (*currV).setLCProb(f);
+    }
+}
+
 //Initializes the road attribute of the class. 
 void Road::Init_road(int mat_wid, int mat_len){
     // road.reserve(mat_wid);
@@ -190,7 +215,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
             int x = get<0>(all_coverage[j]);
             int y = get<1>(all_coverage[j]);
             for (int k = 0;k<x_cord.size();k++){
-                if (x == x_cord[k] || x == x_cord[k]+1 || x == x_cord[k] -1){
+                if (x >= x_cord[k]-2 && x <= x_cord[k]+1){
                     //for right
                     int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
                     if (test_right>=0 && test_right<right){
@@ -204,7 +229,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
                     }
                 }
 
-                if (y == y_cord[k]|| y == y_cord[k]+1 || y == y_cord[k] -1){
+                if (y >= y_cord[k]-2 && y <= y_cord[k]+2 ){
                     //for front
                     int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
                     if (test_front>=0 && test_front<front){
@@ -284,7 +309,7 @@ void Road::Simulation(int mat_len, int mat_wid){
             //(*currVehicle2).ShowOrder();
         }
         Show_road(updatedRoad);
-        usleep(1000000);
+        usleep(500000);
         time++;
         // count--;
     }
