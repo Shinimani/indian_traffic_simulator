@@ -133,7 +133,7 @@ void Vehicle::collisionAvoider(int mat_len){
     else if(front>(vacc - dec + vspeed + 2) && front<2*(vacc -dec + vspeed + 1)){
         float currProb = laneChangeProb;
         setBrake(0);
-        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
     }
     else if (front<=(vacc -dec + vspeed + 2) && front >=2){
         float currProb = laneChangeProb;
@@ -155,6 +155,7 @@ void Vehicle::laneChange(){
     int rfs = fs[3]; //right free space
     int veh_wid = Get_width();
     int veh_len = Get_lenth();
+    if (free_area[0]>1){
     if (lfs > 2){
         llc = true;
     }else{
@@ -165,6 +166,13 @@ void Vehicle::laneChange(){
     } else{
         rlc =false;
     }
+    } 
+    else
+    {
+        llc =false;
+        rlc = false;
+    }
+        
 }
 
 void Vehicle::laneChanger(){
