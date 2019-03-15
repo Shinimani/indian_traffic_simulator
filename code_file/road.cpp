@@ -190,7 +190,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
             int x = get<0>(all_coverage[j]);
             int y = get<1>(all_coverage[j]);
             for (int k = 0;k<x_cord.size();k++){
-                if (x == x_cord[k]){
+                if (x == x_cord[k] || x == x_cord[k]+1 || x == x_cord[k] -1){
                     //for right
                     int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
                     if (test_right>=0 && test_right<right){
@@ -204,7 +204,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid){
                     }
                 }
 
-                if (y == y_cord[k]){
+                if (y == y_cord[k]|| y == y_cord[k]+1 || y == y_cord[k] -1){
                     //for front
                     int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
                     if (test_front>=0 && test_front<front){
@@ -235,18 +235,26 @@ void Road::Simulation(int mat_len, int mat_wid){
         updatedRoad = Set_signal_on_road(updatedRoad,time);
         for (int i = 0; i<vehicles.size();i++){
             currVehicle = &vehicles[i];
+                //Further condiiton checked if only start time is after the current time
                 if ((*currVehicle).Get_start_time() <= time){
+                //Coverage for the current vehicle set.
                 (*currVehicle).setCoverage(mat_len);
+                Set_free_area(updatedRoad,mat_len,mat_wid);
+                //Road updated with the current vehicle
                 updatedRoad = New_road(updatedRoad,*currVehicle);
+                //If current vehicle moves past the simulation then stop it
                 if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
+                //Check for signal
                 bool chk = Signal_behavior((*currVehicle),time);
+                //No signal
+                Set_free_area(updatedRoad,mat_len,mat_wid);
                 if (chk == false){
-                    if (time !=0){
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
-                    }
+                    Set_free_area(updatedRoad,mat_len,mat_wid);
+                    (*currVehicle).collisionAvoider(mat_len);
                     (*currVehicle).NextPosition();
                 } else{
                     //Set the vehicle infront of the signal
@@ -260,7 +268,7 @@ void Road::Simulation(int mat_len, int mat_wid){
                             }
                         }
                     }
-                    (*currVehicle).setPosition(minX-(*currVehicle).Get_lenth() - 1,(*currVehicle).Get_y());
+                    // (*currVehicle).setPosition(minX-(*currVehicle).Get_lenth() - 1,(*currVehicle).Get_y());
                 }
                 }
             }   

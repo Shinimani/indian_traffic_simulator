@@ -44,6 +44,8 @@ class Vehicle{
         void setFreeArea(vector<int> fa);
         void setBrake(int t);
 
+        void collisionAvoider(int mat_len);
+
         void laneChange();
         void laneChanger();
         //functions for getting the coordinates and dimension of the vehicle.
@@ -59,6 +61,7 @@ class Vehicle{
         vector<int> Get_free_area();
         string GetColour();
         float Get_speed();
+        float Get_acceleration();
 
         void posInit(int road_wid);
 
