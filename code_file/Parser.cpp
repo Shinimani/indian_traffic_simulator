@@ -136,7 +136,7 @@ int RoadLen(vector<vector<string> > vec){
     }
 
     if(flag == 0){
-        len = stoi(vec[i][1]) + 10 - stoi(vec[i][1])%10+10;
+        len = stoi(vec[i][1]) + 10 - stoi(vec[i][1])%10;
     }
     return len;
 }
