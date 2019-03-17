@@ -2,6 +2,15 @@
 #include "road.hpp"
 #include <algorithm>
 
+vector<vector<tuple<int,int> > > Road::getAllVertices(){
+    vector<vector<tuple<int,int> > > ans;
+    for ( int i = 0; i < vehicles.size();i++){
+        Vehicle currV = vehicles[i];
+        ans.push_back(currV.getCorners());
+    }
+    return ans;
+}
+
 
 void Road::getAllVehSize(){
     int allSize = 0;

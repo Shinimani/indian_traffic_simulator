@@ -2,6 +2,37 @@
 
 //Here we will add functions of the vehicle class
 
+vector<tuple<int,int> > Vehicle::getCorners(){
+    vector<tuple<int,int> >cov  = coverage;
+    int minX = 0,minY = 0,maxX = 0,maxY = 0;
+    int x,y;
+    for(int i = 0; i<cov.size(); i++){
+        x = get<0>(cov[i]);
+        y = get<1>(cov[i]);
+        if (i == 0){
+            minX = x;
+            maxX = x;
+            minY = y;
+            maxY = y;
+        }else{
+            if (x > maxX){
+                maxX = x;
+            }
+            if (x <minX){
+                minX = x;
+            }
+            if (y > maxY){
+                maxY = y;
+            }
+            if (y <minY){
+                minY = y;
+            }
+        }
+    }
+    vector<tuple<int,int> > al = {make_tuple(minX,maxY),make_tuple(maxX,maxY),make_tuple(maxX,minY),make_tuple(minX,minY)};
+    return al;
+}
+
 
 //Intialising the position and specification of the vehicle. 
 void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed){
@@ -330,16 +361,25 @@ void Vehicle::ShowVehicle(){
     cout<<"\nX: "<<x<<" Y: "<<y;
     // cout<<"\nCoverage of the vehicle in the matrix: ";
     vector<tuple<int,int> > cv = Get_coverage();
+    
     for (int i = 0; i<cv.size();i++){
         int firEle = get<0>(cv[i]);
         int secEle = get<1>(cv[i]);
-        // cout<<"("<<firEle<<","<<secEle<<") ";
+        cout<<"("<<firEle<<","<<secEle<<") ";
     }
     // cout<<endl;
     cout<<"\nFree Area: ";
     cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
     // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
     cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
+    cout<<"\nCorners of the vehicle in the matrix: ";
+    vector<tuple<int,int> > cv2 = getCorners();
+    // vector<tuple<int,int> > corners = cv;
+    for (int i = 0; i<cv2.size();i++){
+        int firEle2 = get<0>(cv2[i]);
+        int secEle2 = get<1>(cv2[i]);
+        cout<<"("<<firEle2<<","<<secEle2<<") ";
+    }
 }
 
 //void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed)
