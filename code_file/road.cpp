@@ -294,52 +294,65 @@ void Road::Simulation(int mat_len, int mat_wid){
                 if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
-                //Check for signal
-                // bool chk = Signal_behavior((*currVehicle),time);
-                //No signal
-                // if (chk == false){
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).collisionAvoider(mat_len);
-                    // Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).NextPosition();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
-                // } else{
-                    //Set the vehicle infront of the signal
-                    // int currX = (*currVehicle).Get_x();
-                    // int minX = get<0>(signals[0]);
-                    // for (int w =0; w<signals.size();w++){
-                    //     int sigX = get<0>(signals[w]);
-                    //     if (sigX > currX){
-                    //         if (sigX < minX){
-                    //             minX = sigX;
-                    //         }
-                    //     }
-                    // }
-                    // (*currVehicle).setPosition(minX-(*currVehicle).Get_lenth() - 1,(*currVehicle).Get_y());
                 }
-                // }
             }   
         }
         Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
-        // Shows the information of the vehicles
-        for (int i = 0; i<vehicles.size();i++){
-            currVehicle2 = &vehicles[i];
-            (*currVehicle2).ShowVehicle();  
-            // (*currVehicle2).ShowEssential(); 
-            cout<<endl;
-            //(*currVehicle2).ShowOrder();
-        }
         Show_road(updatedRoad);
-        usleep(500000);
+        usleep(10000);
         time++;
-        // count--;
     }
 
 }
+
+//OpenGL Simulation
+void Road::SimulationOpenGL(int mat_len, int mat_wid){
+    int time = 0;
+    vector<vector<char> > updatedRoad;
+    Vehicle *currVehicle,*currVehicle2;
+    while (Sim_fin()){
+        system("clear");
+        updatedRoad = Get_road();
+        updatedRoad = Set_signal_on_road(updatedRoad,time);
+        for (int i = 0; i<vehicles.size();i++){
+            currVehicle = &vehicles[i];
+                //Further condiiton checked if only start time is after the current time
+                if ((*currVehicle).Get_start_time() <= time){
+                //Coverage for the current vehicle set.
+                (*currVehicle).setCoverage(mat_len);
+                Set_free_area(updatedRoad,mat_len,mat_wid,time);
+                //Road updated with the current vehicle
+                updatedRoad = New_road(updatedRoad,*currVehicle);
+                //If current vehicle moves past the simulation then stop it
+                if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
+                    continue;
+                }else{
+                    Set_free_area(updatedRoad,mat_len,mat_wid,time);
+                    (*currVehicle).collisionAvoider(mat_len);
+                    (*currVehicle).NextPosition();
+                    Set_free_area(updatedRoad,mat_len,mat_wid,time);
+                    (*currVehicle).laneChange();
+                    (*currVehicle).laneChanger();
+                    Set_free_area(updatedRoad,mat_len,mat_wid,time);
+                }
+            }   
+        }
+        Set_free_area(updatedRoad, mat_len,mat_wid,time);
+
+        usleep(10000);
+        time++;
+    }
+
+}
+
 
 //Checks if the simulation must be finished or not
 bool Road::Sim_fin(){

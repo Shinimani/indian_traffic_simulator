@@ -309,9 +309,5 @@ vector<Vehicle> GetVehicles(vector<Vehicle> temp){
         }
     }
 
-    for(int i=0; i<ans.size(); i++){
-        ans[i].ShowOrder();
-    }
-
     return ans;
 }

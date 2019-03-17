@@ -42,7 +42,7 @@ void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpee
     setColour(colour);
     setStartTime(start_time);
     brake = 0;
-    cout<<brake<<endl;
+    //cout<<brake<<endl;
     // setPosition(x0, y0);
 }
 
@@ -77,10 +77,10 @@ void Vehicle::setLCProb(float f){
 float Vehicle:: callaneChangeProb(){
     int l = Get_lenth();
     int w = Get_width();
-    cout<<"Sum: "<<sumAllVeh<<" "<<endl;
+    //cout<<"Sum: "<<sumAllVeh<<" "<<endl;
     float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
     laneChangeProb = lcp;
-    cout<<lcp<<" ";
+    //cout<<lcp<<" ";
     return laneChangeProb;
 }
 

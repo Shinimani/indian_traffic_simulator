@@ -13,6 +13,7 @@ void common();
 
 void myinit();
 void mydisplay();
+void idle();
 //Function to print vehicles
 void vehicle();
 //Function to print road
@@ -27,32 +28,27 @@ int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
 
-    common();
-
     if(c == 1){
+        common();
         r.Simulation(mat_len,mat_wid);
     }else{
             //opengl code
-            glutInit(&argc, argv);
-        vector<vector<string> > temp = Parser("Mayank.ini");
+         common();
 
-        mat_len = RoadLen(temp)*50;
-        mat_wid = RoadWid(temp)*20;
+         glutInit(&argc, argv);
 
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-        glutInitWindowSize(mat_len, mat_wid);
-        glutInitWindowPosition(0,0);
-        glutCreateWindow("Traffic signal");
+         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+         glutInitWindowSize(mat_len*50, mat_wid*20);
+         glutInitWindowPosition(0,0);
+         glutCreateWindow("Traffic signal");
 
-        //setScreensize();
+         /*call back functions*/
+         glutDisplayFunc(mydisplay);
 
-        /*call back functions*/
-        glutDisplayFunc(mydisplay);
-
-
-        myinit();
-        glutDisplayFunc(mydisplay);
-        glutMainLoop();
+         myinit();
+         glutIdleFunc(idle);
+         glutDisplayFunc(mydisplay);
+         glutMainLoop();
     }
 
         
@@ -95,36 +91,54 @@ void common(){
 }
 
 void mydisplay(){
+
+    glPointSize(1.0); 
+    glMatrixMode(GL_PROJECTION); 
+    glLoadIdentity(); 
+  
+    // Set window size in X- and Y- direction 
+    gluOrtho2D(0, mat_len*50, 0, mat_wid*20); 
+
     glClear(GL_COLOR_BUFFER_BIT);
 
     Roadp();
-
+    vector<vector<tuple<int, int> > > corners = r.getAllVertices();
+    cout<<corners.size();
+    for(int i=0; i<corners.size(); i++){
+        vehicle();
+    }
 
     glutSwapBuffers(); 
+}
+
+void idle(){
+    common();
+    r.SimulationOpenGL(mat_len,mat_wid);
+    glutPostRedisplay();
 }
 
 //Function for printing Road
 void Roadp(){
     glBegin(GL_QUADS);
     //setting the dark grey colour for the road
-    glColor3f(0.411, 0.411, 0.411);
-    
+    glColor3f(0.411, 0.411, 0.411);   
     //defigning the length and width of the road
     glVertex2i(0,0);
-    glVertex2i(mat_len,0);
-    glVertex2i(mat_len,mat_wid);
-    glVertex2i(0,mat_wid);
+    glVertex2i(mat_len*50,0);
+    glVertex2i(mat_len*50,mat_wid*20);
+    glVertex2i(0,mat_wid*20);
 
     glEnd();
 }
 
 void vehicle(){
+    //glClear(GL_COLOR_BUFFER_BIT); 
     glBegin(GL_QUADS);
     glColor3f(0.0, 1.0, 0.0);
     glVertex2i(0,0);
-    glVertex2i(0,100);
-    glVertex2i(600,100);
-    glVertex2i(600,0);
+    glVertex2i(0,10);
+    glVertex2i(60,10);
+    glVertex2i(60,0);
     glEnd();
 }
 
@@ -139,10 +153,10 @@ void myinit(){
     glColor3f(1.0f, 0.0f, 0.0f); 
   
     // Set width of point to one unit 
-    glPointSize(1.0); 
-    glMatrixMode(GL_PROJECTION); 
-    glLoadIdentity(); 
+    // glPointSize(1.0); 
+    // glMatrixMode(GL_PROJECTION); 
+    // glLoadIdentity(); 
   
-    // Set window size in X- and Y- direction 
-    gluOrtho2D(0, mat_len, 0, mat_wid); 
+    // // Set window size in X- and Y- direction 
+    // gluOrtho2D(0, mat_len*50, 0, mat_wid*20); 
 }

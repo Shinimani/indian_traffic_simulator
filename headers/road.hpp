@@ -37,6 +37,8 @@ class Road{
         void Simulation(int mat_len, int mat_wid);
         bool Sim_fin();
 
+        void SimulationOpenGL(int mat_len, int mat_wid);
+
         vector<vector<char> > Get_road();
         vector<Vehicle> Get_vehicles();
         vector<tuple <int,int> > Get_signals();

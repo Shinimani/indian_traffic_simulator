@@ -92,7 +92,11 @@ void mydisplay(){
     glClear(GL_COLOR_BUFFER_BIT);
 
     Roadp();
-
+    vector<vector<vector<tuple<int, int> > > > corners;
+    // for(int i=0; i<corners.size(); i++){
+    //     cout<<i<<endl;
+    //     vehicle();
+    // }
 
     glutSwapBuffers(); 
 }
