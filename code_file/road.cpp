@@ -291,7 +291,7 @@ void Road::Simulation(int mat_len, int mat_wid){
                 //Road updated with the current vehicle
                 updatedRoad = New_road(updatedRoad,*currVehicle);
                 //If current vehicle moves past the simulation then stop it
-                if ((*currVehicle).Get_x()-(*currVehicle).Get_lenth() > mat_len){
+                if ((*currVehicle).Get_x()-2*(*currVehicle).Get_lenth() > mat_len){
                     continue;
                 }else{
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
@@ -307,7 +307,7 @@ void Road::Simulation(int mat_len, int mat_wid){
         Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
         Show_road(updatedRoad);
-        usleep(10000);
+        usleep(100000);
         time++;
     }
 
@@ -395,7 +395,7 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
 bool Road::Sim_fin(){
     for (int i = 0; i<vehicles.size();i++){
         Vehicle v = vehicles[i];
-        if (v.Get_x()-v.Get_lenth()>=road[0].size()){
+        if (v.Get_x()-2*v.Get_lenth()>road[0].size()){
             continue;
         }else{
             return true;
