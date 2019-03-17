@@ -4,4 +4,4 @@ mainIn = code_file/*.cpp
 
 
 main:$(mainIn)
-	@$(Compiler) -o main.out -I $(Deps)/ $(mainIn)
+	@$(Compiler) -o main.out -I $(Deps)/ $(mainIn) -lGL -lGLU -lglut -lm

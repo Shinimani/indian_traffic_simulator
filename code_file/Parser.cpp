@@ -280,3 +280,38 @@ int CheckSignal(vector<vector<string> > vec, int id){
 
     return ans;
 }
+
+
+//Getting the list of signals from the earlier parsed list
+vector<Vehicle> GetSignals(vector<Vehicle> temp){
+
+    vector<Vehicle> ans;
+
+
+    for(int i=0; i<temp.size(); i++){
+        if(temp[i].getType() == "Signal"){
+            ans.push_back(temp[i]);
+        }
+    }
+
+    return ans;
+}
+
+
+//Getting the list of all the vehicles from the earlier parsed list
+vector<Vehicle> GetVehicles(vector<Vehicle> temp){
+
+    vector<Vehicle> ans;
+
+    for(int i=0; i<temp.size(); i++){
+        if(temp[i].getType() != "Signal"){
+            ans.push_back(temp[i]);
+        }
+    }
+
+    for(int i=0; i<ans.size(); i++){
+        ans[i].ShowOrder();
+    }
+
+    return ans;
+}
