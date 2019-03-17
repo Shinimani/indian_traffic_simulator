@@ -200,7 +200,7 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
             count += 1;
         }
 
-        if(vec[i][0].find("Pass") != string::npos){
+        if(vec[i][0].find("PASS") != string::npos){
             //incrementing the start time further
             time = time + stoi(vec[i][1]) - 1 ;
             //cout<<time<<endl;

@@ -19,6 +19,7 @@ void idle();
 void vehicle(Vehicle);
 //Function to print road
 void Roadp();
+vector<float> getRGBValue(string s);
 
 
 // void simulation_wrapper(int mat_len, int mat_wid, string config_file){
@@ -48,8 +49,9 @@ int main(int argc, char **argv){
          glutDisplayFunc(mydisplay);
 
          myinit();
-         glutIdleFunc(idle);
+         //glutIdleFunc(idle);
          glutDisplayFunc(display);
+         //atexit(onexit);
          glutMainLoop();
     }
 
@@ -57,6 +59,10 @@ int main(int argc, char **argv){
 return 0;
 
 }
+
+// void onexit(){
+
+// }
 
 void common(){
 
@@ -102,7 +108,7 @@ void display(){
 
 void mydisplay(){
 
-    glPointSize(1.0); 
+    glPointSize(2.0); 
     glMatrixMode(GL_PROJECTION); 
     glLoadIdentity(); 
   
@@ -116,20 +122,21 @@ void mydisplay(){
     vector<Vehicle> list = r.Get_vehicles();
     for(int i=0; i<list.size(); i++){
         if(list[i].Get_start_time()<r.time){
-
+            cout<<list[i].GetColour();
             vehicle(list[i]);
         }
         
     }
 
+    glFlush();
     glutSwapBuffers(); 
-}
+    }
 
-void idle(){
-    common();
-    r.SimulationOpenGL(mat_len,mat_wid);
-    glutPostRedisplay();
-}
+// void idle(){
+//     common();
+//     r.SimulationOpenGL(mat_len,mat_wid);
+//     glutPostRedisplay();
+// }
 
 //Function for printing Road
 void Roadp(){
@@ -151,9 +158,14 @@ void vehicle(Vehicle temp){
 
     //glClear(GL_COLOR_BUFFER_BIT); 
     glBegin(GL_QUADS);
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex2i(get<0>(corners[0])*50,get<1>(corners[0])*20);
-    glVertex2i(get<0>(corners[1])*50,get<1>(corners[1])*20);
+    string c = temp.GetColour();
+    vector<float> acolour =  getRGBValue(c);
+
+    glColor3f(acolour[0], acolour[1], acolour[2]);
+    //cout<<acol
+    //glColor3f(1.0, 0.0,0.0);
+    glVertex2i(get<0>(corners[0])*50,get<1>(corners[0])*20+10);
+    glVertex2i(get<0>(corners[1])*50,get<1>(corners[1])*20+10);
     glVertex2i(get<0>(corners[2])*50,get<1>(corners[2])*20);
     glVertex2i(get<0>(corners[3])*50,get<1>(corners[3])*20);
     glEnd();
@@ -169,11 +181,40 @@ void myinit(){
     // as only argument corresponding to R (Red) is 1.0 and rest are 0.0 
     glColor3f(1.0f, 0.0f, 0.0f); 
   
-    // Set width of point to one unit 
-    // glPointSize(1.0); 
-    // glMatrixMode(GL_PROJECTION); 
-    // glLoadIdentity(); 
-  
-    // // Set window size in X- and Y- direction 
-    // gluOrtho2D(0, mat_len*50, 0, mat_wid*20); 
+}
+
+
+vector<float> getRGBValue(string s){
+    
+    vector<float> color;
+    if(s.compare("BLACK")== 0){
+        color.push_back(0.0);
+        color.push_back(0.0);
+        color.push_back(0.0);
+
+    }else{
+        if(s.compare("RED")==0){
+            color.push_back(1.0);
+            color.push_back(0.0);
+            color.push_back(0.0);
+        }else{
+            if(s.compare("GREEN")==0){
+                color.push_back(0.0);
+                color.push_back(1.0);
+                color.push_back(0.0);
+            }else{
+                if(s.compare("BLUE")==0){
+                    color.push_back(0.0);
+                    color.push_back(0.0);
+                    color.push_back(1.0);
+                }else{
+                    color.push_back(1.0);
+                    color.push_back(1.0);
+                    color.push_back(0.0);
+                }
+                
+            }
+        }
+    }
+    return color;
 }
