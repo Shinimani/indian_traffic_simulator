@@ -250,6 +250,7 @@ void Vehicle::laneChanger(){
 
 //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
 void Vehicle::NextPosition(){
+    setCorners();
     x = speed + x;
     calSpeed();
 
@@ -377,7 +378,6 @@ void Vehicle::ShowVehicle(){
     // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
     cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
     cout<<"\nCorners of the vehicle in the matrix: ";
-    setCorners();
     // vector<tuple<int,int> > corners = cv;
     for (int i = 0; i<corners.size();i++){
         int firEle2 = get<0>(corners[i]);

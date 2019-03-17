@@ -13,9 +13,10 @@ void common();
 
 void myinit();
 void mydisplay();
+void display();
 void idle();
 //Function to print vehicles
-void vehicle();
+void vehicle(Vehicle);
 //Function to print road
 void Roadp();
 
@@ -47,7 +48,7 @@ int main(int argc, char **argv){
 
          myinit();
          glutIdleFunc(idle);
-         glutDisplayFunc(mydisplay);
+         glutDisplayFunc(display);
          glutMainLoop();
     }
 
@@ -90,6 +91,15 @@ void common(){
      r.setAllVehSize();
 }
 
+void display(){
+
+    while(r.Sim_fin()){
+        r.LoopSimulation(mat_len,mat_wid);
+        mydisplay();
+    }
+
+}
+
 void mydisplay(){
 
     glPointSize(1.0); 
@@ -102,10 +112,14 @@ void mydisplay(){
     glClear(GL_COLOR_BUFFER_BIT);
 
     Roadp();
-    vector<vector<tuple<int, int> > > corners = r.getAllVertices();
-    cout<<corners.size();
-    for(int i=0; i<corners.size(); i++){
-        vehicle();
+
+    vector<Vehicle> list = r.Get_vehicles();
+    for(int i=0; i<list.size(); i++){
+        if(list[i].Get_start_time()<r.time){
+
+            vehicle(list[i]);
+        }
+        
     }
 
     glutSwapBuffers(); 
@@ -131,14 +145,17 @@ void Roadp(){
     glEnd();
 }
 
-void vehicle(){
+void vehicle(Vehicle temp){
+
+    vector<tuple<int, int> > corners = temp.getCorners();
+
     //glClear(GL_COLOR_BUFFER_BIT); 
     glBegin(GL_QUADS);
     glColor3f(0.0, 1.0, 0.0);
-    glVertex2i(0,0);
-    glVertex2i(0,10);
-    glVertex2i(60,10);
-    glVertex2i(60,0);
+    glVertex2i(get<0>(corners[0])*50,get<1>(corners[0])*20);
+    glVertex2i(get<0>(corners[1])*50,get<1>(corners[1])*20);
+    glVertex2i(get<0>(corners[2])*50,get<1>(corners[2])*20);
+    glVertex2i(get<0>(corners[3])*50,get<1>(corners[3])*20);
     glEnd();
 }
 
