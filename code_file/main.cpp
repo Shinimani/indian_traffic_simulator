@@ -9,7 +9,7 @@ Road r;
 int mat_len, mat_wid;
 vector<Vehicle> list_vehicle, Signals;
 
-void common();
+void common(string s);
 
 void myinit();
 void mydisplay();
@@ -29,14 +29,15 @@ vector<float> getRGBValue(string s);
 int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
+    string a = argv[2];
     if(c == 1){
-        common();
+        common(a);
     // cout <<typeid(mat_len).name()<<" "<<mat_len<<" "<<mat_len+(mat_len/10)<<" "<<typeid(mat_len+(mat_len/10)).name();
 
         r.Simulation(mat_len,mat_wid);
     }else{
             //opengl code
-         common();
+         common(a);
 
          glutInit(&argc, argv);
 
@@ -64,9 +65,9 @@ return 0;
 
 // }
 
-void common(){
+void common(string s){
 
-    vector<vector<string> > temp = Parser("Mayank.ini");
+    vector<vector<string> > temp = Parser(s);
     vector<Vehicle> vh1 = InitVehicles(temp);
 
     mat_len = RoadLen(temp);
@@ -108,12 +109,12 @@ void display(){
 
 void mydisplay(){
 
-    glPointSize(2.0); 
+    glPointSize(1.0); 
     glMatrixMode(GL_PROJECTION); 
     glLoadIdentity(); 
   
     // Set window size in X- and Y- direction 
-    gluOrtho2D(0, mat_len*50, 0, mat_wid*20); 
+    gluOrtho2D(0, mat_len*50 -500, 0, mat_wid*20); 
 
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -128,7 +129,7 @@ void mydisplay(){
         
     }
 
-    glFlush();
+    //glFlush();
     glutSwapBuffers(); 
     }
 
@@ -150,9 +151,42 @@ void Roadp(){
     glVertex2i(0,mat_wid*20);
 
     glEnd();
+
 }
 
 void vehicle(Vehicle temp){
+
+
+        for(int i =0 ;i<Signals.size(); i++){
+
+        string c = Signals[i].GetColour();
+        vector<float> acolour =  getRGBValue(c);
+        if(r.time >= Signals[i].Get_start_time()){
+            glColor3f(0,1,0);
+            glBegin(GL_QUADS);
+            //setting the dark grey colour for the road
+
+            glVertex2i(Signals[i].Get_lenth()*50,0);
+            glVertex2i(Signals[i].Get_lenth()*50+10,0);
+            glVertex2i(Signals[i].Get_lenth()*50+10,mat_wid*20);
+            glVertex2i(Signals[i].Get_lenth()*50,mat_wid*20);
+
+            glEnd();
+        }else{
+            glColor3f(1,0,0);
+            glBegin(GL_QUADS);
+            //setting the dark grey colour for the road
+
+            glVertex2i(Signals[i].Get_lenth()*50,0);
+            glVertex2i(Signals[i].Get_lenth()*50+10,0);
+            glVertex2i(Signals[i].Get_lenth()*50+10,mat_wid*20);
+            glVertex2i(Signals[i].Get_lenth()*50,mat_wid*20);
+
+            glEnd();
+        }
+        
+
+    }
 
     vector<tuple<int, int> > corners = temp.getCorners();
 
@@ -163,7 +197,6 @@ void vehicle(Vehicle temp){
 
     glColor3f(acolour[0], acolour[1], acolour[2]);
     //cout<<acol
-    //glColor3f(1.0, 0.0,0.0);
     glVertex2i(get<0>(corners[0])*50,get<1>(corners[0])*20+10);
     glVertex2i(get<0>(corners[1])*50,get<1>(corners[1])*20+10);
     glVertex2i(get<0>(corners[2])*50,get<1>(corners[2])*20);

@@ -346,7 +346,7 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
         }
         Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
-        usleep(500000);
+        usleep(100000);
         time++;
 }
 
