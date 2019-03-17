@@ -2,7 +2,7 @@
 
 //Here we will add functions of the vehicle class
 
-vector<tuple<int,int> > Vehicle::getCorners(){
+void Vehicle::setCorners(){
     vector<tuple<int,int> >cov  = coverage;
     int minX = 0,minY = 0,maxX = 0,maxY = 0;
     int x,y;
@@ -30,7 +30,10 @@ vector<tuple<int,int> > Vehicle::getCorners(){
         }
     }
     vector<tuple<int,int> > al = {make_tuple(minX,maxY),make_tuple(maxX,maxY),make_tuple(maxX,minY),make_tuple(minX,minY)};
-    return al;
+    corners = al;
+}
+vector<tuple<int,int> >Vehicle::getCorners(){
+    return corners;
 }
 
 
@@ -374,11 +377,11 @@ void Vehicle::ShowVehicle(){
     // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
     cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
     cout<<"\nCorners of the vehicle in the matrix: ";
-    vector<tuple<int,int> > cv2 = getCorners();
+    setCorners();
     // vector<tuple<int,int> > corners = cv;
-    for (int i = 0; i<cv2.size();i++){
-        int firEle2 = get<0>(cv2[i]);
-        int secEle2 = get<1>(cv2[i]);
+    for (int i = 0; i<corners.size();i++){
+        int firEle2 = get<0>(corners[i]);
+        int secEle2 = get<1>(corners[i]);
         cout<<"("<<firEle2<<","<<secEle2<<") ";
     }
 }
