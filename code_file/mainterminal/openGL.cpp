@@ -50,6 +50,11 @@ int main(int argc, char** argv)
     return 0;
 }
 void mydisplay(){
+    //vector<vector<tuple<int, int> > > corners;
+    //cout<<corners.size();
+    // for(int i=0; i<corners.size(); i++){
+    //     glClear(GL_COLOR_BUFFER_BIT);
+    //     cout<<i<<endl;
     glClear(GL_COLOR_BUFFER_BIT);
 
     Roadp();

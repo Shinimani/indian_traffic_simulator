@@ -24,6 +24,7 @@ class Vehicle{
         int start_time;
         float x,y; //location of the top left of the vehicle
         vector<tuple<int,int> > coverage;
+        vector<tuple<int,int> > corners;
         vector<int> free_area; //A vector of length 4 which tells the space free in the 4 directions of the vehicle
 
         bool rlc,llc; //right lane change and left lane change
@@ -53,6 +54,7 @@ class Vehicle{
         float callaneChangeProb();
         void collisionAvoider(int mat_len);
         vector<tuple<int,int> > getCorners();
+        void setCorners();        
         void laneChange();
         void laneChanger();
         //functions for getting the coordinates and dimension of the vehicle.

@@ -237,7 +237,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
             int y = get<1>(all_coverage[j]);
             for (int k = 0;k<x_cord.size();k++){
                 // if (x >= x_cord[k]-1 && x <= x_cord[k]+1){
-                    if (x == x_cord[k]){
+                    if (x >= x_cord[k] &&  x <= x_cord[k]+2){
                     //for right
                     int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
                     if (test_right>=0 && test_right<right){

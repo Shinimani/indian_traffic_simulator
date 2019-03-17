@@ -2,7 +2,7 @@
 
 //Here we will add functions of the vehicle class
 
-vector<tuple<int,int> > Vehicle::getCorners(){
+void Vehicle::setCorners(){
     vector<tuple<int,int> >cov  = coverage;
     int minX = 0,minY = 0,maxX = 0,maxY = 0;
     int x,y;
@@ -30,7 +30,10 @@ vector<tuple<int,int> > Vehicle::getCorners(){
         }
     }
     vector<tuple<int,int> > al = {make_tuple(minX,maxY),make_tuple(maxX,maxY),make_tuple(maxX,minY),make_tuple(minX,minY)};
-    return al;
+    corners = al;
+}
+vector<tuple<int,int> >Vehicle::getCorners(){
+    return corners;
 }
 
 
@@ -42,7 +45,11 @@ void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpee
     setColour(colour);
     setStartTime(start_time);
     brake = 0;
+<<<<<<< HEAD
     //cout<<brake<<endl;
+=======
+    // cout<<brake<<endl;
+>>>>>>> 60a34dcf179e04cac90c9f1f19d1f804e722d615
     // setPosition(x0, y0);
 }
 
@@ -77,10 +84,17 @@ void Vehicle::setLCProb(float f){
 float Vehicle:: callaneChangeProb(){
     int l = Get_lenth();
     int w = Get_width();
+<<<<<<< HEAD
     //cout<<"Sum: "<<sumAllVeh<<" "<<endl;
     float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
     laneChangeProb = lcp;
     //cout<<lcp<<" ";
+=======
+    // cout<<"Sum: "<<sumAllVeh<<" "<<endl;
+    float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
+    laneChangeProb = lcp;
+    // cout<<lcp<<" ";
+>>>>>>> 60a34dcf179e04cac90c9f1f19d1f804e722d615
     return laneChangeProb;
 }
 
@@ -158,19 +172,19 @@ void Vehicle::collisionAvoider(int mat_len){
     else if (front < 2){
         float currProb = laneChangeProb;
         setBrake(0);
-        // setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setSpeed(0);
+        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
     } 
-    else if(front>(vacc + vspeed - 2) && front<2*(vacc + vspeed - 2) && vspeed !=0){
+    else if(front>(vacc + vspeed + 2) && front<2*(vacc + vspeed + 2) && vspeed != 0){
         float currProb = laneChangeProb;
         setBrake(0);
         setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
     }
-    else if (front<=(vacc + vspeed - 2) && vspeed != 0){
+    else if (front<=(vacc + vspeed + 2) && vspeed != 0){
         float currProb = laneChangeProb;
         setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setBrake(0);
-        setSpeed(1);
+        setSpeed(0);
     }
     else{
         float currProb = laneChangeProb;
@@ -186,7 +200,7 @@ void Vehicle::laneChange(){
     int rfs = fs[3]; //right free space
     int veh_wid = Get_width();
     int veh_len = Get_lenth();
-    if (free_area[0]<=1){
+    if (free_area[0]>2){
     if (lfs > 1){
         llc = true;
     }else{
@@ -216,9 +230,9 @@ void Vehicle::laneChanger(){
             if (a < laneChangeProb){
             // (free_area[2]>free_area[3])? y-=1:y+=1;
             bool l = free_area[2]>free_area[3];
-            if (a<0.25){
-                l = not l;
-            }
+            // if (a<0.25){
+            //     l = not l;
+            // }
             if (l==true){
                 y-=1;
             } else{
@@ -247,15 +261,16 @@ void Vehicle::laneChanger(){
 
 //Calculating the Next Set of coordinates from the previous set of the cooridinate of the vehicle. 
 void Vehicle::NextPosition(){
-    calSpeed();
     x = speed + x;
+    calSpeed();
+
 }
 
 //Calculating the speed of the vehicle
 void Vehicle::calSpeed(){
     // calAcceleration();
     if(brake == 0 ){
-        decelaration +=2;
+        decelaration +=1;
         acceleration = 0;
         speed = speed - decelaration;
         if(speed < 0){
@@ -263,7 +278,7 @@ void Vehicle::calSpeed(){
         }
     }else{
         decelaration = 0;
-        acceleration = acceleration + 2;
+        acceleration = acceleration + 1;
         if(acceleration >= maxAcceleration){
             acceleration = maxAcceleration;
         }
@@ -373,11 +388,11 @@ void Vehicle::ShowVehicle(){
     // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
     cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
     cout<<"\nCorners of the vehicle in the matrix: ";
-    vector<tuple<int,int> > cv2 = getCorners();
+    setCorners();
     // vector<tuple<int,int> > corners = cv;
-    for (int i = 0; i<cv2.size();i++){
-        int firEle2 = get<0>(cv2[i]);
-        int secEle2 = get<1>(cv2[i]);
+    for (int i = 0; i<corners.size();i++){
+        int firEle2 = get<0>(corners[i]);
+        int secEle2 = get<1>(corners[i]);
         cout<<"("<<firEle2<<","<<secEle2<<") ";
     }
 }
