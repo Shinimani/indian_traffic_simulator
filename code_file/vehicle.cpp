@@ -45,11 +45,7 @@ void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpee
     setColour(colour);
     setStartTime(start_time);
     brake = 0;
-<<<<<<< HEAD
-    //cout<<brake<<endl;
-=======
     // cout<<brake<<endl;
->>>>>>> 60a34dcf179e04cac90c9f1f19d1f804e722d615
     // setPosition(x0, y0);
 }
 
