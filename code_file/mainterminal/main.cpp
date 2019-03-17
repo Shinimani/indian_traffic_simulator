@@ -18,15 +18,9 @@ void vehicle();
 //Function to print road
 void Roadp();
 
-
-// void simulation_wrapper(int mat_len, int mat_wid, string config_file){
-
-// }
-
 int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
-
     common();
 
     if(c == 1){
@@ -36,8 +30,8 @@ int main(int argc, char **argv){
             glutInit(&argc, argv);
         vector<vector<string> > temp = Parser("Mayank.ini");
 
-        mat_len = RoadLen(temp)*50;
-        mat_wid = RoadWid(temp)*20;
+        mat_len = mat_len*50;
+        mat_wid = mat_wid*20;
 
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
         glutInitWindowSize(mat_len, mat_wid);

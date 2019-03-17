@@ -14,4 +14,9 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
 vector<int> GetSignalPosition(vector<vector<string> > vec);
 int CheckSignal(vector<vector<string> > vec, int id);
 
+
+vector<Vehicle> InitVehicles(vector<vector<string> > prased);
+vector<Vehicle> GetSignals(vector<Vehicle> temp);
+vector<Vehicle> GetVehicles(vector<Vehicle> temp);
+
 #endif
