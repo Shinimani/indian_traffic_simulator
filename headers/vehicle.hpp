@@ -33,6 +33,7 @@ class Vehicle{
         void calAcceleration();
 
     public:
+        bool onRoad = true;
         //Intialising the position and specification of the vehicle. 
         void setVehicle(string type, string colour, int len, int wid, int ispeed, int start_time, int ac, int maxSpeed);//, float x0, float y0);
         void setBasicAttributes(int l, int w, int acc, float initSpeed);

@@ -27,9 +27,10 @@ void Roadp();
 int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
-
     if(c == 1){
         common();
+    // cout <<typeid(mat_len).name()<<" "<<mat_len<<" "<<mat_len+(mat_len/10)<<" "<<typeid(mat_len+(mat_len/10)).name();
+
         r.Simulation(mat_len,mat_wid);
     }else{
             //opengl code
@@ -65,7 +66,6 @@ void common(){
     mat_wid = RoadWid(temp);
     
     //10% road hidden for collision handling
-    mat_len+= mat_len/10;
 
     r.Init_road(mat_wid, mat_len);
 
