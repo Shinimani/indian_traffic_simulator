@@ -84,17 +84,10 @@ void Vehicle::setLCProb(float f){
 float Vehicle:: callaneChangeProb(){
     int l = Get_lenth();
     int w = Get_width();
-<<<<<<< HEAD
-    //cout<<"Sum: "<<sumAllVeh<<" "<<endl;
-    float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
-    laneChangeProb = lcp;
-    //cout<<lcp<<" ";
-=======
     // cout<<"Sum: "<<sumAllVeh<<" "<<endl;
     float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
     laneChangeProb = lcp;
     // cout<<lcp<<" ";
->>>>>>> 60a34dcf179e04cac90c9f1f19d1f804e722d615
     return laneChangeProb;
 }
 
