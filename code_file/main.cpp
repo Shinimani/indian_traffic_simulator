@@ -10,6 +10,11 @@ vector<vector<string> > Parser(string name);
 vector<Vehicle> GetSignals(vector<Vehicle> temp);
 vector<Vehicle> GetVehicles(vector<Vehicle> temp);
 
+
+// void simulation_wrapper(int mat_len, int mat_wid, string config_file){
+
+// }
+
 int main(int argc, char **argv){
     srand(time(0));
     int mat_len, mat_wid;

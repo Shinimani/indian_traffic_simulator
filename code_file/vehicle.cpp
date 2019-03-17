@@ -124,22 +124,22 @@ void Vehicle::collisionAvoider(int mat_len){
     }else if(Get_x()<=1){
         setBrake(1);
     }
-    else if (front <= 2){
+    else if (front < 2){
         float currProb = laneChangeProb;
         setBrake(0);
-        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        // setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setSpeed(0);
     } 
-    else if(front>(vacc - dec + vspeed + 2) && front<2*(vacc -dec + vspeed + 1)){
+    else if(front>(vacc + vspeed - 2) && front<2*(vacc + vspeed - 2) && vspeed !=0){
         float currProb = laneChangeProb;
         setBrake(0);
         setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
     }
-    else if (front<=(vacc -dec + vspeed + 2) && front >=2){
+    else if (front<=(vacc + vspeed - 2) && vspeed != 0){
         float currProb = laneChangeProb;
-        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setBrake(0);
-        setSpeed(0);
+        setSpeed(1);
     }
     else{
         float currProb = laneChangeProb;
@@ -155,13 +155,13 @@ void Vehicle::laneChange(){
     int rfs = fs[3]; //right free space
     int veh_wid = Get_width();
     int veh_len = Get_lenth();
-    if (free_area[0]>1){
-    if (lfs > 2){
+    if (free_area[0]<=1){
+    if (lfs > 1){
         llc = true;
     }else{
         llc =false;
     }
-    if (rfs > 2){
+    if (rfs > 1){
         rlc = true;
     } else{
         rlc =false;
@@ -179,7 +179,7 @@ void Vehicle::laneChanger(){
     float a = 0;
     a = static_cast<float>(rand())/(static_cast<float>(RAND_MAX));
 
-    if (Get_speed() != 0 || Get_acceleration() != 0){
+    if (Get_speed() != 0 ){
         if (rlc == true){
         if (llc == true){
             if (a < laneChangeProb){
