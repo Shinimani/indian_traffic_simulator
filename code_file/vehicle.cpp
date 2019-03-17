@@ -2,6 +2,37 @@
 
 //Here we will add functions of the vehicle class
 
+vector<tuple<int,int> > Vehicle::getCorners(){
+    vector<tuple<int,int> >cov  = coverage;
+    int minX = 0,minY = 0,maxX = 0,maxY = 0;
+    int x,y;
+    for(int i = 0; i<cov.size(); i++){
+        x = get<0>(cov[i]);
+        y = get<1>(cov[i]);
+        if (i == 0){
+            minX = x;
+            maxX = x;
+            minY = y;
+            maxY = y;
+        }else{
+            if (x > maxX){
+                maxX = x;
+            }
+            if (x <minX){
+                minX = x;
+            }
+            if (y > maxY){
+                maxY = y;
+            }
+            if (y <minY){
+                minY = y;
+            }
+        }
+    }
+    vector<tuple<int,int> > al = {make_tuple(minX,maxY),make_tuple(maxX,maxY),make_tuple(maxX,minY),make_tuple(minX,minY)};
+    return al;
+}
+
 
 //Intialising the position and specification of the vehicle. 
 void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed){
@@ -124,22 +155,22 @@ void Vehicle::collisionAvoider(int mat_len){
     }else if(Get_x()<=1){
         setBrake(1);
     }
-    else if (front <= 2){
+    else if (front < 2){
         float currProb = laneChangeProb;
         setBrake(0);
-        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        // setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setSpeed(0);
     } 
-    else if(front>(vacc - dec + vspeed + 2) && front<2*(vacc -dec + vspeed + 1)){
+    else if(front>(vacc + vspeed - 2) && front<2*(vacc + vspeed - 2) && vspeed !=0){
         float currProb = laneChangeProb;
         setBrake(0);
         setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
     }
-    else if (front<=(vacc -dec + vspeed + 2) && front >=2){
+    else if (front<=(vacc + vspeed - 2) && vspeed != 0){
         float currProb = laneChangeProb;
-        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setBrake(0);
-        setSpeed(0);
+        setSpeed(1);
     }
     else{
         float currProb = laneChangeProb;
@@ -155,13 +186,13 @@ void Vehicle::laneChange(){
     int rfs = fs[3]; //right free space
     int veh_wid = Get_width();
     int veh_len = Get_lenth();
-    if (free_area[0]>1){
-    if (lfs > 2){
+    if (free_area[0]<=1){
+    if (lfs > 1){
         llc = true;
     }else{
         llc =false;
     }
-    if (rfs > 2){
+    if (rfs > 1){
         rlc = true;
     } else{
         rlc =false;
@@ -179,7 +210,7 @@ void Vehicle::laneChanger(){
     float a = 0;
     a = static_cast<float>(rand())/(static_cast<float>(RAND_MAX));
 
-    if (Get_speed() != 0 || Get_acceleration() != 0){
+    if (Get_speed() != 0 ){
         if (rlc == true){
         if (llc == true){
             if (a < laneChangeProb){
@@ -330,16 +361,25 @@ void Vehicle::ShowVehicle(){
     cout<<"\nX: "<<x<<" Y: "<<y;
     // cout<<"\nCoverage of the vehicle in the matrix: ";
     vector<tuple<int,int> > cv = Get_coverage();
+    
     for (int i = 0; i<cv.size();i++){
         int firEle = get<0>(cv[i]);
         int secEle = get<1>(cv[i]);
-        // cout<<"("<<firEle<<","<<secEle<<") ";
+        cout<<"("<<firEle<<","<<secEle<<") ";
     }
     // cout<<endl;
     cout<<"\nFree Area: ";
     cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
     // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
     cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
+    cout<<"\nCorners of the vehicle in the matrix: ";
+    vector<tuple<int,int> > cv2 = getCorners();
+    // vector<tuple<int,int> > corners = cv;
+    for (int i = 0; i<cv2.size();i++){
+        int firEle2 = get<0>(cv2[i]);
+        int secEle2 = get<1>(cv2[i]);
+        cout<<"("<<firEle2<<","<<secEle2<<") ";
+    }
 }
 
 //void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed)

@@ -2,6 +2,15 @@
 #include "road.hpp"
 #include <algorithm>
 
+vector<vector<tuple<int,int> > > Road::getAllVertices(){
+    vector<vector<tuple<int,int> > > ans;
+    for ( int i = 0; i < vehicles.size();i++){
+        Vehicle currV = vehicles[i];
+        ans.push_back(currV.getCorners());
+    }
+    return ans;
+}
+
 
 void Road::getAllVehSize(){
     int allSize = 0;
@@ -242,7 +251,8 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
                     }
                 }
 
-                if (y >= y_cord[k]-2 && y <= y_cord[k]+2 ){
+                // if (y >= y_cord[k]-1 && y <= y_cord[k]+1 (){
+                    if (y == y_cord[k]){
                     //for front
                     int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
                     if (test_front>=0 && test_front<front){
@@ -287,13 +297,15 @@ void Road::Simulation(int mat_len, int mat_wid){
                 //Check for signal
                 // bool chk = Signal_behavior((*currVehicle),time);
                 //No signal
-                Set_free_area(updatedRoad,mat_len,mat_wid,time);
                 // if (chk == false){
+                    Set_free_area(updatedRoad,mat_len,mat_wid,time);
+                    (*currVehicle).collisionAvoider(mat_len);
+                    // Set_free_area(updatedRoad,mat_len,mat_wid,time);
+                    (*currVehicle).NextPosition();
+                    Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
-                    (*currVehicle).collisionAvoider(mat_len);
-                    (*currVehicle).NextPosition();
                 // } else{
                     //Set the vehicle infront of the signal
                     // int currX = (*currVehicle).Get_x();
@@ -307,8 +319,8 @@ void Road::Simulation(int mat_len, int mat_wid){
                     //     }
                     // }
                     // (*currVehicle).setPosition(minX-(*currVehicle).Get_lenth() - 1,(*currVehicle).Get_y());
-                // }
                 }
+                // }
             }   
         }
         Set_free_area(updatedRoad, mat_len,mat_wid,time);

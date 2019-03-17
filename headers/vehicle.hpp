@@ -52,7 +52,7 @@ class Vehicle{
         void setSumAllVeh(int i);
         float callaneChangeProb();
         void collisionAvoider(int mat_len);
-
+        vector<tuple<int,int> > getCorners();
         void laneChange();
         void laneChanger();
         //functions for getting the coordinates and dimension of the vehicle.

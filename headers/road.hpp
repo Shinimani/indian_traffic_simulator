@@ -25,6 +25,7 @@ class Road{
 
         void Vehicle_intializer(int mat_len, int mat_wid);
 
+        vector<vector<tuple<int,int> > > getAllVertices();
 
         void Set_signal(int col,int rel_time);
         bool Signal_behavior(Vehicle v, int time);

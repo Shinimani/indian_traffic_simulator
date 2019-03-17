@@ -18,6 +18,11 @@ void vehicle();
 //Function to print road
 void Roadp();
 
+
+// void simulation_wrapper(int mat_len, int mat_wid, string config_file){
+
+// }
+
 int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
