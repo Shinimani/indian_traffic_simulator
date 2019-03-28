@@ -129,15 +129,9 @@ void mydisplay(){
         
     }
 
-    //glFlush();
+    glFlush();
     glutSwapBuffers(); 
     }
-
-// void idle(){
-//     common();
-//     r.SimulationOpenGL(mat_len,mat_wid);
-//     glutPostRedisplay();
-// }
 
 //Function for printing Road
 void Roadp(){
@@ -147,7 +141,7 @@ void Roadp(){
     //defigning the length and width of the road
     glVertex2i(0,0);
     glVertex2i(mat_len*50,0);
-    glVertex2i(mat_len*50,mat_wid*20);
+    glVertex2i(mat_len*50 -500,mat_wid*20);
     glVertex2i(0,mat_wid*20);
 
     glEnd();
@@ -196,7 +190,6 @@ void vehicle(Vehicle temp){
     vector<float> acolour =  getRGBValue(c);
 
     glColor3f(acolour[0], acolour[1], acolour[2]);
-    //cout<<acol
     glVertex2i(get<0>(corners[0])*50,get<1>(corners[0])*20+10);
     glVertex2i(get<0>(corners[1])*50,get<1>(corners[1])*20+10);
     glVertex2i(get<0>(corners[2])*50,get<1>(corners[2])*20);
@@ -211,7 +204,6 @@ void myinit(){
     glClearColor(1.0, 1.0, 1.0, 0.0); 
   
     // Set picture color to red (in RGB model) 
-    // as only argument corresponding to R (Red) is 1.0 and rest are 0.0 
     glColor3f(1.0f, 0.0f, 0.0f); 
   
 }
