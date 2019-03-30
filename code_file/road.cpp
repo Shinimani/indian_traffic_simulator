@@ -235,22 +235,24 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
 
 //Free space for each vehicle calculation
 void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int time){
-    int most_forward = mat_len;
+    int most_forward = mat_len; //Starts from the furthest length 
     int most_forward_time_if_signal;
+
     vector<tuple<int,vector<int> > > s= signals;
+
     for (int k =0;k<s.size();k++){
-        tuple<int,vector<int> > currSig = s[k];
-        int col_num = get<0>(currSig);
-        vector<int> sig_times = get<1>(currSig);
-        int GLB = sig_times[0];
+        tuple<int,vector<int> > currSig = s[k]; //Get a signal
+        int col_num = get<0>(currSig); //Get the location of the signal
+        vector<int> sig_times = get<1>(currSig); //Get the list of change times
+        int GLB = sig_times[0]; //Get the immediate lowest time of the current time and then check its sign
         for ( int l = 0; l<sig_times.size(); l++){
             // if ((time<abs(sig_times[l]))&&(sig_times[]))
             if (time>abs(sig_times[l]) && (abs(sig_times[l])>GLB)){
                 GLB = sig_times[l];
             }
         }
-        if (GLB < 0){
-            if (get<0>(currSig)<most_forward){
+        if (GLB <= 0){
+            if (get<0>(currSig) < most_forward){
                 most_forward = get<0>(currSig);
             }
         }
