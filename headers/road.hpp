@@ -23,6 +23,7 @@ class Road{
         void Add_vehicles(Vehicle v);
         void Add_vehicles(vector<Vehicle> v);
 
+        void New_initializer(int mat_len, int mat_wid);
         void Vehicle_intializer(int mat_len, int mat_wid);
 
         vector<vector<tuple<int,int> > > getAllVertices();

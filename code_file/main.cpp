@@ -93,7 +93,7 @@ void common(string s){
     vector<int> signaltime = GetSignalPosition(temp);
     
      r.Add_vehicles(list_vehicle);
-     r.Vehicle_intializer(mat_len,mat_wid);
+     r.New_initializer(mat_len,mat_wid);
      r.getAllVehSize();
      r.setAllVehSize();
 }

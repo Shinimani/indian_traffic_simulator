@@ -112,6 +112,35 @@ void Road::Add_vehicles(vector<Vehicle> v){
     vehicles.insert(vehicles.end(),v.begin(),v.end());
 }
 
+void Road::New_initializer(int mat_len, int mat_wid){
+    Vehicle *currVehicle;
+    vector<tuple<int,int> > all_coverage;
+    for (int i = 0; i<vehicles.size(); i++){
+        currVehicle = &vehicles[i];
+        for (int j = 1;j<mat_wid;j++){
+            int startTime = (*currVehicle).Get_start_time();
+            (*currVehicle).setPosition(0-startTime,j);
+            (*currVehicle).setCoverage(mat_len);
+            vector<tuple<int,int> > cv =(*currVehicle).Get_coverage();
+            int start_time = (*currVehicle).Get_start_time();
+            for (int i = 0; i<cv.size();i++){
+                tuple<int,int> curEle = cv[i];
+                int x = get<0>(curEle) - start_time;
+                int y = get<1>(curEle);
+                cv[i] = make_tuple(x,y);
+            }
+            bool retVal = commIn2vectors(all_coverage,cv);
+            if (retVal == true){
+                all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
+                break;
+            } else{
+                continue;
+            }
+        }
+    }
+}
+
+
 void Road::Vehicle_intializer(int mat_len, int mat_wid){
     Vehicle *currVehicle;
     vector<tuple<int,int> > all_coverage;
