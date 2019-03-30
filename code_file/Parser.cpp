@@ -207,6 +207,8 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
 
         if(vec[i][0].find("@") != string::npos ){
             int id = stoi(vec[i][0].substr(1));
+            string sanitizedColour = vec[i][1];
+            sanitizedColour = regex_replace(sanitizedColour, regex("^ +| +$|( ) +"), "$1");
             //checks if the signal exist or not
             if(CheckSignal(vec, id) > 0){
                 bool alreadyExists = false;
@@ -216,7 +218,7 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
                         Vehicle *currV;
                         currV = &vh[k];
                         vector<int> f = (*currV).Get_free_area();
-                        if (vec[i][1] == "RED"){
+                        if (sanitizedColour == "RED"){
                             f.push_back(-time);
                         }else{
                             f.push_back(time);
@@ -229,10 +231,11 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
                 if (alreadyExists == false){
                 vh.push_back(temp);
                 vh[vh.size()-1].setType("Signal");//Tells that it is Signal not the car
-                if (vec[i][1] == "RED"){
+                if (sanitizedColour == "RED"){
                     vh[vh.size()-1].setFreeArea({-time});
                 }else{
-                    vh[vh.size()-1].setFreeArea({+time});
+                    vh[vh.size()-1].setFreeArea({+time+1});
+
                 }
                 vh[vh.size()-1].setColour(vec[i][1]);//stores the colour of the signal to determine the stored time is release time or not
                 vh[vh.size()-1].setStartTime(time);//start time stores the release time of the signal

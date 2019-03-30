@@ -8,6 +8,7 @@
 #include <string>
 #include <time.h>  
 #include <tuple>
+#include <regex>
 using namespace std;
 
 template<typename T>
