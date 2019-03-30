@@ -80,15 +80,15 @@ void common(string s){
     vector<Vehicle> list_vehicle1 = GetVehicle(temp, vh1);
 
     Signals = GetSignals(list_vehicle1);
-
     for(int i=0; i<Signals.size(); i++){
-        if(Signals[i].GetColour() == "GREEN"){
-            r.Set_signal(Signals[i].Get_lenth(), Signals[i].Get_start_time());
+        for (int j =0; j< Signals[i].Get_free_area().size(); j++){
+            cout<<Signals[i].Get_free_area()[j]<<" ";
         }
+        cout<<endl;
+        r.Set_signal(Signals[i].Get_lenth(), Signals[i].Get_free_area());
     }
 
     list_vehicle = GetVehicles(list_vehicle1);
-
 
     vector<int> signaltime = GetSignalPosition(temp);
     
