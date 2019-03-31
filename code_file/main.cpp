@@ -108,16 +108,6 @@ void display(){
 }
 
 void mydisplay(){
-
-    glPointSize(1.0); 
-    glMatrixMode(GL_PROJECTION); 
-    glLoadIdentity(); 
-  
-    // Set window size in X- and Y- direction 
-    gluOrtho2D(0, mat_len*50 -500, 0, mat_wid*20); 
-
-    glClear(GL_COLOR_BUFFER_BIT);
-
     Roadp();
 
     vector<Vehicle> list = r.Get_vehicles();
@@ -135,14 +125,14 @@ void mydisplay(){
 
 //Function for printing Road
 void Roadp(){
-    glBegin(GL_QUADS);
+    glBegin(GL_QUAD_STRIP);
     //setting the dark grey colour for the road
     glColor3f(0.411, 0.411, 0.411);   
     //defigning the length and width of the road
     glVertex2i(0,0);
-    glVertex2i(mat_len*50,0);
-    glVertex2i(mat_len*50 -500,mat_wid*20);
-    glVertex2i(0,mat_wid*20);
+    glVertex2i(mat_len,0);
+    glVertex2i(mat_len ,mat_wid);
+    glVertex2i(0,mat_wid);
 
     glEnd();
 
@@ -158,53 +148,49 @@ void vehicle(Vehicle temp){
         if(r.time >= Signals[i].Get_start_time()){
             glColor3f(0,1,0);
             glBegin(GL_QUADS);
-            //setting the dark grey colour for the road
 
-            glVertex2i(Signals[i].Get_lenth()*50,0);
-            glVertex2i(Signals[i].Get_lenth()*50+10,0);
-            glVertex2i(Signals[i].Get_lenth()*50+10,mat_wid*20);
-            glVertex2i(Signals[i].Get_lenth()*50,mat_wid*20);
-
-            glEnd();
         }else{
             glColor3f(1,0,0);
             glBegin(GL_QUADS);
-            //setting the dark grey colour for the road
-
+        }
             glVertex2i(Signals[i].Get_lenth()*50,0);
             glVertex2i(Signals[i].Get_lenth()*50+10,0);
             glVertex2i(Signals[i].Get_lenth()*50+10,mat_wid*20);
             glVertex2i(Signals[i].Get_lenth()*50,mat_wid*20);
-
-            glEnd();
-        }
-        
 
     }
 
     vector<tuple<int, int> > corners = temp.getCorners();
 
     //glClear(GL_COLOR_BUFFER_BIT); 
-    glBegin(GL_QUADS);
+    glBegin(GL_QUAD_STRIP);
     string c = temp.GetColour();
     vector<float> acolour =  getRGBValue(c);
 
     glColor3f(acolour[0], acolour[1], acolour[2]);
-    glVertex2i(get<0>(corners[0])*50,get<1>(corners[0])*20+10);
-    glVertex2i(get<0>(corners[1])*50,get<1>(corners[1])*20+10);
-    glVertex2i(get<0>(corners[2])*50,get<1>(corners[2])*20);
-    glVertex2i(get<0>(corners[3])*50,get<1>(corners[3])*20);
+    glVertex2i(get<0>(corners[0]),get<1>(corners[0]));
+    glVertex2i(get<0>(corners[1]),get<1>(corners[1]));
+    glVertex2i(get<0>(corners[2]),get<1>(corners[2]));
+    glVertex2i(get<0>(corners[3]),get<1>(corners[3]));
+    
     glEnd();
 }
 
 
 void myinit(){
 
+
+    glPointSize(1.0); 
+    glMatrixMode(GL_PROJECTION); 
+    glLoadIdentity(); 
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set window size in X- and Y- direction 
+    gluOrtho2D(0.0, mat_len-10, 0.0, mat_wid); 
+
     // Reset background color with white (since all three argument is 1.0) 
-    glClearColor(1.0, 1.0, 1.0, 0.0); 
-  
-    // Set picture color to red (in RGB model) 
-    glColor3f(1.0f, 0.0f, 0.0f); 
+    glClearColor(0.0, 1.0, 0.0, 0.0); 
   
 }
 
