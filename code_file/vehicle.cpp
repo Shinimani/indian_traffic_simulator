@@ -159,43 +159,56 @@ void Vehicle::collisionAvoider(int mat_len){
     int currX = Get_x();
     int vacc = Get_acceleration();
     int dec = decelaration;
+    int signalOrCar;
+    if (infSignal == false){
+        signalOrCar = 1;
+    }else{
+        signalOrCar = (Get_lenth()* Get_width())/2;
+    }
     //Brake 1 is forward accelaration. Brake 0 is retardation
     if (mat_len - Get_x()<=3*Get_lenth()){
         setBrake(1);
     }else if(Get_x()<=1){
         setBrake(1);
-    // } else if (core_front>front){
-    //     float currProb = laneChangeProb;
-    //     setBrake(1);
-    //     setLCProb(laneChangeProb - ((0.9)* (1-currProb)));
-    // }
-    }else if (front < 2){
+    }else if (front < signalOrCar+1){
         float currProb = laneChangeProb;
-        if (core_front<2){
+        if (core_front<signalOrCar+2){
             setBrake(0);
             setSpeed(0);
             setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
-            if (core_front == 1){
-                setPosition(Get_x()+1,Get_y());
-            }
-        }else if(core_front>(vspeed+vacc+2)){
+            // if (core_front == 1){
+            //     setPosition(Get_x()+1,Get_y());
+            // }
+        }else if(core_front>(vspeed+vacc+2+signalOrCar)){
             setBrake(1);
         }else{
             setSpeed(1);
             setBrake(0);
-            // set
             setLCProb(laneChangeProb - ((0.9)* (1-currProb)));
         }
     }
-    else if(front>(vacc + vspeed + 1) && front<2*(vacc + vspeed + 1) && vspeed != 0){
+    else if(core_front>(vacc + vspeed + 2-dec+signalOrCar) && core_front<2*(vacc + vspeed + 2-dec+signalOrCar)){
         float currProb = laneChangeProb;
         setBrake(0);
         setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
     }
-    else if (front<=(vacc + vspeed + 1) && vspeed != 0){
+    else if (core_front<=(vacc + vspeed + 2-dec+signalOrCar) ){
         float currProb = laneChangeProb;
         setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setBrake(0);
+        setSpeed(core_front/2);
+        // setSpeed(0);
+    }
+    else if(front>(vacc + vspeed + 2-dec+signalOrCar) && front<2*(vacc + vspeed + 2-dec+signalOrCar)){
+        float currProb = laneChangeProb;
+        setBrake(0);
+        setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
+    }
+    else if (front<=(vacc + vspeed + 2-dec+signalOrCar) ){
+        float currProb = laneChangeProb;
+        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        setBrake(0);
+        setSpeed(front/2);
         // setSpeed(0);
     }
     else{
@@ -212,13 +225,19 @@ void Vehicle::laneChange(){
     int rfs = fs[3]; //right free space
     int veh_wid = Get_width();
     int veh_len = Get_lenth();
-    if (free_area[0]>2){
-    if (lfs > 1){
+    int signalOrCar;
+    if (infSignal == false){
+        signalOrCar = 1;
+    }else{
+        signalOrCar = Get_lenth();
+    }
+    if (core_free_area[0]>=signalOrCar){
+    if (lfs >= 1){
         llc = true;
     }else{
         llc =false;
     }
-    if (rfs > 1){
+    if (rfs >= 1){
         rlc = true;
     } else{
         rlc =false;
@@ -235,8 +254,13 @@ void Vehicle::laneChange(){
 void Vehicle::laneChanger(){
     float a = 0;
     a = static_cast<float>(rand())/(static_cast<float>(RAND_MAX));
-
-    if (Get_speed() != 0 ){
+    int signalOrCar;
+    if (infSignal == false){
+        signalOrCar = 1;
+    }else{
+        signalOrCar = Get_lenth();
+    }
+    if (Get_speed() != 0 || core_free_area[0]>= signalOrCar){
         if (rlc == true){
         if (llc == true){
             if (a < laneChangeProb){

@@ -28,12 +28,14 @@ class Vehicle{
         vector<int> free_area; //A vector of length 4 which tells the space free in the 4 directions of the vehicle
         vector<int> core_free_area;
         bool rlc,llc; //right lane change and left lane change
+        bool rlp,llp; //right lane possible and left lane possible
+        //It is possible to change lanes only if there is space all over.
 
         void calSpeed();
         void calAcceleration();
 
     public:
-        bool onRoad = true;
+        bool infSignal;
         //Intialising the position and specification of the vehicle. 
         void setVehicle(string type, string colour, int len, int wid, int ispeed, int start_time, int ac, int maxSpeed);//, float x0, float y0);
         void setBasicAttributes(int l, int w, int acc, float initSpeed);
@@ -59,6 +61,7 @@ class Vehicle{
         void setCorners();        
         void laneChange();
         void laneChanger();
+        void rotate();
         //functions for getting the coordinates and dimension of the vehicle.
         float Get_x();
         float Get_y();
