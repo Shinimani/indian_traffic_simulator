@@ -235,7 +235,7 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
 
 //Free space for each vehicle calculation
 void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int time){
-    int most_forward = mat_len; //Starts from the furthest length 
+    vector<int> most_forward(vehicles.size(),mat_len); //Starts from the furthest length 
     int most_forward_time_if_signal;
 
     vector<tuple<int,vector<int> > > s= signals;
@@ -247,15 +247,18 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
         int GLB = sig_times[0]; //Get the immediate lowest time of the current time and then check its sign
         for ( int l = 0; l<sig_times.size(); l++){
             // if ((time<abs(sig_times[l]))&&(sig_times[]))
-            if (time>abs(sig_times[l]) && (abs(sig_times[l])>GLB)){
+            if (time>abs(sig_times[l]) && (abs(sig_times[l])>abs(GLB))){
                 GLB = sig_times[l];
             }
         }
-        if (GLB <= 0){
-            if (get<0>(currSig) < most_forward){
-                most_forward = get<0>(currSig);
+        for(int w = 0; w<vehicles.size();w++){
+            if (GLB <= 0){
+                if (col_num < most_forward[w] && vehicles[w].Get_x()<col_num){
+                    most_forward[w] = col_num;
+                }
             }
         }
+        
     }
     vector<Vehicle> *vl;
     vl = &(vehicles);
@@ -270,7 +273,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
     for (int i = 0;i <(*vl).size();i++){
         currV = &(*vl)[i]; //Each Vehicle
 
-        int front = most_forward-(*currV).Get_x() - (*currV).Get_lenth();
+        int front = most_forward[i]-(*currV).Get_x() - (*currV).Get_lenth();
         
         int back = (*currV).Get_x();
         int left = (*currV).Get_y();
@@ -295,7 +298,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
             int y = get<1>(all_coverage[j]);
             for (int k = 0;k<x_cord.size();k++){
                 // if (x >= x_cord[k]-1 && x <= x_cord[k]+1){
-                    if (x >= x_cord[k] &&  x <= x_cord[k]+2){
+                    if (x >= x_cord[k] &&  x <= x_cord[k]+1){
                     //for right
                     int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
                     if (test_right>=0 && test_right<right){
@@ -362,6 +365,9 @@ void Road::Simulation(int mat_len, int mat_wid){
                 }
             }   
         }
+        for (int k =0;k<vehicles.size(); k++){
+            vehicles[k].ShowVehicle();
+        }
         Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
         Show_road(updatedRoad);
@@ -373,7 +379,7 @@ void Road::Simulation(int mat_len, int mat_wid){
 
 void Road::LoopSimulation(int mat_len, int mat_wid){
     
-            vector<vector<char> > updatedRoad;
+    vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
 
      system("clear");

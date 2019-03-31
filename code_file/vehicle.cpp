@@ -164,7 +164,7 @@ void Vehicle::collisionAvoider(int mat_len){
         setSpeed(0);
         setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
     } 
-    else if(front>(vacc + vspeed + 2) && front<3*(vacc + vspeed + 2) && vspeed != 0){
+    else if(front>(vacc + vspeed + 1) && front<2*(vacc + vspeed + 1) && vspeed != 0){
         float currProb = laneChangeProb;
         setBrake(0);
         setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
@@ -268,14 +268,15 @@ void Vehicle::calSpeed(){
         }
     }else{
         decelaration = 0;
-        acceleration = acceleration + 1;
-        if(acceleration >= maxAcceleration){
-            acceleration = maxAcceleration;
-        }
         speed = acceleration + speed;
         if(speed >= maxspeed){
             speed = maxspeed;
         }
+        acceleration = acceleration + 1;
+        if(acceleration >= maxAcceleration){
+            acceleration = maxAcceleration;
+        }
+        
     }
 }
 
@@ -384,6 +385,7 @@ void Vehicle::ShowVehicle(){
         int secEle2 = get<1>(corners[i]);
         cout<<"("<<firEle2<<","<<secEle2<<") ";
     }
+    cout<<endl;
 }
 
 //void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpeed, int start_time, int ac, int maxSpeed)
