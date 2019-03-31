@@ -112,6 +112,35 @@ void Road::Add_vehicles(vector<Vehicle> v){
     vehicles.insert(vehicles.end(),v.begin(),v.end());
 }
 
+void Road::New_initializer(int mat_len, int mat_wid){
+    Vehicle *currVehicle;
+    vector<tuple<int,int> > all_coverage;
+    for (int i = 0; i<vehicles.size(); i++){
+        currVehicle = &vehicles[i];
+        for (int j = 1;j<mat_wid - 1 - (*currVehicle).Get_width(); j++){
+            int startTime = (*currVehicle).Get_start_time();
+            (*currVehicle).setPosition(0-startTime,j);
+            (*currVehicle).setCoverage(mat_len);
+            vector<tuple<int,int> > cv =(*currVehicle).Get_coverage();
+            int start_time = (*currVehicle).Get_start_time();
+            for (int i = 0; i<cv.size();i++){
+                tuple<int,int> curEle = cv[i];
+                int x = get<0>(curEle) - start_time;
+                int y = get<1>(curEle);
+                cv[i] = make_tuple(x,y);
+            }
+            bool retVal = commIn2vectors(all_coverage,cv);
+            if (retVal == true){
+                all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
+                break;
+            } else{
+                continue;
+            }
+        }
+    }
+}
+
+
 void Road::Vehicle_intializer(int mat_len, int mat_wid){
     Vehicle *currVehicle;
     vector<tuple<int,int> > all_coverage;
@@ -147,39 +176,56 @@ void Road::Vehicle_intializer(int mat_len, int mat_wid){
 
 
 //Adds Signal to the vector of signals 
-void Road::Set_signal(int col,int rel_time){
-    tuple<int,int> t = make_tuple(col,rel_time);
+void Road::Set_signal(int col,vector<int> rel_time){
+    tuple<int,vector<int> > t = make_tuple(col,rel_time);
     signals.push_back(t);
 }
 
-bool Road::Signal_behavior(Vehicle v, int curr_time){
-    for (int i = 0; i< signals.size();i++){
-        int curr_signal = get<0>(signals[i]);
-        int curr_rel_time = get<1>(signals[i]);
-        int vehSpeed = v.Get_speed();
-        float nextX = vehSpeed + v.Get_x();
-        if (curr_signal - v.Get_x()-v.Get_lenth() >= 0 && curr_signal-nextX-v.Get_lenth() <= 0){
-            if (curr_time < curr_rel_time){
-                return true;
-            }else{
-                return false;
-            }
-        } else{
-            continue;
-        }
-    }
-    return false;
-}
+// bool Road::Signal_behavior(Vehicle v, int curr_time){
+//     for (int i = 0; i< signals.size();i++){
+//         int curr_signal = get<0>(signals[i]);
+//         int curr_rel_time = get<1>(signals[i]);
+//         int vehSpeed = v.Get_speed();
+//         float nextX = vehSpeed + v.Get_x();
+//         if (curr_signal - v.Get_x()-v.Get_lenth() >= 0 && curr_signal-nextX-v.Get_lenth() <= 0){
+//             if (curr_time < curr_rel_time){
+//                 return true;
+//             }else{
+//                 return false;
+//             }
+//         } else{
+//             continue;
+//         }
+//     }
+//     return false;
+// }
 
 vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time){
     for(int i = 0; i< r.size();i++){
         for (int j = 0; j<r[0].size(); j++){
             for (int k =0;k<signals.size();k++){
                 int sig_col = get<0>(signals[k]); 
-                int sig_rel_time = get<1>(signals[k]);
-                if (sig_col == j && sig_rel_time>time){
-                    r[i][j] = '|';
+                vector<int> sig_change_times = get<1>(signals[k]);
+
+                for (int l =0; l<sig_change_times.size();l++){
+                    int sig_change_time = sig_change_times[l];
+                    if (sig_col == j){ //We match the column number of the signal with the current column of matrix
+                        if (abs(sig_change_time)>time){ //If this time is greater than current time
+                            try{
+                                if (sig_change_times[l-1]<=0){ //Check if the preceeding element is negative or equal to zero
+                                    r[i][j] = '|'; //If so, make this.
+                                }
+                            }catch(exception e){ //The first element is not 0.
+                                if (sig_change_time<=0){
+                                    r[i][j] = '|';
+                                }
+                            }
+                            
+                        break;
+                        }
+                    }
                 }
+
             }
         }
     }
@@ -189,15 +235,30 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
 
 //Free space for each vehicle calculation
 void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int time){
-    int most_forward = mat_len;
-    vector<tuple<int,int> > s= signals;
+    vector<int> most_forward(vehicles.size(),mat_len); //Starts from the furthest length 
+    int most_forward_time_if_signal;
+
+    vector<tuple<int,vector<int> > > s= signals;
+
     for (int k =0;k<s.size();k++){
-        tuple<int,int> currSig = s[k];
-        if (time < get<1>(currSig)){
-            if (get<0>(currSig)<most_forward){
-                most_forward = get<0>(currSig);
+        tuple<int,vector<int> > currSig = s[k]; //Get a signal
+        int col_num = get<0>(currSig); //Get the location of the signal
+        vector<int> sig_times = get<1>(currSig); //Get the list of change times
+        int GLB = sig_times[0]; //Get the immediate lowest time of the current time and then check its sign
+        for ( int l = 0; l<sig_times.size(); l++){
+            // if ((time<abs(sig_times[l]))&&(sig_times[]))
+            if (time>abs(sig_times[l]) && (abs(sig_times[l])>abs(GLB))){
+                GLB = sig_times[l];
             }
         }
+        for(int w = 0; w<vehicles.size();w++){
+            if (GLB <= 0){
+                if (col_num < most_forward[w] && vehicles[w].Get_x()<col_num){
+                    most_forward[w] = col_num;
+                }
+            }
+        }
+        
     }
     vector<Vehicle> *vl;
     vl = &(vehicles);
@@ -212,7 +273,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
     for (int i = 0;i <(*vl).size();i++){
         currV = &(*vl)[i]; //Each Vehicle
 
-        int front = most_forward-(*currV).Get_x() - (*currV).Get_lenth();
+        int front = most_forward[i]-(*currV).Get_x() - (*currV).Get_lenth();
         
         int back = (*currV).Get_x();
         int left = (*currV).Get_y();
@@ -237,7 +298,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
             int y = get<1>(all_coverage[j]);
             for (int k = 0;k<x_cord.size();k++){
                 // if (x >= x_cord[k]-1 && x <= x_cord[k]+1){
-                    if (x >= x_cord[k] &&  x <= x_cord[k]+2){
+                    if (x >= x_cord[k] &&  x <= x_cord[k]+1){
                     //for right
                     int test_right = y - *(max_element(y_cord.begin(),y_cord.end())) - 1;
                     if (test_right>=0 && test_right<right){
@@ -304,6 +365,9 @@ void Road::Simulation(int mat_len, int mat_wid){
                 }
             }   
         }
+        for (int k =0;k<vehicles.size(); k++){
+            vehicles[k].ShowVehicle();
+        }
         Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
         Show_road(updatedRoad);
@@ -315,7 +379,7 @@ void Road::Simulation(int mat_len, int mat_wid){
 
 void Road::LoopSimulation(int mat_len, int mat_wid){
     
-            vector<vector<char> > updatedRoad;
+    vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
 
      system("clear");
@@ -371,6 +435,6 @@ vector<vector<char> > Road::Get_road(){
 vector<Vehicle> Road::Get_vehicles(){
     return vehicles;
 }
-vector<tuple<int,int> > Road::Get_signals(){
+vector<tuple<int,vector<int> > > Road::Get_signals(){
     return signals;
 }

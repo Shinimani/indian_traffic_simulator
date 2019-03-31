@@ -26,7 +26,7 @@ class Vehicle{
         vector<tuple<int,int> > coverage;
         vector<tuple<int,int> > corners;
         vector<int> free_area; //A vector of length 4 which tells the space free in the 4 directions of the vehicle
-
+        vector<int> core_free_area;
         bool rlc,llc; //right lane change and left lane change
 
         void calSpeed();

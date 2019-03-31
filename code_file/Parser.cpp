@@ -167,8 +167,6 @@ vector<int> GetSignalPosition(vector<vector<string> > vec){
 
 //Get the different types of vehicles from 2D input vector
 vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehicle){
-
-
     //for generating random number
     srand(time(0));
 
@@ -187,13 +185,13 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
 
         if(temp.getType() != "null"){
             vh.push_back(temp);
-            vh[count].setColour(vec[i][1]);
+            vh[vh.size()-1].setColour(vec[i][1]);
             int randspeed = rand()%(int)(vh[count].GetMaxSpeed() + 1);
             int randAccleration = rand()%(int)(vh[count].GetMaxAccleration() + 1);
-            vh[count].setSpeed(randspeed);
-            vh[count].setAcceleration(randAccleration);
-            vh[count].setBrake(1);
-            vh[count].setStartTime(time);
+            vh[vh.size()-1].setSpeed(randspeed);
+            vh[vh.size()-1].setAcceleration(randAccleration);
+            vh[vh.size()-1].setBrake(1);
+            vh[vh.size()-1].setStartTime(time);
 
             //updating the time that initialises the start time of the car
             time += 1;
@@ -209,15 +207,40 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
 
         if(vec[i][0].find("@") != string::npos ){
             int id = stoi(vec[i][0].substr(1));
-
+            string sanitizedColour = vec[i][1];
+            sanitizedColour = regex_replace(sanitizedColour, regex("^ +| +$|( ) +"), "$1");
             //checks if the signal exist or not
             if(CheckSignal(vec, id) > 0){
+                bool alreadyExists = false;
+                for (int k = 0; k < vh.size(); k++){
+                    if (vh[k].Get_lenth() == id){
+                        alreadyExists = true;
+                        Vehicle *currV;
+                        currV = &vh[k];
+                        vector<int> f = (*currV).Get_free_area();
+                        if (sanitizedColour == "RED"){
+                            f.push_back(-time);
+                        }else{
+                            f.push_back(time);
+                        }
+                        (*currV).setFreeArea(f);
+                    }else{
+                        continue;
+                    }
+                }
+                if (alreadyExists == false){
                 vh.push_back(temp);
-                vh[count].setType("Signal");//Tells that it is Signal not the car
-                vh[count].setColour(vec[i][1]);//stores the colour of the signal to determine the stored time is release time or not
-                vh[count].setStartTime(time);//start time stores the release time of the signal
-                vh[count].setLength(id); //length stores the position of the Signal
-            
+                vh[vh.size()-1].setType("Signal");//Tells that it is Signal not the car
+                if (sanitizedColour == "RED"){
+                    vh[vh.size()-1].setFreeArea({-time});
+                }else{
+                    vh[vh.size()-1].setFreeArea({+time+1});
+
+                }
+                vh[vh.size()-1].setColour(vec[i][1]);//stores the colour of the signal to determine the stored time is release time or not
+                vh[vh.size()-1].setStartTime(time);//start time stores the release time of the signal
+                vh[vh.size()-1].setLength(id); //length stores the position of the Signal
+                }
             }
             //cout<<time<<endl;
 
