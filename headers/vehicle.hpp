@@ -49,6 +49,7 @@ class Vehicle{
         void setSpeed(float speed);
         void setAcceleration(float ac);
         void setFreeArea(vector<int> fa);
+        void setCoreFreeArea(vector<int> fa);
         void setBrake(int t);
         void setLCProb(float f);
         void setSumAllVeh(int i);
@@ -69,6 +70,8 @@ class Vehicle{
         float GetMaxSpeed();
         float GetMaxAccleration();
         vector<int> Get_free_area();
+        vector<int> Get_core_free_area();
+
         string GetColour();
         float Get_speed();
         float Get_acceleration();

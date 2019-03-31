@@ -273,23 +273,27 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
     for (int i = 0;i <(*vl).size();i++){
         currV = &(*vl)[i]; //Each Vehicle
 
-        int front = most_forward[i]-(*currV).Get_x() - (*currV).Get_lenth();
-        
+        int front = most_forward[i]-(*currV).Get_x() - (*currV).Get_lenth();  
+        int core_front = most_forward[i]-(*currV).Get_x() - (*currV).Get_lenth();  
+        int core_back = (*currV).Get_x();
         int back = (*currV).Get_x();
         int left = (*currV).Get_y();
         int right = mat_wid - (*currV).Get_y() - (*currV).Get_width(); //wrt to the vehicle
+
+
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();
         vector<int>x_cord,y_cord; //x and y coordinates of the curr vehicle's coverage
+        
         for(int k = 0; k<currCov.size();k++){
             int x = get<0>(currCov[k]);
             int y = get<1>(currCov[k]);
             if(find(x_cord.begin(),x_cord.end(),x) != x_cord.end()){
             }else{
-                x_cord.push_back(x);
+                x_cord.push_back(x); //If that x value doesn't exist then push it in the vector
             }
             if(find(y_cord.begin(),y_cord.end(),y) != y_cord.end()){
             }else{
-                y_cord.push_back(y);
+                y_cord.push_back(y); //If that y value doesn't exist, then push it in the vector
             }
         }
 
@@ -311,9 +315,23 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
                         left = test_left;
                     }
                 }
+            }
+            for (int k = 0;k<y_cord.size();k++){
+                if (y == y_cord[k]){
+                    //for core_front
+                    int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
+                    if (test_front>=0 && test_front<core_front){
+                        core_front = test_front;
+                    }
 
-                // if (y >= y_cord[k]-1 && y <= y_cord[k]+1 (){
-                    if (y == y_cord[k]){
+                    //for core_back
+                    int test_back =  *(min_element(x_cord.begin(),x_cord.end())) - x - 1;
+                    if (test_back>=0 && test_back<back){
+                        core_back = test_back;
+                    }
+                }
+                if (y >= y_cord[k]-1 && y <= y_cord[k]+1) {
+                    // if (y == y_cord[k]){
                     //for front
                     int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
                     if (test_front>=0 && test_front<front){
@@ -330,6 +348,8 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
 
         }
         (*currV).setFreeArea({front,back,left,right});
+        (*currV).setCoreFreeArea({core_front,core_back,left,right});
+
     }
 }
 

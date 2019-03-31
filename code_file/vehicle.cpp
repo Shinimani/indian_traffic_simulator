@@ -145,8 +145,15 @@ void Vehicle::setCoverage(int mat_len){
 void Vehicle::setFreeArea(vector<int> fa){
     free_area = fa;   
 }
+
+void Vehicle::setCoreFreeArea(vector<int> fa){
+    core_free_area = fa;   
+}
+
 void Vehicle::collisionAvoider(int mat_len){
     vector<int> fs = Get_free_area();
+    vector<int> cfs = Get_core_free_area();
+    int core_front = cfs[0];
     int front = fs[0];
     int vspeed = Get_speed();
     int currX = Get_x();
@@ -157,23 +164,39 @@ void Vehicle::collisionAvoider(int mat_len){
         setBrake(1);
     }else if(Get_x()<=1){
         setBrake(1);
-    }
-    else if (front < 3){
+    // } else if (core_front>front){
+    //     float currProb = laneChangeProb;
+    //     setBrake(1);
+    //     setLCProb(laneChangeProb - ((0.9)* (1-currProb)));
+    // }
+    }else if (front < 2){
         float currProb = laneChangeProb;
-        setBrake(0);
-        setSpeed(0);
-        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
-    } 
+        if (core_front<2){
+            setBrake(0);
+            setSpeed(0);
+            setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+            if (core_front == 1){
+                setPosition(Get_x()+1,Get_y());
+            }
+        }else if(core_front>(vspeed+vacc+2)){
+            setBrake(1);
+        }else{
+            setSpeed(1);
+            setBrake(0);
+            // set
+            setLCProb(laneChangeProb - ((0.9)* (1-currProb)));
+        }
+    }
     else if(front>(vacc + vspeed + 1) && front<2*(vacc + vspeed + 1) && vspeed != 0){
         float currProb = laneChangeProb;
         setBrake(0);
         setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
     }
-    else if (front<=(vacc + vspeed + 2) && vspeed != 0){
+    else if (front<=(vacc + vspeed + 1) && vspeed != 0){
         float currProb = laneChangeProb;
         setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
         setBrake(0);
-        setSpeed(0);
+        // setSpeed(0);
     }
     else{
         float currProb = laneChangeProb;
@@ -219,9 +242,9 @@ void Vehicle::laneChanger(){
             if (a < laneChangeProb){
             // (free_area[2]>free_area[3])? y-=1:y+=1;
             bool l = free_area[2]>free_area[3];
-            // if (a<0.25){
-            //     l = not l;
-            // }
+            if (a<0.25){
+                l = not l;
+            }
             if (l==true){
                 y-=1;
             } else{
@@ -330,6 +353,10 @@ vector<int> Vehicle::Get_free_area(){
     return free_area;
 }
 
+vector<int> Vehicle::Get_core_free_area(){
+    return core_free_area;
+}
+
 string Vehicle::GetColour(){
     return colour;
 }
@@ -362,10 +389,10 @@ void Vehicle::ShowVehicle(){
     cout<<"\nAccelaration: "<<acceleration;
     // cout<<"\tVehicle MaxAcceleration: "<<maxAcceleration;
     cout<<"\nBrake value:"<<brake;
-    // cout<<"\tColour: "<<colour;
+    cout<<"\tColour: "<<colour;
     cout<<"\nStart Time: "<<start_time;
     cout<<"\nX: "<<x<<" Y: "<<y;
-    // cout<<"\nCoverage of the vehicle in the matrix: ";
+    cout<<"\nCoverage of the vehicle in the matrix: ";
     vector<tuple<int,int> > cv = Get_coverage();
     
     for (int i = 0; i<cv.size();i++){
@@ -375,7 +402,7 @@ void Vehicle::ShowVehicle(){
     }
     // cout<<endl;
     cout<<"\nFree Area: ";
-    cout<<"Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
+    cout<<"Core Front: "<<core_free_area[0]<<" Front: "<<free_area[0]<<" Back: "<<free_area[1]<<" Left: "<<free_area[2]<<" Right: "<<free_area[3]<<endl<<endl;
     // cout<<"\nLane Change: "<<" Left: "<<llc<<" Right: "<<rlc<<endl;
     cout<<"Lane Changing Probability: "<<laneChangeProb<<endl;
     cout<<"\nCorners of the vehicle in the matrix: ";
