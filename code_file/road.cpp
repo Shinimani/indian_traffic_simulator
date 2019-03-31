@@ -134,6 +134,7 @@ void Road::New_initializer(int mat_len, int mat_wid){
                 all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
                 break;
             } else{
+                j+=1;
                 continue;
             }
         }
@@ -425,9 +426,11 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).collisionAvoider(mat_len);
                     (*currVehicle).NextPosition();
+                    (*currVehicle).setCoverage(mat_len);
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
+                    (*currVehicle).setCoverage(mat_len);
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                 }
             }   

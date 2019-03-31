@@ -9,7 +9,7 @@ Road r;
 int mat_len, mat_wid;
 vector<Vehicle> list_vehicle, Signals;
 
-void common(string s);
+void common(string s,string initType);
 
 void myinit();
 void mydisplay();
@@ -29,15 +29,16 @@ vector<float> getRGBValue(string s);
 int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
-    string a = argv[2];
+    string a = argv[3];
+    string initType = argv[2];
     if(c == 1){
-        common(a);
+        common(a,initType);
     // cout <<typeid(mat_len).name()<<" "<<mat_len<<" "<<mat_len+(mat_len/10)<<" "<<typeid(mat_len+(mat_len/10)).name();
 
         r.Simulation(mat_len,mat_wid);
     }else{
             //opengl code
-         common(a);
+         common(a,initType);
 
          glutInit(&argc, argv);
 
@@ -65,7 +66,7 @@ return 0;
 
 // }
 
-void common(string s){
+void common(string s,string initType){
 
     vector<vector<string> > temp = Parser(s);
     vector<Vehicle> vh1 = InitVehicles(temp);
@@ -93,7 +94,11 @@ void common(string s){
     vector<int> signaltime = GetSignalPosition(temp);
     
      r.Add_vehicles(list_vehicle);
-     r.New_initializer(mat_len,mat_wid);
+     if (initType == "normal"){
+         r.New_initializer(mat_len,mat_wid);
+     }else{
+        r.Vehicle_intializer(mat_len,mat_wid);
+     }
      r.getAllVehSize();
      r.setAllVehSize();
 }
