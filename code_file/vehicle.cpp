@@ -32,8 +32,37 @@ void Vehicle::setCorners(){
     vector<tuple<int,int> > al = {make_tuple(minX,maxY),make_tuple(maxX,maxY),make_tuple(maxX,minY),make_tuple(minX,minY)};
     corners = al;
 }
+
 vector<tuple<int,int> >Vehicle::getCorners(){
     return corners;
+}
+
+void Vehicle::ShowCorners(){
+
+                int x1 = get<0>(corners[0])*50;
+                int y1 = get<1>(corners[0])*20+10;
+
+                int x2 = get<0>(corners[1])*50;
+                int y2 = get<1>(corners[1])*20+10;
+
+                int x3 = get<0>(corners[2])*50;
+                int y3 = get<1>(corners[2])*20;
+
+                int x4 = get<0>(corners[3])*50;
+                int y4 = get<1>(corners[3])*20;
+
+                float sq_x = (x1+x2)/2;
+                float sq_y = (y1+3*y4)/4;
+
+                float tr_x = (3*x2+x1)/4;
+                float tr_y = (3*y4+y1)/4;
+
+                cout<<x1<<" "<<y1<<endl;
+                cout<<x2<<" "<<y2<<endl;
+                cout<<x3<<" "<<y3<<endl;
+                cout<<x4<<" "<<y4<<endl;
+                cout<<sq_x<<" "<<sq_y<<endl;
+                cout<<tr_x<<" "<<tr_y<<endl;
 }
 
 
@@ -45,6 +74,7 @@ void Vehicle::setVehicle(string type, string colour, int len, int wid, int iSpee
     setColour(colour);
     setStartTime(start_time);
     brake = 0;
+    setCorners();
     // cout<<brake<<endl;
     // setPosition(x0, y0);
 }
@@ -93,6 +123,7 @@ void Vehicle::setBasicAttributes(int l, int w, int acc, float initSpeed){
     acceleration = acc;
     brake = 1;
     speed = initSpeed;
+    setCorners();
 }
 
 void Vehicle::setBrake(int t){
