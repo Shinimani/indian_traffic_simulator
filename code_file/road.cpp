@@ -394,14 +394,16 @@ void Road::Simulation(int mat_len, int mat_wid){
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
                     (*currVehicle).setCoverage(mat_len);
+                    // (*currVehicle).setCorners();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                 }
             }   
         }
+        
+        Set_free_area(updatedRoad, mat_len,mat_wid,time);
         for (int k =0;k<vehicles.size(); k++){
             vehicles[k].ShowVehicle();
         }
-        Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
         Show_road(updatedRoad);
         usleep(100000);
@@ -439,6 +441,7 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
                     (*currVehicle).setCoverage(mat_len);
+                    // (*currVehicle).setCorners();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                 }
             }   
