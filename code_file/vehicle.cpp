@@ -80,10 +80,9 @@ void Vehicle::setLCProb(float f){
 float Vehicle:: callaneChangeProb(){
     int l = Get_lenth();
     int w = Get_width();
-    // cout<<"Sum: "<<sumAllVeh<<" "<<endl;
     float lcp = (1 - ((0.75)*float(l*w)/sumAllVeh))*0.5;
-    laneChangeProb = lcp;
-    // cout<<lcp<<" ";
+    //(1-(lcp*2))*(4/3) gives (l*w)/sumAllVeh
+    // laneChangeProb = lcp;
     return laneChangeProb;
 }
 
@@ -166,19 +165,18 @@ void Vehicle::collisionAvoider(int mat_len){
         signalOrCar = (Get_lenth()* Get_width())/2;
     }
     //Brake 1 is forward accelaration. Brake 0 is retardation
+    //(1-(lcp*2))*(4/3) gives (l*w)/sumAllVeh
+    float frac = Get_lenth()*Get_width()/sumAllVeh;
+    float currProb = laneChangeProb;
     if (mat_len - Get_x()<=3*Get_lenth()){
         setBrake(1);
     }else if(Get_x()<=1){
         setBrake(1);
     }else if (front < signalOrCar+1){
-        float currProb = laneChangeProb;
         if (core_front<signalOrCar+2){
             setBrake(0);
             setSpeed(0);
-            setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
-            // if (core_front == 1){
-            //     setPosition(Get_x()+1,Get_y());
-            // }
+            setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
         }else if(core_front>(vspeed+vacc+2+signalOrCar)){
             setBrake(1);
         }else{
@@ -188,32 +186,27 @@ void Vehicle::collisionAvoider(int mat_len){
         }
     }
     else if(core_front>(vacc + vspeed + 2-dec+signalOrCar) && core_front<2*(vacc + vspeed + 2-dec+signalOrCar)){
-        float currProb = laneChangeProb;
         setBrake(0);
-        setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
     }
     else if (core_front<=(vacc + vspeed + 2-dec+signalOrCar) ){
-        float currProb = laneChangeProb;
-        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
         setBrake(0);
         setSpeed(core_front/2);
         // setSpeed(0);
     }
     else if(front>(vacc + vspeed + 2-dec+signalOrCar) && front<2*(vacc + vspeed + 2-dec+signalOrCar)){
-        float currProb = laneChangeProb;
         setBrake(0);
-        setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.5)* (1-currProb)));
     }
     else if (front<=(vacc + vspeed + 2-dec+signalOrCar) ){
-        float currProb = laneChangeProb;
-        setLCProb(laneChangeProb + ((0.9)* (1-currProb)));
+        setLCProb(laneChangeProb + ((0.75)* (1-currProb)));
         setBrake(0);
         setSpeed(front/2);
         // setSpeed(0);
     }
     else{
-        float currProb = laneChangeProb;
-        setLCProb(laneChangeProb - ((0.5)*(currProb)));
+        setLCProb(laneChangeProb - ((0.9)*(currProb)));
         setBrake(1);
     }   
 }
@@ -266,7 +259,7 @@ void Vehicle::laneChanger(){
             if (a < laneChangeProb){
             // (free_area[2]>free_area[3])? y-=1:y+=1;
             bool l = free_area[2]>free_area[3];
-            if (a<0.25){
+            if (a<0.35){
                 l = not l;
             }
             if (l==true){
