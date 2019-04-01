@@ -134,7 +134,8 @@ void Road::New_initializer(int mat_len, int mat_wid){
                 all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
                 break;
             } else{
-                j+=1;
+                j+=(*currVehicle).Get_lenth();
+                j= j % (mat_wid);
                 continue;
             }
         }
@@ -211,7 +212,8 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
                 for (int l =0; l<sig_change_times.size();l++){
                     int sig_change_time = sig_change_times[l];
                     if (sig_col == j){ //We match the column number of the signal with the current column of matrix
-                        if (abs(sig_change_time)>time){ //If this time is greater than current time
+                    
+                        if (abs(sig_change_time)>=time){ //If this time is greater than current time
                             try{
                                 if (sig_change_times[l-1]<=0){ //Check if the preceeding element is negative or equal to zero
                                     r[i][j] = '|'; //If so, make this.
@@ -223,6 +225,12 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
                             }
                             
                         break;
+                        } else if (sig_change_times.size() == 1){
+                            
+                            if (sig_change_times[0]<=0){ //Check if the preceeding element is negative or equal to zero
+                                r[i][j] = '|'; //If so, make this.
+                            }
+                            
                         }
                     }
                 }
