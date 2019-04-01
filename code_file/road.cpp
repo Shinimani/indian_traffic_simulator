@@ -134,8 +134,8 @@ void Road::New_initializer(int mat_len, int mat_wid){
                 all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
                 break;
             } else{
-                j+=(*currVehicle).Get_lenth();
-                j= j % (mat_wid);
+                j+=(*currVehicle).Get_width();
+                j= j % (mat_wid - 2 - (*currVehicle).Get_width());
                 continue;
             }
         }
@@ -288,7 +288,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
         int core_back = (*currV).Get_x();
         int back = (*currV).Get_x();
         int left = (*currV).Get_y() - 1;
-        int right = mat_wid - (*currV).Get_y() - (*currV).Get_width()-1; //wrt to the vehicle
+        int right = mat_wid - (*currV).Get_y() - (*currV).Get_width()-2; //wrt to the vehicle
 
 
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();

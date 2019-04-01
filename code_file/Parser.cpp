@@ -186,8 +186,8 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
         if(temp.getType() != "null"){
             vh.push_back(temp);
             vh[vh.size()-1].setColour(vec[i][1]);
-            int randspeed = rand()%(int)(vh[count].GetMaxSpeed() + 1);
-            int randAccleration = rand()%(int)(vh[count].GetMaxAccleration() + 1);
+            int randspeed = rand() % (int)(vh[vh.size()-1].GetMaxSpeed() + 1);
+            int randAccleration = rand()%(int)(vh[vh.size()-1].GetMaxAccleration() + 1);
             vh[vh.size()-1].setSpeed(randspeed);
             vh[vh.size()-1].setAcceleration(randAccleration);
             vh[vh.size()-1].setBrake(1);
