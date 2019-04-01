@@ -232,7 +232,7 @@ vector<Vehicle> GetVehicle(vector<vector<string> > vec, vector<Vehicle> typeVehi
                 vh.push_back(temp);
                 vh[vh.size()-1].setType("Signal");//Tells that it is Signal not the car
                 if (sanitizedColour == "RED"){
-                    vh[vh.size()-1].setFreeArea({-time});
+                    vh[vh.size()-1].setFreeArea({-time-1});
                 }else{
                     vh[vh.size()-1].setFreeArea({+time+1});
 
