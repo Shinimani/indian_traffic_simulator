@@ -416,7 +416,7 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
 
-     system("clear");
+     //system("clear");
         updatedRoad = Get_road();
         updatedRoad = Set_signal_on_road(updatedRoad,time);
         for (int i = 0; i<vehicles.size();i++){

@@ -91,6 +91,8 @@ class Vehicle{
         void ShowEssential();
         void ShowBasic();
 
+        void ShowCorners();
+
 };
 
 #endif

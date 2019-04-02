@@ -10,6 +10,7 @@ class Road{
         // vector<vector<int> >coverage; //The matrix cell numberseach of the car take. Useful for detecting collisions
         // vector<tuple<int,int> > signals; //List of signals with their Column Numbers. The length of the vector are the number of columns
         vector<tuple<int,vector<int> > > signals; //List of signals of the form tuple<Column numbers,[+24., -20 +....]>
+
         int sumAllVeh;
     public:
         void getAllVehSize();
@@ -46,7 +47,7 @@ class Road{
         vector<Vehicle> Get_vehicles();
         vector<tuple <int,vector<int> > > Get_signals();
 
-        int time=0;
+        int time =0;
 
 };
 
