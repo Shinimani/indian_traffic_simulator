@@ -134,6 +134,8 @@ void Road::New_initializer(int mat_len, int mat_wid){
                 all_coverage.insert(all_coverage.end(),cv.begin(),cv.end());
                 break;
             } else{
+                j+=(*currVehicle).Get_width();
+                j= j % (mat_wid - 2 - (*currVehicle).Get_width());
                 continue;
             }
         }
@@ -210,7 +212,8 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
                 for (int l =0; l<sig_change_times.size();l++){
                     int sig_change_time = sig_change_times[l];
                     if (sig_col == j){ //We match the column number of the signal with the current column of matrix
-                        if (abs(sig_change_time)>time){ //If this time is greater than current time
+                    
+                        if (abs(sig_change_time)>=time){ //If this time is greater than current time
                             try{
                                 if (sig_change_times[l-1]<=0){ //Check if the preceeding element is negative or equal to zero
                                     r[i][j] = '|'; //If so, make this.
@@ -222,6 +225,12 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
                             }
                             
                         break;
+                        } else if (sig_change_times.size() == 1){
+                            
+                            if (sig_change_times[0]<=0){ //Check if the preceeding element is negative or equal to zero
+                                r[i][j] = '|'; //If so, make this.
+                            }
+                            
                         }
                     }
                 }
@@ -257,6 +266,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
                     most_forward[w] = col_num;
                 }
             }
+            vehicles[w].infSignal = true;
         }
         
     }
@@ -277,8 +287,8 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
         int core_front = most_forward[i]-(*currV).Get_x() - (*currV).Get_lenth();  
         int core_back = (*currV).Get_x();
         int back = (*currV).Get_x();
-        int left = (*currV).Get_y();
-        int right = mat_wid - (*currV).Get_y() - (*currV).Get_width(); //wrt to the vehicle
+        int left = (*currV).Get_y() - 1;
+        int right = mat_wid - (*currV).Get_y() - (*currV).Get_width()-2; //wrt to the vehicle
 
 
         vector<tuple<int,int> > currCov = (*currV).Get_coverage();
@@ -322,6 +332,7 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
                     int test_front = x - *(max_element(x_cord.begin(),x_cord.end())) - 1;
                     if (test_front>=0 && test_front<core_front){
                         core_front = test_front;
+                        (*currV).infSignal=false;
                     }
 
                     //for core_back
@@ -378,17 +389,21 @@ void Road::Simulation(int mat_len, int mat_wid){
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).collisionAvoider(mat_len);
                     (*currVehicle).NextPosition();
+                    (*currVehicle).setCoverage(mat_len);
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
+                    (*currVehicle).setCoverage(mat_len);
+                    // (*currVehicle).setCorners();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                 }
             }   
         }
+        
+        Set_free_area(updatedRoad, mat_len,mat_wid,time);
         for (int k =0;k<vehicles.size(); k++){
             vehicles[k].ShowVehicle();
         }
-        Set_free_area(updatedRoad, mat_len,mat_wid,time);
 
         Show_road(updatedRoad);
         usleep(100000);
@@ -402,7 +417,7 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
 
-     system("clear");
+     //system("clear");
         updatedRoad = Get_road();
         updatedRoad = Set_signal_on_road(updatedRoad,time);
         for (int i = 0; i<vehicles.size();i++){
@@ -421,9 +436,12 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).collisionAvoider(mat_len);
                     (*currVehicle).NextPosition();
+                    (*currVehicle).setCoverage(mat_len);
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                     (*currVehicle).laneChange();
                     (*currVehicle).laneChanger();
+                    (*currVehicle).setCoverage(mat_len);
+                    // (*currVehicle).setCorners();
                     Set_free_area(updatedRoad,mat_len,mat_wid,time);
                 }
             }   

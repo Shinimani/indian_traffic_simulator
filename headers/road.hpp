@@ -47,7 +47,7 @@ class Road{
         vector<Vehicle> Get_vehicles();
         vector<tuple <int,vector<int> > > Get_signals();
 
-        int time;
+        int time =0;
 
 };
 

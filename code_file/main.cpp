@@ -12,7 +12,7 @@ vector<Vehicle> list_vehicle, Signals;
 int k = 0;
 
 
-void common(string s);
+void common(string s,string initType);
 
 
 //List of OpenGL functions 
@@ -43,6 +43,7 @@ void vehicle(Vehicle);
 void Roadp();
 
 int GLowerBound(vector<int> temp, float value);
+void dispSignal(int column, vector<int> list);
 
 vector<float> getRGBValue(string s);
 
@@ -50,13 +51,17 @@ vector<float> getRGBValue(string s);
 int main(int argc, char **argv){
     srand(time(0));
     int c = stoi(argv[1]);
-    string a = argv[2];
-    common(a);
-
+    string a = argv[3];
+    string initType = argv[2];
     if(c == 1){
+        common(a,initType);
+    // cout <<typeid(mat_len).name()<<" "<<mat_len<<" "<<mat_len+(mat_len/10)<<" "<<typeid(mat_len+(mat_len/10)).name();
+
         r.Simulation(mat_len,mat_wid);
 
     }else{
+            //opengl code
+         common(a,initType);
 
          glutInit(&argc, argv);
 
@@ -66,6 +71,7 @@ int main(int argc, char **argv){
          glutCreateWindow("Traffic signal");
 
          //call back functions
+        
          
          myinit();
 
@@ -81,7 +87,8 @@ return 0;
 
 }
 
-void common(string s){
+
+void common(string s,string initType){
 
     vector<vector<string> > temp = Parser(s);
     vector<Vehicle> vh1 = InitVehicles(temp);
@@ -109,13 +116,16 @@ void common(string s){
     vector<int> signaltime = GetSignalPosition(temp);
     
      r.Add_vehicles(list_vehicle);
-     r.New_initializer(mat_len,mat_wid);
+     if (initType == "normal"){
+         r.New_initializer(mat_len,mat_wid);
+     }else{
+        r.Vehicle_intializer(mat_len,mat_wid);
+     }
      r.getAllVehSize();
      r.setAllVehSize();
 }
 
 void display(){
-
     while(r.Sim_fin()){
         r.LoopSimulation(mat_len,mat_wid);
         mydisplay();
@@ -156,7 +166,6 @@ void mydisplay(){
 
     for(int i=0; i<list.size(); i++){
         if(list[i].Get_start_time()<r.time){
-            cout<<list[i].GetColour();
             vehicle(list[i]);
         }
         
@@ -175,11 +184,11 @@ void Roadp(){
     glColor3f(0.411, 0.411, 0.411);
 
     //defigning the length and width of the road
-    cout<<mat_len*50<<" "<<mat_wid*20<<endl;
+    //cout<<mat_len*50<<" "<<mat_wid*20<<endl;
     glVertex2i(0,0);
     glVertex2i(mat_len*50,0);
-    glVertex2i(mat_len*50 ,mat_wid*20);
-    glVertex2i(0,mat_wid*20);
+    glVertex2i(mat_len*50 ,mat_wid*50);
+    glVertex2i(0,mat_wid*50);
 
     glEnd();
 
@@ -187,26 +196,30 @@ void Roadp(){
 
 int GLowerBound(vector<int> temp, float value){
 
-    int count = 0; 
+    int count; 
 
     for(int i=0; i<temp.size(); i++){
+
         if(abs(temp[i]) < value){
 
         }else{
-            if(i=0){
-                count = i;
+            cout<<" "<<temp[i-1]<<" "<<value<<endl;
+            count = temp[i-1];
+            if(temp[i-1]>=0){
+                return 1;
             }else{
-                count = i-1;
+                return -1;
             }
-            break;
         }
     }
-
-    if(temp[count]<=0){
-        return -1;
-    }else{
+    cout<<endl;
+    
+    if(temp[temp.size()-1]>= 0 ){
         return 1;
+    }else{
+        return -1;
     }
+    
 
 }
 
@@ -215,23 +228,10 @@ void vehicle(Vehicle temp){
         vector<tuple <int,vector<int> > > signal = r.Get_signals();
 
         for(int i=0; i<signal.size(); i++){
-                
-                int check = GLowerBound(get<1>(signal[i]), r.time);
 
-                if(check <=0){
-                    glColor3f(getRGBValue("RED")[0], getRGBValue("RED")[1], getRGBValue("RED")[2]);
-                }else{
-                    glColor3f(getRGBValue("GREEN")[0], getRGBValue("GREEN")[1], getRGBValue("GREEN")[2]);
-                }
-                
-                glBegin(GL_QUADS);
+            dispSignal(get<0>(signal[i]), get<1>(signal[i]));
 
-                glVertex2i(get<0>(signal[i])*50,0);
-                glVertex2i(get<0>(signal[i])*50+10,0);
-                glVertex2i(get<0>(signal[i])*50+10,mat_wid*50);
-                glVertex2i(get<0>(signal[i])*50,mat_wid*50);
-                glEnd();
-            }
+        }
 
                 vector<tuple<int, int> > corners = temp.getCorners();
                 string c = temp.GetColour();
@@ -239,26 +239,32 @@ void vehicle(Vehicle temp){
                 car(corners, acolour);
 
 
-        }
+}
 
 
-        // for(int i =0 ;i<Signals.size(); i++){
+void dispSignal(int column, vector<int> list){
+        int check = GLowerBound(list, r.time);
 
-        // string c = Signals[i].GetColour();
-        // if(r.time >= Signals[i].Get_start_time()){
-        //     glColor3f(0,1,0);
-        //     glBegin(GL_QUADS);
+        if(check <0){
+            glColor3f(getRGBValue("RED")[0], getRGBValue("RED")[1], getRGBValue("RED")[2]);
 
-        // }else{
-        //     glColor3f(1,0,0);
-        //     glBegin(GL_QUADS);
-        // }
-        //     glVertex2i(Signals[i].Get_lenth()*50,0);
-        //     glVertex2i(Signals[i].Get_lenth()*50+10,0);
-        //     glVertex2i(Signals[i].Get_lenth()*50+10,mat_wid*50);
-        //     glVertex2i(Signals[i].Get_lenth()*50,mat_wid*50);
+        }else{
 
-//    }
+            glColor3f(getRGBValue("GREEN")[0], getRGBValue("GREEN")[1], getRGBValue("GREEN")[2]);
+
+            }
+                
+        glBegin(GL_QUADS);
+
+        glVertex2i(column*50,0);
+        glVertex2i(column*50+10,0);
+        glVertex2i(column*50+10,mat_wid*50);
+        glVertex2i(column*50,mat_wid*50);
+        
+        glEnd();
+
+}
+
 
 
 
@@ -277,7 +283,6 @@ void myinit(){
     glClearColor(0.0, 1.0, 0.0, 0.0); 
   
 }
-
 
 //function to get the colour in RGB value
 vector<float> getRGBValue(string s){
