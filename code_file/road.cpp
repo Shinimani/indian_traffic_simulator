@@ -213,24 +213,23 @@ vector<vector<char> > Road::Set_signal_on_road(vector<vector<char> > r, int time
                     int sig_change_time = sig_change_times[l];
                     if (sig_col == j){ //We match the column number of the signal with the current column of matrix
                     
-                        if (abs(sig_change_time)>=time){ //If this time is greater than current time
-                            try{
-                                if (sig_change_times[l-1]<=0){ //Check if the preceeding element is negative or equal to zero
+                        if (sig_change_times.size() == 1){
+                            if (time>=abs(sig_change_times[0])){
+                                if (sig_change_times[0]<=0){ //Check if the preceeding element is negative or equal to zero
                                     r[i][j] = '|'; //If so, make this.
                                 }
-                            }catch(exception e){ //The first element is not 0.
-                                if (sig_change_time<=0){
-                                    r[i][j] = '|';
+                            }
+                            
+                        }else if (abs(sig_change_time)<=time){ //If this time is greater than current time
+                            // try{
+                                if (sig_change_times[l]<=0){ //Check if the preceeding element is negative or equal to zero
+                                    r[i][j] = '|'; //If so, make this.
+                                }else{
+                                    r[i][j] = ' ';
                                 }
-                            }
+
                             
-                        break;
-                        } else if (sig_change_times.size() == 1){
-                            
-                            if (sig_change_times[0]<=0){ //Check if the preceeding element is negative or equal to zero
-                                r[i][j] = '|'; //If so, make this.
-                            }
-                            
+                        continue;
                         }
                     }
                 }
@@ -253,15 +252,15 @@ void Road::Set_free_area(vector<vector<char> > r,int mat_len,int mat_wid, int ti
         tuple<int,vector<int> > currSig = s[k]; //Get a signal
         int col_num = get<0>(currSig); //Get the location of the signal
         vector<int> sig_times = get<1>(currSig); //Get the list of change times
-        int GLB = sig_times[0]; //Get the immediate lowest time of the current time and then check its sign
+        int GLB = 0; //Get the immediate lowest time of the current time and then check its sign
         for ( int l = 0; l<sig_times.size(); l++){
             // if ((time<abs(sig_times[l]))&&(sig_times[]))
-            if (time>abs(sig_times[l]) && (abs(sig_times[l])>abs(GLB))){
+            if (time>=abs(sig_times[l]) && (abs(sig_times[l])>abs(GLB))){
                 GLB = sig_times[l];
             }
         }
         for(int w = 0; w<vehicles.size();w++){
-            if (GLB <= 0){
+            if (GLB < 0){
                 if (col_num < most_forward[w] && vehicles[w].Get_x()<col_num){
                     most_forward[w] = col_num;
                 }
