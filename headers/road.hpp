@@ -39,6 +39,7 @@ class Road{
         void Simulation(vector<Vehicle> v ,int count); //can be deleted afterwards
         void Simulation(int mat_len, int mat_wid);
         bool Sim_fin();
+        bool Sim_fing();
 
         void SimulationOpenGL(int mat_len, int mat_wid);
         void LoopSimulation(int mat_len, int mat_wid);

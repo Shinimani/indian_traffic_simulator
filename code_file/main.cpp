@@ -9,7 +9,7 @@
 Road r;
 int mat_len, mat_wid;
 vector<Vehicle> list_vehicle, Signals;
-int k = 0;
+int time_wether = 0;
 
 
 void common(string s,string initType);
@@ -41,6 +41,8 @@ void vehicle(Vehicle);
 
 //Function to print road
 void Roadp();
+
+void night(int );
 
 int GLowerBound(vector<int> temp, float value);
 void dispSignal(int column, vector<int> list);
@@ -124,12 +126,13 @@ void common(string s,string initType){
 }
 
 void display(){
-    while(r.Sim_fin()){
+    while(r.Sim_fing()){
         r.LoopSimulation(mat_len,mat_wid);
         mydisplay();
-        //cout<<endl<<"@@@@@"<<r.Sim_fin()<<"@@@@@"<<endl;
+        time_wether++;
     }
-
+    cout<<r.Sim_fin();
+    exit(0);
 }
 
 void disp(){
@@ -168,7 +171,24 @@ void mydisplay(){
             vehicle(list[i]);
         }
         
-    }   
+    }
+
+    int skycolour = 0;
+    if(time_wether >= 0 && time_wether < 50){
+         night(3);
+    }else{
+        if(time_wether >=50 && time_wether <85){
+            night(2);
+        }else{
+            if(time_wether >=75 && time_wether < 140){
+                night(1);
+            }else{
+                time_wether = 0;
+            }
+        }
+    }
+
+    
     
     glFlush();
     glutSwapBuffers();  
@@ -180,7 +200,7 @@ void Roadp(){
     int x1 = mat_len*50;
     int y1 = mat_wid*70; 
 
-    vector<float> acolour {0.4862745098, 0.98823529411, 0.0};    
+    vector<float> acolour {0.33725490196, 0.69019607843, 0.0};    
 
     rectangle(0, 0, x1, y1, acolour);
 
@@ -188,6 +208,22 @@ void Roadp(){
     vector<float> acolour1 {0.411, 0.411, 0.411}; 
     int y2 = mat_wid*50;
     rectangle(0,y2,x1, y1, acolour1);
+
+    x1 = 0;
+    float y11 = mat_wid*34.5;
+    int x2 = mat_len;
+    float y22 = mat_wid*35.5;
+
+    vector<float> colour = {0.8, 0.8, 0.8};
+
+    while(x2<(mat_len*50)){
+
+        rectangle(x1, y11, x2, y22, colour);
+
+        x1 = x1 + mat_len*2;
+        x2 = x2 + mat_len*2;
+
+    }
 
 }
 
@@ -232,7 +268,7 @@ void vehicle(Vehicle temp){
         string c = temp.GetColour();
         vector<float> acolour =  getRGBValue(c);
 
-        cout<<2<<temp.getType()<<1<<endl;
+        //cout<<2<<temp.getType()<<1<<endl;
 
         if(temp.getType().find("Car") != string::npos){
             car(corners, acolour);
@@ -243,7 +279,7 @@ void vehicle(Vehicle temp){
                 if(temp.getType().find("Bus") != string::npos){
                     bus(corners, acolour);
                 }else{
-                    truck(corners, acolour);
+                    car(corners, acolour);
                 }
             }
         }
@@ -343,7 +379,7 @@ void car(vector<tuple<int, int> > corners, vector<float> acolour){
 
     float tr_x = (3*x2+x1)/4;
     float tr_y = (3*y4+y1)/4;
-    
+
     rectangle(x1, tr_y, x3, y3, acolour);
 
 
@@ -367,60 +403,58 @@ void car(vector<tuple<int, int> > corners, vector<float> acolour){
 
 void truck(vector<tuple<int, int> > corners, vector<float> acolour){
 
-    int x1 = get<0>(corners[0])*50;
-    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
+    float x1 = get<0>(corners[0])*50;
+    float y1 = (get<1>(corners[0])*30 + mat_wid*20);
 
-    int x2 = get<0>(corners[1])*50;
-    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
+    float x2 = get<0>(corners[1])*50;
+    float y2 = (get<1>(corners[1])*30 + mat_wid*20);
 
-    int x3 = get<0>(corners[2])*50;
-    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
+    float x3 = get<0>(corners[2])*50;
+    float y3 = (get<1>(corners[2])*30 + mat_wid*20);
 
-    int x4 = get<0>(corners[3])*50;
-    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
+    float x4 = get<0>(corners[3])*50;
+    float y4 = (get<1>(corners[3])*30 + mat_wid*20);
 
+    float xprime = (3*x2+x1)/4;
 
-    int xprime = (3*x2+x1)/4;
-
-    int mx = (5*x2+5*x1)/10;
+    float mx = (5*x2+5*x1)/10;
 
     //part1
     rectangle(x1, y1, mx, y3, acolour);
     
     //part2
-    int cy = (7*y3 + 3*y1)/10;
-    int dx = (6*x2+4*x1)/10;
+    float cy = (7*y3 + 3*y1)/10;
+    float dx = (6*x2+4*x1)/10;
     rectangle(mx, cy, dx, y3, acolour);
 
     //part3
-    int gx = (9*x2+ x1)/10;
+    float gx = (9*x2+ x1)/10;
     rectangle(dx, y1, gx, y3, acolour);
     
     //part4
-    int yprime = (3*y1+y4)/4;
+    float yprime = (3*y1+y4)/4;
     rectangle(gx, yprime, x3, y3, acolour);
 
-    int lightx = (11*x2+x1)/12;
-    int lighty = (y1+y3)/2;
-    int lightyy = (3*y3+y1)/4;
+    float lightx = (11*x2+x1)/12;
+    float lighty = (y1+y3)/2;
+    float lightyy = (3*y3+y1)/4;
     rectangle(lightx, lighty, x3, lightyy, getRGBValue("YELLOW"));
     
 }
 
 void bus(vector<tuple<int, int> > corners, vector<float> acolour){
 
-    int x1 = get<0>(corners[0])*50;
-    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
+    float x1 = get<0>(corners[0])*50;
+    float y1 = (get<1>(corners[0])*30 + mat_wid*20);
 
-    int x2 = get<0>(corners[1])*50;
-    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
+    float x2 = get<0>(corners[1])*50;
+    float y2 = (get<1>(corners[1])*30 + mat_wid*20);
 
-    int x3 = get<0>(corners[2])*50;
-    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
+    float x3 = get<0>(corners[2])*50;
+    float y3 = (get<1>(corners[2])*30 + mat_wid*20);
 
-    int x4 = get<0>(corners[3])*50;
-    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
-
+    float x4 = get<0>(corners[3])*50;
+    float y4 = (get<1>(corners[3])*30 + mat_wid*20);
     rectangle(x1, y1, x3,y3,acolour);
 
     vector<float> windowColour = {0.2, 0.4862745098, 0.49803921568};
@@ -456,17 +490,17 @@ void bus(vector<tuple<int, int> > corners, vector<float> acolour){
 
 void bike(vector<tuple<int, int> > corners, vector<float> acolour){
 
-    int x1 = get<0>(corners[0])*50;
-    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
+    float x1 = get<0>(corners[0])*50;
+    float y1 = (get<1>(corners[0])*30 + mat_wid*20);
 
-    int x2 = get<0>(corners[1])*50;
-    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
+    float x2 = get<0>(corners[1])*50;
+    float y2 = (get<1>(corners[1])*30 + mat_wid*20);
 
-    int x3 = get<0>(corners[2])*50;
-    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
+    float x3 = get<0>(corners[2])*50;
+    float y3 = (get<1>(corners[2])*30 + mat_wid*20);
 
-    int x4 = get<0>(corners[3])*50;
-    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
+    float x4 = get<0>(corners[3])*50;
+    float y4 = (get<1>(corners[3])*30 + mat_wid*20);
 
     // int y1 = get<0>(corners[0])*50;
     // int x1 = (get<1>(corners[0])*50);
@@ -494,22 +528,6 @@ void bike(vector<tuple<int, int> > corners, vector<float> acolour){
 
 }
 
-void drawCircle(float cx, float cy, float r, int num_segments, vector<float> acolour){
-
-    glBegin(GL_LINE_LOOP);
-    for(int ii = 0; ii < num_segments; ii++)
-    {
-        float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments);//get the current angle
-
-        float x = r * cosf(theta);//calculate the x component
-        float y = r * sinf(theta);//calculate the y component
-
-        glVertex2f(x + cx, y + cy);//output vertex
-
-    }
-    glEnd();
-}
-
 void rectangle(float x1, float y1, float x2, float y2, vector<float> acolour){
         glBegin(GL_QUADS);
         glColor3f(acolour[0], acolour[1], acolour[2]);
@@ -523,14 +541,36 @@ void rectangle(float x1, float y1, float x2, float y2, vector<float> acolour){
 
 }
 
-void triangle(float x1 , float y1, float x2, float y2, float x3, float y3, vector<float> acolour){
-    glBegin(GL_TRIANGLES);
-    glColor3f(acolour[0], acolour[1], acolour[2]);
-        
-        glVertex2i(x1, y1);
-        glVertex2i(x2, y2);
-        glVertex2i(x3, y3);
+void night(int a){
 
-    glEnd();
+    if( a == 1 ){
+        //night
+        int y1 = mat_wid*20;
+        vector<float> colour {0.18039215686, 0.26666666666, 0.50980392156};
+        rectangle(0.0, 0.0, mat_len*50, y1, colour);
+
+        y1 = y1 + mat_wid*30;
+        rectangle(0.0, mat_wid*70, mat_len*50, y1, colour);
+    }else{
+        if(a ==2){
+            //evening
+            int y1 = mat_wid*20;
+            vector<float> colour {0.92156862745, 0.53725490196, 0.32549019607};
+            rectangle(0.0, 0.0, mat_len*50, y1, colour);
+
+            y1 = y1 + mat_wid*30;
+            rectangle(0.0, mat_wid*70, mat_len*50, y1, colour);
+            
+        }else{
+            //day
+                int y1 = mat_wid*20;
+                vector<float> colour {0.33725490196, 0.69019607843, 0.0};    
+            //    vector<float> colour {0.92156862745, 0.53725490196, 0.32549019607};
+                rectangle(0.0, 0.0, mat_len*50, y1, colour);
+
+                y1 = y1 + mat_wid*30;
+                rectangle(0.0, mat_wid*70, mat_len*50, y1, colour);
+        }
+    }
     
 }

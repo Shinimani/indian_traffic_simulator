@@ -368,6 +368,7 @@ void Road::Simulation(int mat_len, int mat_wid){
     int time = 0;
     vector<vector<char> > updatedRoad;
     Vehicle *currVehicle,*currVehicle2;
+    
     while (Sim_fin()){
         system("clear");
         updatedRoad = Get_road();
@@ -400,9 +401,9 @@ void Road::Simulation(int mat_len, int mat_wid){
         }
         
         Set_free_area(updatedRoad, mat_len,mat_wid,time);
-        for (int k =0;k<vehicles.size(); k++){
-            vehicles[k].ShowVehicle();
-        }
+        // for (int k =0;k<vehicles.size(); k++){
+        //     vehicles[k].ShowVehicle();
+        // }
 
         Show_road(updatedRoad);
         usleep(100000);
@@ -456,7 +457,9 @@ void Road::LoopSimulation(int mat_len, int mat_wid){
 bool Road::Sim_fin(){
     for (int i = 0; i<vehicles.size();i++){
         Vehicle v = vehicles[i];
-        if (v.Get_x()-2*v.Get_lenth()>road[0].size()){
+        
+        //cout<<"@@@@"<<v.Get_x()-v.Get_lenth()<<" "<<road[0].size()<<"@@@@"<<i<<endl;
+        if (v.Get_x()-v.Get_lenth()>road[0].size()){
             continue;
         }else{
             return true;
@@ -465,6 +468,22 @@ bool Road::Sim_fin(){
     return false;
 }
 
+bool Road::Sim_fing(){
+    for (int i = 0; i<vehicles.size();i++){
+        Vehicle v = vehicles[i];
+        
+        if(vehicles[vehicles.size()-1].Get_x()-v.Get_lenth()>road[0].size()){
+                return false;
+            }
+        //cout<<"@@@@"<<v.Get_x()-v.Get_lenth()<<" "<<road[0].size()<<"@@@@"<<i<<endl;
+        if (v.Get_x()-v.Get_lenth()>road[0].size()){
+            continue;
+        }else{
+            return true;
+        }
+    }
+    return false;
+}
 vector<vector<char> > Road::Get_road(){
     return road;
 }
