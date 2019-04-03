@@ -136,6 +136,10 @@ void Road::New_initializer(int mat_len, int mat_wid){
             } else{
                 j+=(*currVehicle).Get_width();
                 j= j % (mat_wid - 2 - (*currVehicle).Get_width());
+                if (j==0){
+                    j=1;
+                }
+                
                 continue;
             }
         }
