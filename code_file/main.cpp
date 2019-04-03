@@ -66,18 +66,16 @@ int main(int argc, char **argv){
          glutInit(&argc, argv);
 
          glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-         glutInitWindowSize(1600, 400);
+         glutInitWindowSize(1800, 600);
          glutInitWindowPosition(0,0);
          glutCreateWindow("Traffic signal");
 
          //call back functions
-        
          
          myinit();
 
          glutIdleFunc(display);
          glutDisplayFunc(display);
-
 
          glutMainLoop();
     }
@@ -129,6 +127,7 @@ void display(){
     while(r.Sim_fin()){
         r.LoopSimulation(mat_len,mat_wid);
         mydisplay();
+        //cout<<endl<<"@@@@@"<<r.Sim_fin()<<"@@@@@"<<endl;
     }
 
 }
@@ -178,19 +177,17 @@ void mydisplay(){
 //Function for printing Road
 void Roadp(){
 
-    glBegin(GL_QUADS);
+    int x1 = mat_len*50;
+    int y1 = mat_wid*70; 
 
-    //setting the dark grey colour for the road
-    glColor3f(0.411, 0.411, 0.411);
+    vector<float> acolour {0.4862745098, 0.98823529411, 0.0};    
 
-    //defigning the length and width of the road
-    //cout<<mat_len*50<<" "<<mat_wid*20<<endl;
-    glVertex2i(0,0);
-    glVertex2i(mat_len*50,0);
-    glVertex2i(mat_len*50 ,mat_wid*50);
-    glVertex2i(0,mat_wid*50);
+    rectangle(0, 0, x1, y1, acolour);
 
-    glEnd();
+    y1 = mat_wid*20;
+    vector<float> acolour1 {0.411, 0.411, 0.411}; 
+    int y2 = mat_wid*50;
+    rectangle(0,y2,x1, y1, acolour1);
 
 }
 
@@ -203,8 +200,8 @@ int GLowerBound(vector<int> temp, float value){
         if(abs(temp[i]) < value){
 
         }else{
-            cout<<" "<<temp[i-1]<<" "<<value<<endl;
-            count = temp[i-1];
+            // cout<<" "<<temp[i-1]<<" "<<value<<endl;
+            // count = temp[i-1];
             if(temp[i-1]>=0){
                 return 1;
             }else{
@@ -228,20 +225,31 @@ void vehicle(Vehicle temp){
         vector<tuple <int,vector<int> > > signal = r.Get_signals();
 
         for(int i=0; i<signal.size(); i++){
-
             dispSignal(get<0>(signal[i]), get<1>(signal[i]));
-
         }
 
-                vector<tuple<int, int> > corners = temp.getCorners();
-                string c = temp.GetColour();
-                vector<float> acolour =  getRGBValue(c);
-                car(corners, acolour);
+        vector<tuple<int, int> > corners = temp.getCorners();
+        string c = temp.GetColour();
+        vector<float> acolour =  getRGBValue(c);
 
+        cout<<2<<temp.getType()<<1<<endl;
 
+        if(temp.getType().find("Car") != string::npos){
+            car(corners, acolour);
+        }else{
+            if(temp.getType().find("bike") != string::npos){
+                bike(corners, acolour);
+            }else{
+                if(temp.getType().find("Bus") != string::npos){
+                    bus(corners, acolour);
+                }else{
+                    truck(corners, acolour);
+                }
+            }
+        }
 }
 
-
+//displaying the signal
 void dispSignal(int column, vector<int> list){
         int check = GLowerBound(list, r.time);
 
@@ -256,17 +264,14 @@ void dispSignal(int column, vector<int> list){
                 
         glBegin(GL_QUADS);
 
-        glVertex2i(column*50,0);
-        glVertex2i(column*50+10,0);
+        glVertex2i(column*50,mat_wid*20);
+        glVertex2i(column*50+10,mat_wid*20);
         glVertex2i(column*50+10,mat_wid*50);
         glVertex2i(column*50,mat_wid*50);
         
         glEnd();
 
 }
-
-
-
 
 
 void myinit(){
@@ -277,7 +282,7 @@ void myinit(){
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Set window size in X- and Y- direction 
-    gluOrtho2D(0.0, mat_len*50-500, 0.0, mat_wid*50); 
+    gluOrtho2D(0.0, mat_len*50-500, 0.0, mat_wid*70); 
 
     // Reset background color with white (since all three argument is 1.0) 
     glClearColor(0.0, 1.0, 0.0, 0.0); 
@@ -322,35 +327,23 @@ vector<float> getRGBValue(string s){
 
 void car(vector<tuple<int, int> > corners, vector<float> acolour){
     int x1 = get<0>(corners[0])*50;
-    int y1 = (get<1>(corners[0])*50) +10;
+    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
 
     int x2 = get<0>(corners[1])*50;
-    int y2 = (get<1>(corners[1])*50)+10;
+    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
 
     int x3 = get<0>(corners[2])*50;
-    int y3 = (get<1>(corners[2])*50);
+    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
 
     int x4 = get<0>(corners[3])*50;
-    int y4 = (get<1>(corners[3])*50);
+    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
 
     float sq_x = (x1+x2)/2;
     float sq_y = (y4+3*y1)/4;
 
     float tr_x = (3*x2+x1)/4;
     float tr_y = (3*y4+y1)/4;
-
-    // cout<<x1<<" "<<y1<<endl;
-    // cout<<x2<<" "<<y2<<endl;
-    // cout<<x3<<" "<<y3<<endl;
-    // cout<<x4<<" "<<y4<<endl;
-    // cout<<sq_x<<" "<<sq_y<<endl;
-    // cout<<tr_x<<" "<<tr_y<<endl;
-
-    // cout<<x1<<" "<<tr_y<<endl;
-    // cout<<x1<<" "<<sq_y<<endl;
-    // cout<<tr_x<<" "<<sq_y<<endl;
-    // cout<<sq_x<<" "<<tr_y<<endl;
-
+    
     rectangle(x1, tr_y, x3, y3, acolour);
 
 
@@ -373,6 +366,131 @@ void car(vector<tuple<int, int> > corners, vector<float> acolour){
 }
 
 void truck(vector<tuple<int, int> > corners, vector<float> acolour){
+
+    int x1 = get<0>(corners[0])*50;
+    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
+
+    int x2 = get<0>(corners[1])*50;
+    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
+
+    int x3 = get<0>(corners[2])*50;
+    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
+
+    int x4 = get<0>(corners[3])*50;
+    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
+
+
+    int xprime = (3*x2+x1)/4;
+
+    int mx = (5*x2+5*x1)/10;
+
+    //part1
+    rectangle(x1, y1, mx, y3, acolour);
+    
+    //part2
+    int cy = (7*y3 + 3*y1)/10;
+    int dx = (6*x2+4*x1)/10;
+    rectangle(mx, cy, dx, y3, acolour);
+
+    //part3
+    int gx = (9*x2+ x1)/10;
+    rectangle(dx, y1, gx, y3, acolour);
+    
+    //part4
+    int yprime = (3*y1+y4)/4;
+    rectangle(gx, yprime, x3, y3, acolour);
+
+    int lightx = (11*x2+x1)/12;
+    int lighty = (y1+y3)/2;
+    int lightyy = (3*y3+y1)/4;
+    rectangle(lightx, lighty, x3, lightyy, getRGBValue("YELLOW"));
+    
+}
+
+void bus(vector<tuple<int, int> > corners, vector<float> acolour){
+
+    int x1 = get<0>(corners[0])*50;
+    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
+
+    int x2 = get<0>(corners[1])*50;
+    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
+
+    int x3 = get<0>(corners[2])*50;
+    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
+
+    int x4 = get<0>(corners[3])*50;
+    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
+
+    rectangle(x1, y1, x3,y3,acolour);
+
+    vector<float> windowColour = {0.2, 0.4862745098, 0.49803921568};
+
+    //making the windows 
+    int wy1 = (4*y2+y3)/5;
+    int wy2 = (2*y2+3*y3)/5;
+    
+    //window 1
+    int w1x1 =(9*x1+x2)/10;
+    int w1x2 = (7*x1+3*x2)/10;
+    
+    rectangle(w1x1, wy1, w1x2, wy2, windowColour);
+
+    //window 2
+    int w2x1 = (6*x1+4*x2)/10;
+    int w2x2 = (4*x1+6*x2)/10;
+
+    rectangle(w2x1,wy1, w2x2, wy2, windowColour);
+
+    //window 3 
+    int w3x1 = (3*x1+7*x2)/10;
+    int w3x2 = (x1+9*x2)/10;
+
+    rectangle(w3x1, wy1, w3x2, wy2, windowColour);
+
+    //headlight 
+    int hy1 = (y2+4*y3)/5;
+
+    rectangle(w3x2, wy2, x2, hy1, getRGBValue("YELLOw")); 
+     
+}
+
+void bike(vector<tuple<int, int> > corners, vector<float> acolour){
+
+    int x1 = get<0>(corners[0])*50;
+    int y1 = (get<1>(corners[0])*30 + mat_wid*20);
+
+    int x2 = get<0>(corners[1])*50;
+    int y2 = (get<1>(corners[1])*30 + mat_wid*20);
+
+    int x3 = get<0>(corners[2])*50;
+    int y3 = (get<1>(corners[2])*30 + mat_wid*20);
+
+    int x4 = get<0>(corners[3])*50;
+    int y4 = (get<1>(corners[3])*30 + mat_wid*20);
+
+    // int y1 = get<0>(corners[0])*50;
+    // int x1 = (get<1>(corners[0])*50);
+
+    // int y2 = get<0>(corners[1])*50;
+    // int x2 = (get<1>(corners[1])*50);
+
+    // int y3 = get<0>(corners[2])*50;
+    // int x3 = (get<1>(corners[2])*50);
+
+    // int y4 = get<0>(corners[3])*50;
+    // int x4 = (get<1>(corners[3])*50);
+
+    int ax = (5*x2+x1)/6;
+    int ay = (5*y3+y2)/6;
+
+    rectangle(ax, y2, x3, y3, acolour);
+
+    int bx = (2*x2 + x1)/3;
+    rectangle(bx, ay, ax, y3, acolour);
+
+    int by = (2*y1 + y3)/3;
+    rectangle(x1, by, bx, y3, acolour);
+
 
 }
 
