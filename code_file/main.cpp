@@ -24,6 +24,8 @@ void idle();
 void disp();
 void vehicles(Vehicle);
 
+void zebraCrossing(int column);
+
 //list of the different vehicles that can be drawn
 void car(vector<tuple<int, int> > corners, vector<float> acolour);
 void bus(vector<tuple<int, int> > corners, vector<float> acolour);
@@ -131,7 +133,6 @@ void display(){
         mydisplay();
         time_wether++;
     }
-    cout<<r.Sim_fin();
     exit(0);
 }
 
@@ -260,15 +261,9 @@ void vehicle(Vehicle temp){
 
         vector<tuple <int,vector<int> > > signal = r.Get_signals();
 
-        for(int i=0; i<signal.size(); i++){
-            dispSignal(get<0>(signal[i]), get<1>(signal[i]));
-        }
-
         vector<tuple<int, int> > corners = temp.getCorners();
         string c = temp.GetColour();
         vector<float> acolour =  getRGBValue(c);
-
-        //cout<<2<<temp.getType()<<1<<endl;
 
         if(temp.getType().find("Car") != string::npos){
             car(corners, acolour);
@@ -283,10 +278,16 @@ void vehicle(Vehicle temp){
                 }
             }
         }
+
+        for(int i=0; i<signal.size(); i++){
+            dispSignal(get<0>(signal[i]), get<1>(signal[i]));
+        }
+
 }
 
 //displaying the signal
 void dispSignal(int column, vector<int> list){
+        zebraCrossing(column);
         int check = GLowerBound(list, r.time);
 
         if(check <0){
@@ -573,4 +574,22 @@ void night(int a){
         }
     }
     
+}
+
+void zebraCrossing(int column){
+    int x1 = column*50;
+    int x2 = column*50 - mat_len*2;
+
+    int y1 = 0+mat_wid*20; 
+    int y2 = mat_wid+mat_wid*20;
+
+    vector<float> colour = {0.8, 0.8, 0.8};
+
+    while(y2<mat_wid*50){
+
+        rectangle(x2, y2, x1, y1, colour);
+        y1 = mat_wid*3 + y1;
+        y2 = mat_wid*3 + y2;
+
+    } 
 }
