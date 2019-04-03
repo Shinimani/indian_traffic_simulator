@@ -218,19 +218,12 @@ void Vehicle::collisionAvoider(int mat_len){
             setLCProb(laneChangeProb - ((0.9)* (1-currProb)));
         }
     }
-    else if(front>(vacc + vspeed + 2-dec+signalOrCar) && front<2*(vacc + vspeed + 2-dec+signalOrCar)){
-        setBrake(0);
-        setLCProb(laneChangeProb + ((0.25)* (1-currProb)));
-    }
-    else if (front<=(vacc + vspeed + 2-dec+signalOrCar) ){
-        setLCProb(laneChangeProb + ((0.50)* (1-currProb)));
-        setBrake(0);
-        setSpeed(front/2);
-        // setSpeed(0);
-    }
     else if(core_front>(vacc + vspeed + 2-dec+signalOrCar) && core_front<2*(vacc + vspeed + 2-dec+signalOrCar)){
         setBrake(0);
         setLCProb(laneChangeProb + ((0.25)* (1-currProb)));
+        if (vspeed == 0){
+            setSpeed(1);
+        }
     }
     else if (core_front<=(vacc + vspeed + 2-dec+signalOrCar) ){
         setLCProb(laneChangeProb + ((0.55)* (1-currProb)));
@@ -238,6 +231,16 @@ void Vehicle::collisionAvoider(int mat_len){
         setSpeed(core_front/2);
         // setSpeed(0);
     }
+    else if (front<=(vacc + vspeed + 2-dec+signalOrCar) ){
+        setLCProb(laneChangeProb + ((0.50)* (1-currProb)));
+        setBrake(0);
+        setSpeed(front/2);
+        // setSpeed(0);
+    }
+    // else if(front>(vacc + vspeed + 2-dec+signalOrCar) && front<2*(vacc + vspeed + 2-dec+signalOrCar)){
+    //     setBrake(0);
+    //     setLCProb(laneChangeProb + ((0.25)* (1-currProb)));
+    // }
     else{
         setLCProb(laneChangeProb - ((0.9)*(currProb)));
         setBrake(1);
