@@ -226,6 +226,12 @@ void Roadp(){
 
     }
 
+    vector<tuple <int,vector<int> > > signal = r.Get_signals();
+
+    for(int i=0; i<signal.size(); i++){
+        dispSignal(get<0>(signal[i]), get<1>(signal[i]));
+    }
+
 }
 
 int GLowerBound(vector<int> temp, float value){
@@ -259,8 +265,6 @@ int GLowerBound(vector<int> temp, float value){
 
 void vehicle(Vehicle temp){
 
-        vector<tuple <int,vector<int> > > signal = r.Get_signals();
-
         vector<tuple<int, int> > corners = temp.getCorners();
         string c = temp.GetColour();
         vector<float> acolour =  getRGBValue(c);
@@ -277,10 +281,6 @@ void vehicle(Vehicle temp){
                     car(corners, acolour);
                 }
             }
-        }
-
-        for(int i=0; i<signal.size(); i++){
-            dispSignal(get<0>(signal[i]), get<1>(signal[i]));
         }
 
 }
@@ -302,8 +302,8 @@ void dispSignal(int column, vector<int> list){
         glBegin(GL_QUADS);
 
         glVertex2i(column*50,mat_wid*20);
-        glVertex2i(column*50+10,mat_wid*20);
-        glVertex2i(column*50+10,mat_wid*50);
+        glVertex2i(column*50-10,mat_wid*20);
+        glVertex2i(column*50-10,mat_wid*50);
         glVertex2i(column*50,mat_wid*50);
         
         glEnd();
@@ -590,6 +590,18 @@ void zebraCrossing(int column){
         rectangle(x2, y2, x1, y1, colour);
         y1 = mat_wid*3 + y1;
         y2 = mat_wid*3 + y2;
-
     } 
+
+    y1 = mat_wid+mat_wid*20;
+    y2 = mat_wid*23;
+
+    vector<float> colour1 = {0.411, 0.411, 0.411};
+
+    while(y2<mat_wid*50){
+        
+        rectangle(x2, y2, x1, y1, colour1);
+
+        y1 = mat_wid*3 + y1;
+        y2 = mat_wid*3 + y2;
+    }
 }
