@@ -338,24 +338,23 @@ vector<float> getRGBValue(string s){
     }else{
         if(s.compare("RED")==0){
             color.push_back(1.0);
-            color.push_back(0.0);
-            color.push_back(0.0);
+            color.push_back(55/255);
+            color.push_back(55/255);
         }else{
             if(s.compare("GREEN")==0){
                 color.push_back(0.0);
                 color.push_back(1.0);
-                color.push_back(0.0);
+                color.push_back(64/255);
             }else{
-                if(s.compare("BLUE")==0){
-                    color.push_back(0.0);
-                    color.push_back(0.0);
+                if(s.compare("YELLOW")==0){
                     color.push_back(1.0);
+                    color.push_back(1.0);
+                    color.push_back(0.0);
                 }else{
-                    color.push_back(1.0);
-                    color.push_back(1.0);
                     color.push_back(0.0);
-                }
-                
+                    color.push_back(228/255);
+                    color.push_back(1.0);
+                }                
             }
         }
     }
