@@ -1,5 +1,5 @@
 # indian_traffic_simulator
-## Task 2 of the COP290 Course.<br>
+## Task 2 of the COP290 Course<br>
 
 ## Running the Simulator
 The config file is provided which sets the various parameters for simulation.
